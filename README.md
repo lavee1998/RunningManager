@@ -42,6 +42,12 @@ A célunk egy olyan mobilalkalmazás készítése ami futás közben képes assz
 ![](images/viewModel.png) 
 
 
+## Use-Case diagramm
+
+![](images/usecase.png) 
+
+
+
 
 
 
