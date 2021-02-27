@@ -16,7 +16,13 @@ Futás teljesítmény mérő: A feladat egy olyan mobil alkalmazás megvalósít
 
 A célunk egy olyan mobilalkalmazás készítése ami futás közben képes asszisztálni és motiválni a felhasználót. Ennek az alkalmazásnak a segítségével  időintervallum és távolság alapján folyamatosan nyomonkövethetjük, hogy az utunkat, szinten tarthatjuk a sebességünket, hogy a kívánt idő alatt elérjük célunkat. 
 
-## Plattform: Mobileszközök, okostelefonok
+## Plattform: 
+
+Mobileszközök, okostelefonok
+
+## Operációs rendszerek:
+
+Android, iOS
 
 ## Használt technológia:
 
@@ -26,7 +32,7 @@ A célunk egy olyan mobilalkalmazás készítése ami futás közben képes assz
 
 ## Funkciók
 
-1. Az alkalmazás megnyítását követően a "Get started" screen-re irányítja a felhasználót.
+1. Az alkalmazás megnyítását követően a "Get started!" screen-re irányítja a felhasználót.
 2. A képernyő alján egy navigációs fül található, ahol a felhasználó a 2 alapvető képernyő között navigálhat tetszőlegesen
 3. A két alapvető képernyő a "Get started" illetve a "Your runs" fül alatt található.
 5. A "Get started" képernyőn a felhasználó beállíthatja a tervezett futásának paramétereit, például a futás típusát: szabad futás, időhöz kötött futás, távolsághoz kötött futás, időhöz és távolsághoz kötött futás.
