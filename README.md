@@ -40,6 +40,7 @@ A célunk egy olyan mobilalkalmazás készítése ami futás közben képes assz
 
 ## Az alkalmazás felületi terve
 
-![](images/getstartedView.png)
+![](images/getstartedView.png)  ![](images/listView.png)  ![](images/detailsView.png)  
+![](images/detailsView2.png)  ![](images/actionView1.png) ![](images/actionView2.png) 
 
 
