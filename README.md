@@ -36,10 +36,10 @@ Android, iOS
 
 ## Fontosabb használt csomagok:
 
-- ** expo-location ** : a folyamatos pozició változtatás követéséhez használt eszköz.
-- ** react-native-paper ** : az alkalmazás stílusozásához használt eszköz.
-- ** react-native-maps ** : a térképes megjelenítéshez használt eszköz.
-- ** react-native-speedometer ** : a sebességmérő szimulálására használt eszköz.
+- **expo-location** : a folyamatos pozició változtatás követéséhez használt eszköz.
+- **react-native-paper** : az alkalmazás stílusozásához használt eszköz.
+- **react-native-maps** : a térképes megjelenítéshez használt eszköz.
+- **react-native-speedometer** : a sebességmérő szimulálására használt eszköz.
 
 ## Funkciók
 
