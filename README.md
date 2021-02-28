@@ -1,5 +1,3 @@
-Ide írjuk a specit, mindenki szerkessze bátran, csak derítsük ki a követelményeket!
-
 
 #  _Térinformatikai és távérzékelési alkalmazások fejlesztése:_ RunningManager 
 
