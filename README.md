@@ -2,8 +2,8 @@
 #  _Térinformatikai és távérzékelési alkalmazások fejlesztése:_ RunningManager 
 
 ## Készítette:
-**Jónás Eszter Laura. 
-Horváth Milán. 
+**Jónás Eszter Laura, 
+Horváth Milán,  
 Kovács Levente**
 
 ## Feladat:
@@ -13,6 +13,10 @@ Futás teljesítmény mérő: A feladat egy olyan mobil alkalmazás megvalósít
 ## Leírás:
 
 A célunk egy olyan mobilalkalmazás készítése ami futás közben képes asszisztálni és motiválni a felhasználót. Ennek az alkalmazásnak a segítségével  időintervallum és távolság alapján folyamatosan nyomonkövethetjük, hogy az utunkat, szinten tarthatjuk a sebességünket, hogy a kívánt idő alatt elérjük célunkat. 
+
+## Használt programozási nyelv: 
+
+JavaScript
 
 ## Plattform: 
 
@@ -29,6 +33,13 @@ Android, iOS
 **Expo:** egy keretrendszer és egy egy platform univerzális React alkalmazásokhoz. Előnye hogy könnyű tesztelni éles eszközök, hisz egyből a saját eszközünkön jelenik meg az általunk megírt alkalmazás. 
 
 **Redux:** A Redux egy JavaScript appokhoz szánt alkalmazás szintű "kiszámítható" állapot tároló, ami segít a fejlesztőknek egy konzisztens viselkedésű alkalmazás megírásában.
+
+## Fontosabb használt csomagok:
+
+- ** expo-location ** : a folyamatos pozició változtatás követéséhez használt eszköz.
+- ** react-native-paper ** : az alkalmazás stílusozásához használt eszköz.
+- ** react-native-maps ** : a térképes megjelenítéshez használt eszköz.
+- ** react-native-speedometer ** : a sebességmérő szimulálására használt eszköz.
 
 ## Funkciók
 
@@ -58,10 +69,11 @@ Az alkalmazás alapvetően 4 oldalt tartalmaz, ebből 2 érhető el közvetlenü
 ![](images/viewModel.png) 
 
 
-
 ## Osztály diagram
 
 ![](images/classdiagramm.png) 
+
+
 
 
 
