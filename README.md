@@ -55,10 +55,14 @@ Az alkalmazás alapvetően 4 oldalt tartalmaz, ebből 2 érhető el közvetlenü
 ![](images/viewModel.png) 
 
 
-## Use-Case diagramm
+## Használat - eset diagram
 
 ![](images/usecase.png) 
 
+
+## Osztály diagram
+
+![](images/classdiagramm.png) 
 
 
 
