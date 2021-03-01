@@ -60,8 +60,7 @@ Az alkalmazás futtatásához az Expo Go mobil app szükséges.
 
 ## Használat - eset diagram
 
-
-![](images/usecase.png) 
+![](images/usecase1.png) 
 
 ## Az alkalmazás felületi terve
 
