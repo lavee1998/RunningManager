@@ -34,12 +34,16 @@ Android, iOS
 
 **Redux:** A Redux egy JavaScript appokhoz szánt alkalmazás szintű "kiszámítható" állapot tároló, ami segít a fejlesztőknek egy konzisztens viselkedésű alkalmazás megírásában.
 
-## Fontosabb használt csomagok:
+## Egyéb fontosabb használt csomagok:
 
 - **expo-location** : a folyamatos pozició változtatás követéséhez használt eszköz.
 - **react-native-paper** : az alkalmazás stílusozásához használt eszköz.
 - **react-native-maps** : a térképes megjelenítéshez használt eszköz.
 - **react-native-speedometer** : a sebességmérő szimulálására használt eszköz.
+
+## Futtatás
+
+Az alkalmazás futtatásához az Expo Go mobil app szükséges.
 
 ## Funkciók
 
