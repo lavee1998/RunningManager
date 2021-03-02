@@ -56,6 +56,9 @@ Az alkalmazás futtatásához az Expo Go mobil app szükséges.
 8. Miután befejezte futását a megfelelő gomb lenyomásával leállíthatja a folyamatot. Ekkor kérhet elemzést a programtól a felhasználó, ahol megkapja az átlagsebességét, a távolságot amennyit futott, a maximális sebességét, és egy térképen megjeleníti a futását. A térképen egyenletesen ellenörzőpontok segítségével további adatokat olvashat le a futásának részleteiről az adott pontban.
 9. Miután végzett az elemzéssel a felhasználó kérheti hogy elmentse az adott futás vizsgálatát a helyi tárolóba.
 10. A másik fő képernyőn a "Your runs"-ban megtekintheti a felhasználó az elmentett eredményeit és ezeket újra megvizsgálhatja a térképen (mint ahogy a futás elemzésénél is).
+11. Az alkalmazás futás közben figyelmeztet az esetleges célidő közelettére 10%-kal a vége elött. 
+12. Az alkalmazás futás közben figyelmeztet az esetleges céltáv elérésének közelettére 10%-kal a vége elött.
+13. Az alkalmazás figyelmeztet ha a kívánt sebesség (esetleges átlagsebesség) alatt teljesít a felhasználó.
 
 
 ## Használat - eset diagram
