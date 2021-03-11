@@ -5366,6 +5366,11 @@ react-native-iphone-x-helper@^1.3.0, react-native-iphone-x-helper@^1.3.1:
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
   integrity sha512-HOf0jzRnq2/aFUcdCJ9w9JGzN3gdEg0zFE4FyYlp4jtidqU03D5X7ZegGKfT1EWteR0gPBGp9ye5T5FvSWi9Yg==
 
+react-native-maps@0.27.1:
+  version "0.27.1"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.27.1.tgz#2f10cd417bb2fd938c9e015b1c9b6d9b1a44b97f"
+  integrity sha512-HygBkZBecTnIVRYrSiLRAvu4OmXOYso/A7c6Cy73HkOh9CgGV8Ap5eBea24tvmFGptjj5Hg8AJ94/YbmWK1Okw==
+
 react-native-numeric-input@^1.8.3:
   version "1.8.3"
   resolved "https://registry.yarnpkg.com/react-native-numeric-input/-/react-native-numeric-input-1.8.3.tgz#e869aa1b60d0c38b92e84e44bb28944f48b4ccd3"
@@ -5383,6 +5388,11 @@ react-native-paper-dropdown@0.0.5:
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/react-native-paper-dropdown/-/react-native-paper-dropdown-0.0.5.tgz#d5358519c0e503bd24f742d43306503d9d618150"
   integrity sha512-KaiRO4YLEJ6+8aEImqYmKzVWv4Rzsqp2XKK6cjK2oJ3bPUHLqVnxl0FMQ2v0WbahjYM7MA9L08f8uLAW2M+Ckw==
+
+react-native-paper-grid@^0.1.12:
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/react-native-paper-grid/-/react-native-paper-grid-0.1.12.tgz#c65e8413df01bdb5d599b19f7b83780a66d2e743"
+  integrity sha512-8ANVcZ3p9YghWimAkICGYnD5A9ZZwNbzCVHJVwru6UDXlHV7v/CZvLaklrd2qpTXcGGTjmpSPajpoDIoGAdpkA==
 
 react-native-paper@^4.7.2:
   version "4.7.2"
@@ -5436,6 +5446,11 @@ react-native-svg@^12.1.0:
   dependencies:
     css-select "^2.1.0"
     css-tree "^1.0.0-alpha.39"
+
+react-native-tab-view@^2.15.2:
+  version "2.16.0"
+  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-2.16.0.tgz#cae72c7084394bd328fac5fefb86cd966df37a86"
+  integrity sha512-ac2DmT7+l13wzIFqtbfXn4wwfgtPoKzWjjZyrK1t+T8sdemuUvD4zIt+UImg03fu3s3VD8Wh/fBrIdcqQyZJWg==
 
 react-native-vector-icons@^8.0.0:
   version "8.0.0"
