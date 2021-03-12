@@ -17,6 +17,9 @@ import RNSpeedometer from "react-native-speedometer";
 import { TabView, SceneMap } from "react-native-tab-view";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { Col, Row, Grid } from "react-native-paper-grid";
+import * as Location from 'expo-location'
+import  { useState, useEffect } from 'react';
+import * as TaskManager from 'expo-task-manager';
 
 const ActionScreen = ({ navigation }) => {
   const [isCompleted, setCompleted] = React.useState(false);
@@ -72,6 +75,28 @@ const ActionScreen = ({ navigation }) => {
   const stopRunning = () => {
     toggleStopwatch();
   };
+  //gps 
+
+
+  var locationDatas = JSON.parse('{"locations": []}');
+  TaskManager.defineTask('MYTASK', ({  data:{locations } , error}) => {
+     if(!error){
+      console.log(locationDatas.locations.length)
+    setTimeout(() => {  Location.startLocationUpdatesAsync('MYTASK',
+    {deferredUpdatesInterval: 1000 }
+    ); }, 5000);
+    var actual= {'lat': locations[0].coords.latitude, 'long': locations[0].coords.longitude}
+    locationDatas.locations.push(actual);
+    
+  }
+  });
+  useEffect(() => {
+    (async () => {
+      await Location.startLocationUpdatesAsync('MYTASK',
+        {deferredUpdatesInterval: 1000 }
+        );
+    })();
+  }, []);
 
   return (
     <React.Fragment>
