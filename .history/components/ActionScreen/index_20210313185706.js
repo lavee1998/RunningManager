@@ -87,7 +87,7 @@ const ActionScreen = ({ navigation }) => {
       console.log(currDistance,  distance, distance + Math.round(currDistance * 100) / 100,  "curr-distance-test")
 
       
-      setDistance(parseFloat(distance) + ( Math.round(currDistance * 100) / 100))
+      setDistance(parseFloat(distance +( Math.round(currDistance * 100) / 100))
 
 
     }

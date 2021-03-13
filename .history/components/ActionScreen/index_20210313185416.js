@@ -84,10 +84,10 @@ const ActionScreen = ({ navigation }) => {
         longitude: currLocation.coords.longitude
       }
       let currDistance = haversine(start, end, {unit: 'meter'})
-      console.log(currDistance,  distance, distance + Math.round(currDistance * 100) / 100,  "curr-distance-test")
+      console.log(currDistance,  distance, distance + Math.round(currDistance * 100) / 100 "curr-distance-test")
 
       
-      setDistance(parseFloat(distance) + ( Math.round(currDistance * 100) / 100))
+      setDistance(distance + Math.round(currDistance * 100) / 100)
 
 
     }

@@ -32,8 +32,8 @@ const ActionScreen = ({ navigation }) => {
   const [currenTime, setCurrentTime] = React.useState();
   const [distance, setDistance] = React.useState(0);
   const initialLayout = { width: Dimensions.get("window").width };
-  const [text, setText] = React.useState("Waiting...")
 
+  const updateTask = "UPDATE_LOCATION_TASK";
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     { key: "first", title: "Speedometer" },
@@ -54,27 +54,17 @@ const ActionScreen = ({ navigation }) => {
       }
 
       Location.watchPositionAsync(
-        { accuracy: 6, timeInterval: 5, distanceInterval: 2 },
+        { accuracy: 6, timeInterval: 3, distanceInterval: 2 },
         updatePosition
       );
     })();
   }, []);
 
-  useEffect(() => {
-    if (errorMsg) {
-      setText(errorMsg)
-    } else if (runCoordinates.length) {
-     setText(JSON.stringify(runCoordinates[runCoordinates.length-1]))
-    }
-  
-
-  },[runCoordinates])
+  useEffect(())
 
   const updatePosition = (currLocation) => {
-  
-    if(runCoordinates.length) {
-      const lastLocation = runCoordinates[runCoordinates.length-1] //last coordinate
-      console.log(lastLocation, "lastlocation-test")
+    let lastLocation = runCoordinates.slice(-1)[0] //last coordinate
+    if(lastLocation) {
       let start = {
         latitude: lastLocation.coords.latitude,
         longitude: lastLocation.coords.longitude
@@ -84,27 +74,27 @@ const ActionScreen = ({ navigation }) => {
         longitude: currLocation.coords.longitude
       }
       let currDistance = haversine(start, end, {unit: 'meter'})
-      console.log(currDistance,  distance, distance + Math.round(currDistance * 100) / 100,  "curr-distance-test")
-
       
-      setDistance(parseFloat(distance) + ( Math.round(currDistance * 100) / 100))
-
+      setDistance(distance + Math.round(currDistance * 100) / 100)
+      console.log(currDistance, "curr-distance-test")
 
     }
+
     setCoordinates([...runCoordinates, currLocation])
-
-
-
-
-  
-    console.log(runCoordinates, "runcoordinates-tes");
+    console.log(currLocation);
     setCurrentSpeed(currLocation.coords.speed)
 
   };
 
   
 
-  
+  let text = "Waiting..";
+  if (errorMsg) {
+    text = errorMsg;
+  } else if (location) {
+    text = JSON.stringify(location);
+  }
+
   const MapTab = () => (
     <View style={[styles.scene, { backgroundColor: "#673ab7" }]} />
   );

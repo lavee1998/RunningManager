@@ -34,6 +34,7 @@ const ActionScreen = ({ navigation }) => {
   const initialLayout = { width: Dimensions.get("window").width };
   const [text, setText] = React.useState("Waiting...")
 
+  const updateTask = "UPDATE_LOCATION_TASK";
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     { key: "first", title: "Speedometer" },
@@ -54,7 +55,7 @@ const ActionScreen = ({ navigation }) => {
       }
 
       Location.watchPositionAsync(
-        { accuracy: 6, timeInterval: 5, distanceInterval: 2 },
+        { accuracy: 6, timeInterval: 4, distanceInterval: 2 },
         updatePosition
       );
     })();
@@ -63,7 +64,7 @@ const ActionScreen = ({ navigation }) => {
   useEffect(() => {
     if (errorMsg) {
       setText(errorMsg)
-    } else if (runCoordinates.length) {
+    } else if (runCoordinates[runCoordinates.length-1]) {
      setText(JSON.stringify(runCoordinates[runCoordinates.length-1]))
     }
   
@@ -73,8 +74,6 @@ const ActionScreen = ({ navigation }) => {
   const updatePosition = (currLocation) => {
   
     if(runCoordinates.length) {
-      const lastLocation = runCoordinates[runCoordinates.length-1] //last coordinate
-      console.log(lastLocation, "lastlocation-test")
       let start = {
         latitude: lastLocation.coords.latitude,
         longitude: lastLocation.coords.longitude
@@ -84,20 +83,14 @@ const ActionScreen = ({ navigation }) => {
         longitude: currLocation.coords.longitude
       }
       let currDistance = haversine(start, end, {unit: 'meter'})
-      console.log(currDistance,  distance, distance + Math.round(currDistance * 100) / 100,  "curr-distance-test")
+      console.log(currDistance,  distance, "curr-distance-test")
 
-      
-      setDistance(parseFloat(distance) + ( Math.round(currDistance * 100) / 100))
-
+      setDistance(distance + Math.round(currDistance * 100) / 100)
 
     }
+
     setCoordinates([...runCoordinates, currLocation])
-
-
-
-
-  
-    console.log(runCoordinates, "runcoordinates-tes");
+    console.log(currLocation);
     setCurrentSpeed(currLocation.coords.speed)
 
   };
