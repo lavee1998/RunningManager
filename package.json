@@ -16,6 +16,7 @@
     "@formatjs/intl-numberformat": "^6.2.2",
     "@formatjs/intl-pluralrules": "^4.0.11",
     "@formatjs/intl-relativetimeformat": "^8.1.2",
+    "@react-native-async-storage/async-storage": "^1.14.1",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/material-bottom-tabs": "^5.3.14",
     "@react-navigation/native": "^5.9.3",
@@ -52,7 +53,8 @@
     "react-native-vector-icons": "^8.0.0",
     "react-native-web": "~0.13.12",
     "react-redux": "^7.2.2",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"
