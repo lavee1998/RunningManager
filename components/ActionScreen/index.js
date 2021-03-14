@@ -22,7 +22,8 @@ import * as Location from "expo-location";
 import { useState, useEffect } from "react";
 import haversine from "haversine"
 
-
+// This component is responsible for the main running process
+// navigation -- ??
 const ActionScreen = ({ navigation }) => {
   const [isCompleted, setCompleted] = React.useState(false);
   const [stopwatchStart, setStopwatchStart] = React.useState(false);
@@ -33,18 +34,24 @@ const ActionScreen = ({ navigation }) => {
   const [distance, setDistance] = React.useState(0);
   const initialLayout = { width: Dimensions.get("window").width };
   const [text, setText] = React.useState("Waiting...")
-
   const [index, setIndex] = React.useState(0);
+  const [runCoordinates, setCoordinates] = React.useState([]);
+  const [location, setLocation] = useState();
+  const [errorMsg, setErrorMsg] = useState(null);
   const [routes] = React.useState([
     { key: "first", title: "Speedometer" },
     { key: "second", title: "Map" },
   ]);
-  const [runCoordinates, setCoordinates] = React.useState([]);
 
-  const [location, setLocation] = useState();
-  const [errorMsg, setErrorMsg] = useState(null);
+  const MapComponent = () => <MapComponent value={location,null}/>;
+  const Speedometer = () => <RNSpeedometer value={currentSpeed} />;
 
+  const renderScene = SceneMap({
+    first: Speedometer,
+    second: MapComponent
+  });
 
+  // ----------------------- METHODS ----------------------------
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
@@ -89,14 +96,6 @@ const ActionScreen = ({ navigation }) => {
     console.log(runCoordinates, "runcoordinates-tes");
     setCurrentSpeed(currLocation.coords.speed)
   };
-
-  const MapComponent = () => <MapComponent value={location,null}/>;
-  const Speedometer = () => <RNSpeedometer value={currentSpeed} />;
-
-  const renderScene = SceneMap({
-    first: Speedometer,
-    second: MapComponent
-  });
 
   //const onChange = (value) => setAverageSpeed(parseInt(value));
 

@@ -5,7 +5,6 @@ import React from "react";
 
 
 const Stack = createStackNavigator();
-
 const HomeNavigator = () => {
   return (
     <Stack.Navigator headerMode="none" initialRouteName="Home">

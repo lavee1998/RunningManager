@@ -1,40 +1,27 @@
 import {
     ScrollView,
     View,
-    Image,
     Text,
     SafeAreaView,
-    TouchableHighlight,
     StyleSheet,
   } from "react-native";
   import React, { Component, useEffect } from "react";
   import { Card, Title, Button, TextInput } from "react-native-paper";
   import { connect, useDispatch } from "react-redux";
   import DropDown from "react-native-paper-dropdown";
-  import { TimePickerModal } from "react-native-paper-dates";
   import DialogInput from "react-native-dialog-input";
+  import Dialog from "react-native-dialog";
+
   
+  // This component is the main component. Here the user can configure his/her running parameters
+  // navigation -- ??
   const HomeScreen = ({navigation}) => {
     const [showDropDown, setShowDropDown] = React.useState(false);
-    const [interval, setInterval] = React.useState({
-      interval: {
-        hours: 0,
-        minutes: 0,
-      },
-    });
-    const [hours, setHours] = React.useState();
-    const [minutes, setMinutes] = React.useState();
-    // const [interval, setInterval] = useState("");
-    // const [value, onChange] = useState("00:00:00");
-  
-    const [open, setOpen] = React.useState(true);
-  
-    const [visible, setVisible] = React.useState(false);
-    const [stopwatchStart, setStopwatchStart] = React.useState(false);
-    const [stopwatchReset, setStopwatchReset] = React.useState(false);
-    const [distance, setDistance] = React.useState(4.1);
-    const [isDialogVisible, setDialogVisible] = React.useState(false);
-    const [currenTime, setCurrentTime] = React.useState();
+    const [hours, setHours] = React.useState(0);
+    const [minutes, setMinutes] = React.useState(0);
+    const [distance, setDistance] = React.useState(0);
+    const [isDistanceDialogVisible, setDistanceDialogVisible] = React.useState(false);
+    const [isTimeDialogVisible, setTimeDialogVisible] = React.useState(false);
     const [runType, setRunType] = React.useState(0);
 
     // Running types
@@ -44,24 +31,8 @@ import {
       { value: 2, label: "Run based on distance", details: "Detail3" },
       { value: 3, label: "Free run", details: "Detail4" },
     ];
-  
-    // Set Intervall methods
-    const onDismiss = React.useCallback(() => {
-      setVisible(false);
-    }, [setVisible]);
-  
-    const onConfirm = React.useCallback(({ hours, minutes }) => {
-      setInterval({
-        interval: {
-          hours: hours,
-          minutes: minutes,
-        },
-      });
-  
-      setVisible(false);
-      console.log({ hours, minutes });
-    }, [setInterval, setVisible]);
-  
+    
+
     return (
       <ScrollView>
         <View style={styles.pageTitleContainer}>
@@ -82,64 +53,59 @@ import {
               right: <TextInput.Icon name={"menu-down"} />,
             }}
           />
+
           <View style={styles.detailsContainer}>
             <Text style={styles.detailsText}>{runTypeList[runType].details}</Text>
           </View>
-          {
-            <Button
-              icon={distance == 0 ? "close" : "check"}
-              style={styles.setButton}
-              onPress={() => setDialogVisible(true)}
+
+          <Button
+            icon={distance == 0 ? "close" : "check"}
+            style={styles.setButton}
+            onPress={() => setDistanceDialogVisible(true)}
             >
               <Text style={styles.buttonText}>Set distance</Text>
-            </Button>
-          }
+          </Button>
   
           <Button
              icon={
-               interval.interval.hours == 0 && interval.interval.minutes == 0
+               hours == 0 && minutes == 0
                  ? "close"
                  : "check"
              }
-        
             style={styles.setButton}
-            onPress={() => setVisible(true)}
-          >
-            <Text style={styles.buttonText}>Set time</Text>
+            onPress={() => setTimeDialogVisible(true)}
+            >
+              <Text style={styles.buttonText}>Set time</Text>
           </Button>
         
-  
           <DialogInput
-            isDialogVisible={isDialogVisible}
-            title={"DialogInput 1"}
+            isDialogVisible={isDistanceDialogVisible}
+            title={"Distance"}
             textInputProps={{ keyboardType: "numeric" }}
-            message={"Message for DialogInput #1"}
-            hintInput={"HINT INPUT"}
+            message={"Please provide a distance (km):"}
+            hintInput={"0.75"}
             submitInput={(inputText) => {
               setDistance(inputText);
-              setDialogVisible(false);
+              setDistanceDialogVisible(false);
             }}
             closeDialog={() => {
-              setDialogVisible(false);
-            }}
-          ></DialogInput>
-  
-          <TimePickerModal
-            visible={visible}
-            onDismiss={onDismiss}
-            onConfirm={onConfirm}
-            hours={24} // default: current hours
-            minutes={60} // default: current minutes
-            label="Select running time" // optional, default 'Select time'
-            cancelLabel="Cancel" // optional, default: 'Cancel'
-            confirmLabel="Ok" // optional, default: 'Ok'
-            animationType="fade" // optional, default is 'none'
-            locale={"hu"} // optional, default is automically detected by your system
-          />
+              setDistanceDialogVisible(false);
+            }}>
+          </DialogInput>
+
+          <Dialog.Container visible={isTimeDialogVisible}>
+          <Dialog.Title>Time</Dialog.Title>
+            <Dialog.Input label="Hours" defaultValue="0" onChangeText={(hour) => setHours(hour)}></Dialog.Input>
+            <Dialog.Input label="Minutes" defaultValue="0" onChangeText={(minute) => setMinutes(minute)}></Dialog.Input>
+            <Dialog.Button label="Cancel"
+              onPress={() => {
+                setHours(0);
+                setMinutes(0);
+                setTimeDialogVisible(false)}} />
+            <Dialog.Button label="Submit" onPress={() => setTimeDialogVisible(false)} />
+          </Dialog.Container>
   
           <Button onPress={() => navigation.navigate("Action")} style={styles.startButton} mode="container"> <Text style={styles.startButtonText}> Start run!</Text></Button>
-  
-        
         </SafeAreaView>
       </ScrollView>
     );
