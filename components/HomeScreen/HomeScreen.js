@@ -36,6 +36,14 @@ import {
     const [isDialogVisible, setDialogVisible] = React.useState(false);
     const [currenTime, setCurrentTime] = React.useState();
     const [runType, setRunType] = React.useState(0);
+
+    // Running types
+    const runTypeList = [
+      { value: 0, label: "Run based on time and distance", details: "Detail1" },
+      { value: 1, label: "Run based on time", details: "Detail2" },
+      { value: 2, label: "Run based on distance", details: "Detail3" },
+      { value: 3, label: "Free run", details: "Detail4" },
+    ];
   
     // Set Intervall methods
     const onDismiss = React.useCallback(() => {
@@ -50,23 +58,9 @@ import {
         },
       });
   
-    
       setVisible(false);
       console.log({ hours, minutes });
     }, [setInterval, setVisible]);
-  
-    //stopwatch methods
-  
-  
-  
-   
-  
-    const runTypeList = [
-      { value: 0, label: "Run based on time and distance", details: "Detail1" },
-      { value: 1, label: "Run based on time", details: "Detail2" },
-      { value: 2, label: "Run based on distance", details: "Detail3" },
-      { value: 3, label: "Free run", details: "Detail4" },
-    ];
   
     return (
       <ScrollView>

@@ -58,20 +58,17 @@ const ActionScreen = ({ navigation }) => {
         updatePosition
       );
     })();
-  }, []);
+  },[]);
 
   useEffect(() => {
     if (errorMsg) {
       setText(errorMsg)
     } else if (runCoordinates.length) {
-     setText(JSON.stringify(runCoordinates[runCoordinates.length-1]))
+      setText(JSON.stringify(runCoordinates[runCoordinates.length-1]))
     }
-  
-
   },[runCoordinates])
 
-  const updatePosition = (currLocation) => {
-  
+  const updatePosition = (currLocation) => { 
     if(runCoordinates.length) {
       const lastLocation = runCoordinates[runCoordinates.length-1] //last coordinate
       console.log(lastLocation, "lastlocation-test")
@@ -85,35 +82,20 @@ const ActionScreen = ({ navigation }) => {
       }
       let currDistance = haversine(start, end, {unit: 'meter'})
       console.log(currDistance,  distance, distance + Math.round(currDistance * 100) / 100,  "curr-distance-test")
-
-      
       setDistance(parseFloat(distance) + ( Math.round(currDistance * 100) / 100))
-
-
     }
+    
     setCoordinates([...runCoordinates, currLocation])
-
-
-
-
-  
     console.log(runCoordinates, "runcoordinates-tes");
     setCurrentSpeed(currLocation.coords.speed)
-
   };
 
-  
-
-  
-  const MapTab = () => (
-    <View style={[styles.scene, { backgroundColor: "#673ab7" }]} />
-  );
-
+  const MapComponent = () => <MapComponent value={location,null}/>;
   const Speedometer = () => <RNSpeedometer value={currentSpeed} />;
 
   const renderScene = SceneMap({
     first: Speedometer,
-    second: MapTab,
+    second: MapComponent
   });
 
   //const onChange = (value) => setAverageSpeed(parseInt(value));
@@ -178,7 +160,6 @@ const ActionScreen = ({ navigation }) => {
             >
               <Text style={styles.stopButtonText}> Stop run!</Text>
             </Button>
-            
 
             <Text>{text}</Text>
 
