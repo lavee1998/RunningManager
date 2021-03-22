@@ -28,7 +28,7 @@ const ActionScreen = ({ navigation }) => {
   const [isCompleted, setCompleted] = React.useState(false);
   const [stopwatchStart, setStopwatchStart] = React.useState(false);
   const [stopwatchReset, setStopwatchReset] = React.useState(false);
-  const [averageSpeed, setAverageSpeed] = React.useState(40);
+  const [averageSpeed, setAverageSpeed] = React.useState(0);
   const [currentSpeed, setCurrentSpeed] = React.useState(0);
   const [currenTime, setCurrentTime] = React.useState();
   const [distance,setDistance]=React.useState(0);
@@ -62,16 +62,25 @@ const ActionScreen = ({ navigation }) => {
       }
 
       Location.watchPositionAsync(
-        { accuracy: 12, timeInterval: 5000, distanceInterval: 0},
+        { accuracy: 6, timeInterval: 5000, distanceInterval: 0},
         updatePosition,
       );
     })();
   },[]);
-  let distance2=0;
+  const calculateAvgSpeed= () => {
+    if(runCoordinates.length===0) return;
+    let avgSpeed=0;
+    for(let loc of runCoordinates){
+      avgSpeed=avgSpeed+loc.coords.speed;
+      console.log(loc);
+    }
+    setAverageSpeed(  avgSpeed/runCoordinates.length);
+  }
+  let distance2=0;runCoordinates.length===0
   const updatePosition = (currLocation) => {
     if(runCoordinates.length!==0) {
+      
       const lastLocation = runCoordinates[runCoordinates.length-1] ;//last coordinate
-      console.log(lastLocation, "lastlocation-test");
       let start = {
         latitude: lastLocation.coords.latitude,
         longitude: lastLocation.coords.longitude
@@ -81,12 +90,13 @@ const ActionScreen = ({ navigation }) => {
         longitude: currLocation.coords.longitude
       }
       let currDistance = haversine(start, end, {unit: 'kilometer'});
-      console.log(currDistance,  distance2, distance2 + Math.round(currDistance * 1000) / 1000,  "curr-distance-test");
       distance2=Math.round((parseFloat(distance2) + ( Math.round(currDistance * 1000) / 1000))*1000)/1000;
       setDistance(distance2);
     }
     setCoordinates(runCoordinates.push(currLocation));
     setCurrentSpeed(currLocation.coords.speed);
+
+    calculateAvgSpeed();
   };
 
   
