@@ -31,9 +31,9 @@ const ActionScreen = ({ navigation }) => {
   const [averageSpeed, setAverageSpeed] = React.useState(40);
   const [currentSpeed, setCurrentSpeed] = React.useState(0);
   const [currenTime, setCurrentTime] = React.useState();
-  const [distance, setDistance] = React.useState(0);
+  const [distance,setDistance]=React.useState(0);
   const initialLayout = { width: Dimensions.get("window").width };
-  const [text, setText] = React.useState("Waiting...")
+  const [text, setText] = React.useState("Waiting...");
   const [index, setIndex] = React.useState(0);
   const [runCoordinates, setCoordinates] = React.useState([]);
   const [location, setLocation] = useState();
@@ -43,12 +43,13 @@ const ActionScreen = ({ navigation }) => {
     { key: "second", title: "Map" },
   ]);
 
-  const MapComponent = () => <MapComponent value={location,null}/>;
+  const MapTab = () =><View style={[styles.scene, { backgroundColor: "#673ab7" }]} />
+
   const Speedometer = () => <RNSpeedometer value={currentSpeed} />;
 
   const renderScene = SceneMap({
     first: Speedometer,
-    second: MapComponent
+    second: MapTab,
   });
 
   // ----------------------- METHODS ----------------------------
@@ -61,24 +62,16 @@ const ActionScreen = ({ navigation }) => {
       }
 
       Location.watchPositionAsync(
-        { accuracy: 6, timeInterval: 5, distanceInterval: 2 },
-        updatePosition
+        { accuracy: 12, timeInterval: 5000, distanceInterval: 0},
+        updatePosition,
       );
     })();
   },[]);
-
-  useEffect(() => {
-    if (errorMsg) {
-      setText(errorMsg)
-    } else if (runCoordinates.length) {
-      setText(JSON.stringify(runCoordinates[runCoordinates.length-1]))
-    }
-  },[runCoordinates])
-
-  const updatePosition = (currLocation) => { 
-    if(runCoordinates.length) {
-      const lastLocation = runCoordinates[runCoordinates.length-1] //last coordinate
-      console.log(lastLocation, "lastlocation-test")
+  let distance2=0;
+  const updatePosition = (currLocation) => {
+    if(runCoordinates.length!==0) {
+      const lastLocation = runCoordinates[runCoordinates.length-1] ;//last coordinate
+      console.log(lastLocation, "lastlocation-test");
       let start = {
         latitude: lastLocation.coords.latitude,
         longitude: lastLocation.coords.longitude
@@ -87,15 +80,16 @@ const ActionScreen = ({ navigation }) => {
         latitude: currLocation.coords.latitude,
         longitude: currLocation.coords.longitude
       }
-      let currDistance = haversine(start, end, {unit: 'meter'})
-      console.log(currDistance,  distance, distance + Math.round(currDistance * 100) / 100,  "curr-distance-test")
-      setDistance(parseFloat(distance) + ( Math.round(currDistance * 100) / 100))
+      let currDistance = haversine(start, end, {unit: 'kilometer'});
+      console.log(currDistance,  distance2, distance2 + Math.round(currDistance * 1000) / 1000,  "curr-distance-test");
+      distance2=Math.round((parseFloat(distance2) + ( Math.round(currDistance * 1000) / 1000))*1000)/1000;
+      setDistance(distance2);
     }
-    
-    setCoordinates([...runCoordinates, currLocation])
-    console.log(runCoordinates, "runcoordinates-tes");
-    setCurrentSpeed(currLocation.coords.speed)
+    setCoordinates(runCoordinates.push(currLocation));
+    setCurrentSpeed(currLocation.coords.speed);
   };
+
+  
 
   //const onChange = (value) => setAverageSpeed(parseInt(value));
 
@@ -152,54 +146,26 @@ const ActionScreen = ({ navigation }) => {
       {isCompleted && (
         <ScrollView>
           <SafeAreaView style={styles.contentContainer}>
-            <Button
-              onPress={() => stopRunning()}
-              style={styles.stopButton}
-              mode="container"
-            >
-              <Text style={styles.stopButtonText}> Stop run!</Text>
-            </Button>
-
-            <Text>{text}</Text>
-
-            <Stopwatch
-              laps
-              msecs
-              start={stopwatchStart}
-              reset={stopwatchReset}
-              options={options}
-              getTime={(time) => getFormattedTime(time)}
-            />
-
-            {/* <Grid>
-              <Row style={styles.paddingMarginZero}>
-                <Col style={styles.paddingMarginZero}>
-                  <Text style={styles.primaryDataText}>Average Speed</Text>
-                </Col>
-                <Col style={styles.paddingMarginZero}>
-                  <Text style={styles.secondaryDataText}>
-                    {averageSpeed} km/h
-                  </Text>
-                </Col>
-              </Row>
-              <Row style={styles.paddingMarginZero}>
-                <Col style={styles.paddingMarginZero}>
-                  <Text style={styles.secondaryDataText}>Distance</Text>
-                </Col>
-                <Col style={styles.paddingMarginZero}>
-                  <Text style={styles.primaryDataText}>{distance} km</Text>
-                </Col>
-              </Row>
-            </Grid> */}
-
-            <TabView
-              navigationState={{ index, routes }}
-              renderScene={renderScene}
-              onIndexChange={setIndex}
-              initialLayout={initialLayout}
-            />
 
             <Grid style={styles.paddingMarginZero}>
+              <Button
+                onPress={() => stopRunning()}
+                style={styles.stopButton}
+                mode="container"
+              >
+                <Text style={styles.stopButtonText}> Stop run!</Text>
+              </Button>
+            
+              <Row style={styles.container}>
+                <Stopwatch
+                  laps
+                  msecs
+                  start={stopwatchStart}
+                  reset={stopwatchReset}
+                  options={options}
+                  getTime={(time) => getFormattedTime(time)}
+                />
+              </Row>
               <Row style={styles.paddingMarginZero}>
                 <Col style={styles.paddingMarginZero}>
                   <Text style={styles.primaryDataText}>Average Speed</Text>
@@ -217,6 +183,14 @@ const ActionScreen = ({ navigation }) => {
                 <Col style={styles.paddingMarginZero}>
                   <Text style={styles.primaryDataText}>{distance} km</Text>
                 </Col>
+              </Row>
+              <Row style={styles.paddingMarginZero}>
+                <TabView
+                  navigationState={{ index, routes }}
+                  renderScene={renderScene}
+                  onIndexChange={setIndex}
+                  initialLayout={initialLayout}
+                />
               </Row>
             </Grid>
           </SafeAreaView>
