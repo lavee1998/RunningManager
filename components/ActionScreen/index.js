@@ -81,15 +81,14 @@ const ActionScreen = ({ navigation }) => {
   }
 
   let distance2 = 0;
-
+  let arr= [];
   const updatePosition =  (currLocation) => {
-    console.log(runCoordinates.length, "length-test", currLocation)
     if (runCoordinates.length !== 0) {
 
       const lastLocation = runCoordinates[runCoordinates.length - 1];//last coordinate
       let start = {
-        latitude: lastLocation.coords.latitude,
-        longitude: lastLocation.coords.longitude
+        latitude: lastLocation.latitude,
+        longitude: lastLocation.longitude
       }
       let end = {
         latitude: currLocation.coords.latitude,
@@ -99,11 +98,10 @@ const ActionScreen = ({ navigation }) => {
       distance2 = Math.round((parseFloat(distance2) + (Math.round(currDistance * 1000) / 1000)) * 1000) / 1000;
       setDistance(distance2);
     }
-    if(currLocation.coords.speed > 0) {
-    setCoordinates(runCoordinates.push(currLocation));
+    arr = [... runCoordinates, currLocation.coords];
+    setCoordinates(arr);
     setCurrentSpeed(currLocation.coords.speed);
     calculateAvgSpeed();
-    }
   };
 
 
@@ -129,7 +127,6 @@ const ActionScreen = ({ navigation }) => {
   const getFormattedTime = (time) => {
     if (!stopwatchStart) {
       setCurrentTime(time);
-      console.log("time-check", time);
     }
   };
 

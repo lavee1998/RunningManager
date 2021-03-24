@@ -15,12 +15,12 @@ import {
 // location     -- used by the ActionSreen for current position
 // markers      -- passed by the components for displaying the markers on the map
 const MapComponent = ({ runCoordinates }) => {
-  console.log(runCoordinates.length, "mapcomponent")
-  if (runCoordinates.length )
-  return (
+  if (runCoordinates.length ){
+  console.log(runCoordinates[runCoordinates.length-1]);
+    return (
     <View>
       <MapView showUserLocation followUserLocation loadingEnabled style={styles.map}>
-
+        
         <Polyline coordinates={runCoordinates} strokeWidth={5} />
         
           <Marker
@@ -33,13 +33,12 @@ const MapComponent = ({ runCoordinates }) => {
       </MapView>
     </View>
   );
-
+  }
 
   return (<View>
     <MapView showUserLocation followUserLocation loadingEnabled style={styles.map}>
 
-      <Polyline coordinates={runCoordinates} strokeWidth={5} />
-      
+    <Polyline coordinates={runCoordinates} strokeWidth={5} />
        
       
 
