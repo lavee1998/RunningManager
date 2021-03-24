@@ -20,6 +20,7 @@ import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { Col, Row, Grid } from "react-native-paper-grid";
 import * as Location from "expo-location";
 import { useState, useEffect } from "react";
+import MapComponent from "../MapComponent"
 import haversine from "haversine"
 
 // This component is responsible for the main running process
@@ -43,7 +44,7 @@ const ActionScreen = ({ navigation }) => {
     { key: "second", title: "Map" },
   ]);
 
-  const MapTab = () => <View style={[styles.scene, { backgroundColor: "#673ab7" }]} />
+  const MapTab = () => <MapComponent runCoordinates={runCoordinates} />
 
   const Speedometer = () => <RNSpeedometer maxValue={2.6} value={currentSpeed} />;
 
@@ -62,7 +63,7 @@ const ActionScreen = ({ navigation }) => {
       }
 
       Location.watchPositionAsync(
-        { accuracy: Location.Accuracy.BestForNavigation },
+        { accuracy: Location.Accuracy.BestForNavigation , distanceInterval: 5 },
         updatePosition,
       );
     })();
