@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import React from "react";
 import Constants from "expo-constants";
-import { Stopwatch, Timer } from "react-native-stopwatch-timer";
+// import { Stopwatch, Timer } from "react-native-stopwatch-timer";
 import { Card, Title, Button, TextInput } from "react-native-paper";
 import RNSpeedometer from "react-native-speedometer";
 import { TabView, SceneMap } from "react-native-tab-view";
@@ -20,7 +20,10 @@ import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { Col, Row, Grid } from "react-native-paper-grid";
 import * as Location from "expo-location";
 import { useState, useEffect } from "react";
+import MapComponent from "../MapComponent"
 import haversine from "haversine"
+// import Geolocation from 'react-native-geolocation-service';
+
 
 // This component is responsible for the main running process
 // navigation -- ??
@@ -31,21 +34,22 @@ const ActionScreen = ({ navigation }) => {
   const [averageSpeed, setAverageSpeed] = React.useState(40);
   const [currentSpeed, setCurrentSpeed] = React.useState(0);
   const [currenTime, setCurrentTime] = React.useState();
-  const [distance,setDistance]=React.useState(0);
+  const [distance, setDistance] = React.useState(0);
   const initialLayout = { width: Dimensions.get("window").width };
   const [text, setText] = React.useState("Waiting...");
   const [index, setIndex] = React.useState(0);
   const [runCoordinates, setCoordinates] = React.useState([]);
   const [location, setLocation] = useState();
+  const [watchPosState, setPosState] = useState()
   const [errorMsg, setErrorMsg] = useState(null);
   const [routes] = React.useState([
     { key: "first", title: "Speedometer" },
     { key: "second", title: "Map" },
   ]);
 
-  const MapTab = () =><View style={[styles.scene, { backgroundColor: "#673ab7" }]} />
+  const MapTab = () => <MapComponent runCoordinates={runCoordinates} />
 
-  const Speedometer = () => <RNSpeedometer value={currentSpeed} />;
+  const Speedometer = () => <RNSpeedometer minValue={0} maxValue={  ((averageSpeed * 2) > currentSpeed) ? averageSpeed:40} value={currentSpeed} />;
 
   const renderScene = SceneMap({
     first: Speedometer,
@@ -54,42 +58,116 @@ const ActionScreen = ({ navigation }) => {
 
   // ----------------------- METHODS ----------------------------
   useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
 
-      Location.watchPositionAsync(
-        { accuracy: 12, timeInterval: 5000, distanceInterval: 0},
-        updatePosition,
-      );
-    })();
-  },[]);
-  let distance2=0;
-  const updatePosition = (currLocation) => {
-    if(runCoordinates.length!==0) {
-      const lastLocation = runCoordinates[runCoordinates.length-1] ;//last coordinate
+    if (Platform.OS === 'android' && !Constants.isDevice) {
+      setErrorMsg('Permission to access location was denied')
+
+    } else {
+      setInterval(() => getLocationAsync(), 5000);
+    }
+    // (async () => {
+    //   let { status } =  await Location.requestPermissionsAsync();
+    //   if (status !== "granted") {
+    //     setErrorMsg("Permission to access location was denied");
+    //     return;
+    //   }
+
+    //    let watchId =  Location.watchPositionAsync(
+    //     {  },
+    //     updatePosition,
+    //   );
+    //   // setPosState(posState)
+
+    //   console.log(runCoordinates.length, "runcor-length-test")
+    // })();
+  }, []);
+
+  let myarray = []
+
+  const getLocationAsync = async () => {
+    let distance2 = 0
+    let { status } = await Location.requestPermissionsAsync();
+    if (status !== 'granted') {
+      setErrorMsg('Permission to access location was denied')
+
+    }
+
+    let currLocation = await Location.getCurrentPositionAsync({});
+    console.log( runCoordinates.length, runCoordinates, "runCoordinates-test")
+
+    if (runCoordinates.length !== 0) {
+      let lastLocation = runCoordinates[runCoordinates.length - 1];
       console.log(lastLocation, "lastlocation-test");
       let start = {
-        latitude: lastLocation.coords.latitude,
-        longitude: lastLocation.coords.longitude
+        latitude: lastLocation.latitude,
+        longitude: lastLocation.longitude
       }
       let end = {
         latitude: currLocation.coords.latitude,
         longitude: currLocation.coords.longitude
       }
-      let currDistance = haversine(start, end, {unit: 'kilometer'});
-      console.log(currDistance,  distance2, distance2 + Math.round(currDistance * 1000) / 1000,  "curr-distance-test");
-      distance2=Math.round((parseFloat(distance2) + ( Math.round(currDistance * 1000) / 1000))*1000)/1000;
-      setDistance(distance2);
+
+      let currDistance = haversine(start, end, { unit: 'kilometer' }) || 0;
+      console.log(currDistance, distance2, distance2 + Math.round(currDistance * 1000) / 1000, "curr-distance-test");
+      distance2 = (Math.round((parseFloat(distance2) + (Math.round(currDistance * 1000) / 1000)) * 1000) / 1000) || 0;
+      setDistance(distance2 + distance);
+
+      let sumSpeed = 0
+      runCoordinates.forEach(corr => {
+        sumSpeed = sumSpeed + corr.speed
+      });
+      let avgSpeed = sumSpeed / (runCoordinates.length)
+      console.log("avgSpeed-test",avgSpeed)
+
+      setAverageSpeed(avgSpeed)
+
     }
-    setCoordinates(runCoordinates.push(currLocation));
+    else {
+      setAverageSpeed(currLocation.coords.speed )
+    }
+    myarray = [...runCoordinates]
+    myarray.push(currLocation.coords)
+    console.log(myarray)
+    setCoordinates(myarray)
+  };
+
+
+
+  const updatePosition = (currLocation) => {
+    let distance2 = 0;
+    //console.log(runCoordinates, "runcoordinates-test", runCoordinates.length, currLocation)
+
+    console.log("zet is", Object.values(runCoordinates), "zet is")
+    if (runCoordinates.length !== 0) {
+      const lastLocation = runCoordinates[runCoordinates.length - 1];//last coordinate
+      console.log(lastLocation, "lastlocation-test");
+      let start = {
+        latitude: lastLocation.latitude,
+        longitude: lastLocation.longitude
+      }
+      let end = {
+        latitude: currLocation.coords.latitude,
+        longitude: currLocation.coords.longitude
+      }
+
+      let currDistance = haversine(start, end, { unit: 'kilometer' }) || 0;
+      console.log(currDistance, distance2, distance2 + Math.round(currDistance * 1000) / 1000, "curr-distance-test");
+      distance2 = Math.round((parseFloat(distance2) + (Math.round(currDistance * 1000) / 1000)) * 1000) / 1000;
+      setDistance(distance2);
+      setCoordinates([currLocation.coords])
+      setCoordinates((prevState) => ([...prevState, currLocation.coords]))
+
+    }
+    else {
+      setCoordinates((prevState) => ([...prevState, currLocation.coords]))
+
+    }
+    // setCoordinates(runCoordinates.push(currLocation));
+
     setCurrentSpeed(currLocation.coords.speed);
   };
 
-  
+
 
   //const onChange = (value) => setAverageSpeed(parseInt(value));
 
@@ -118,6 +196,7 @@ const ActionScreen = ({ navigation }) => {
 
   const stopRunning = () => {
     toggleStopwatch();
+    watchPosState.remove()
   };
   //gps
 
@@ -155,16 +234,9 @@ const ActionScreen = ({ navigation }) => {
               >
                 <Text style={styles.stopButtonText}> Stop run!</Text>
               </Button>
-            
+
               <Row style={styles.container}>
-                <Stopwatch
-                  laps
-                  msecs
-                  start={stopwatchStart}
-                  reset={stopwatchReset}
-                  options={options}
-                  getTime={(time) => getFormattedTime(time)}
-                />
+
               </Row>
               <Row style={styles.paddingMarginZero}>
                 <Col style={styles.paddingMarginZero}>
