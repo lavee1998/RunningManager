@@ -98,10 +98,13 @@ const ActionScreen = ({ navigation }) => {
       distance2 = Math.round((parseFloat(distance2) + (Math.round(currDistance * 1000) / 1000)) * 1000) / 1000;
       setDistance(distance2);
     }
-    arr = [... runCoordinates, currLocation.coords];
+    if(currLocation.coords.speed>=0){
+      console.log(arr.length);
+    arr = [... arr, currLocation.coords];
     setCoordinates(arr);
     setCurrentSpeed(currLocation.coords.speed);
     calculateAvgSpeed();
+    }
   };
 
 

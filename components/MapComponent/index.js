@@ -16,6 +16,8 @@ import {
 // markers      -- passed by the components for displaying the markers on the map
 const MapComponent = ({ runCoordinates }) => {
   if (runCoordinates.length ){
+
+  console.log(runCoordinates.length);
   console.log(runCoordinates[runCoordinates.length-1]);
     return (
     <View>
