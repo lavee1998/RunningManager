@@ -25,7 +25,7 @@ import haversine from "haversine"
 
 // This component is responsible for the main running process
 // navigation -- ??
-const ActionScreen = ({ navigation }) => {
+const ActionScreen = ({ navigation , goal, interval }) => {
   const [isCompleted, setCompleted] = React.useState(false);
   const [stopwatchStart, setStopwatchStart] = React.useState(false);
   const [stopwatchReset, setStopwatchReset] = React.useState(false);
@@ -39,6 +39,7 @@ const ActionScreen = ({ navigation }) => {
   const [runCoordinates, setCoordinates] = React.useState([]);
   const [location, setLocation] = useState();
   const [errorMsg, setErrorMsg] = useState(null);
+  let timer
   const [routes] = React.useState([
     { key: "first", title: "Speedometer" },
     { key: "second", title: "Map" },
@@ -46,7 +47,7 @@ const ActionScreen = ({ navigation }) => {
 
   const MapTab = () => <MapComponent runCoordinates={runCoordinates} />
 
-  const Speedometer = () => <RNSpeedometer maxValue={2.6} value={currentSpeed} />;
+  const Speedometer = () => <RNSpeedometer maxValue={(currentSpeed > 7) ? 12: 7} value={currentSpeed} />;
 
   const renderScene = SceneMap({
     first: Speedometer,
@@ -63,26 +64,35 @@ const ActionScreen = ({ navigation }) => {
       }
 
       Location.watchPositionAsync(
-        { accuracy: Location.Accuracy.BestForNavigation , distanceInterval: 5 },
+        { accuracy: Location.Accuracy.BestForNavigation, distanceInterval: 5 },
         updatePosition,
       );
+
+      if(interval) {
+        let timer = setTimeout(passedTime, 0.8 * interval )
+      } //clearTimeout(timer)
     })();
   }, []);
+
+  const passedTime = () => {
+
+    console.log("Letelt az idő barátom!")
+  }
 
   const calculateAvgSpeed = () => {
     if (runCoordinates.length === 0) return;
     let sumSpeed = 0;
     runCoordinates.forEach(corr => {
-        if (corr.speed > 0) {
-          sumSpeed = sumSpeed + corr.speed
-        }
-      });
+      if (corr.speed > 0) {
+        sumSpeed = sumSpeed + corr.speed
+      }
+    });
     setAverageSpeed(sumSpeed / runCoordinates.length);
   }
 
   let distance2 = 0;
-  let arr= [];
-  const updatePosition =  (currLocation) => {
+  let arr = [];
+  const updatePosition = (currLocation) => {
     if (runCoordinates.length !== 0) {
 
       const lastLocation = runCoordinates[runCoordinates.length - 1];//last coordinate
@@ -98,12 +108,12 @@ const ActionScreen = ({ navigation }) => {
       distance2 = Math.round((parseFloat(distance2) + (Math.round(currDistance * 1000) / 1000)) * 1000) / 1000;
       setDistance(distance2);
     }
-    if(currLocation.coords.speed>=0){
+    if (currLocation.coords.speed >= 0) {
       console.log(arr.length);
-    arr = [... arr, currLocation.coords];
-    setCoordinates(arr);
-    setCurrentSpeed(currLocation.coords.speed);
-    calculateAvgSpeed();
+      arr = [...arr, currLocation.coords];
+      setCoordinates(arr);
+      setCurrentSpeed(currLocation.coords.speed);
+      calculateAvgSpeed();
     }
   };
 

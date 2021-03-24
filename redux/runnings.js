@@ -1,0 +1,5 @@
+// Define action types
+export const RUN_BASEDON_TIME = 'RUN_BASEDON_TIME';
+export const RUN_BASEDON_DISTANCE = 'RUN_BASEDON_DISTANCE';
+export const FREE_RUN = 'FREE_RUN';
+export const RUN_BASEDON_DISTANCE_TIME = 'RUN_BASEDON_DISTANCE_TIME';
