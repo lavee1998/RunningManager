@@ -31,7 +31,7 @@ const ActionScreen = ({ navigation }) => {
   const [averageSpeed, setAverageSpeed] = React.useState(0);
   const [currentSpeed, setCurrentSpeed] = React.useState(0);
   const [currenTime, setCurrentTime] = React.useState();
-  const [distance,setDistance]=React.useState(0);
+  const [distance, setDistance] = React.useState(0);
   const initialLayout = { width: Dimensions.get("window").width };
   const [text, setText] = React.useState("Waiting...");
   const [index, setIndex] = React.useState(0);
@@ -43,9 +43,9 @@ const ActionScreen = ({ navigation }) => {
     { key: "second", title: "Map" },
   ]);
 
-  const MapTab = () =><View style={[styles.scene, { backgroundColor: "#673ab7" }]} />
+  const MapTab = () => <View style={[styles.scene, { backgroundColor: "#673ab7" }]} />
 
-  const Speedometer = () => <RNSpeedometer value={currentSpeed} />;
+  const Speedometer = () => <RNSpeedometer maxValue={2.6} value={currentSpeed} />;
 
   const renderScene = SceneMap({
     first: Speedometer,
@@ -62,25 +62,30 @@ const ActionScreen = ({ navigation }) => {
       }
 
       Location.watchPositionAsync(
-        { accuracy: 6, timeInterval: 5000, distanceInterval: 0},
+        { accuracy: Location.Accuracy.BestForNavigation },
         updatePosition,
       );
     })();
-  },[]);
-  const calculateAvgSpeed= () => {
-    if(runCoordinates.length===0) return;
-    let avgSpeed=0;
-    for(let loc of runCoordinates){
-      avgSpeed=avgSpeed+loc.coords.speed;
-      console.log(loc);
-    }
-    setAverageSpeed(  avgSpeed/runCoordinates.length);
+  }, []);
+
+  const calculateAvgSpeed = () => {
+    if (runCoordinates.length === 0) return;
+    let sumSpeed = 0;
+    runCoordinates.forEach(corr => {
+        if (corr.speed > 0) {
+          sumSpeed = sumSpeed + corr.speed
+        }
+      });
+    setAverageSpeed(sumSpeed / runCoordinates.length);
   }
-  let distance2=0;runCoordinates.length===0
-  const updatePosition = (currLocation) => {
-    if(runCoordinates.length!==0) {
-      
-      const lastLocation = runCoordinates[runCoordinates.length-1] ;//last coordinate
+
+  let distance2 = 0;
+
+  const updatePosition =  (currLocation) => {
+    console.log(runCoordinates.length, "length-test", currLocation)
+    if (runCoordinates.length !== 0) {
+
+      const lastLocation = runCoordinates[runCoordinates.length - 1];//last coordinate
       let start = {
         latitude: lastLocation.coords.latitude,
         longitude: lastLocation.coords.longitude
@@ -89,17 +94,18 @@ const ActionScreen = ({ navigation }) => {
         latitude: currLocation.coords.latitude,
         longitude: currLocation.coords.longitude
       }
-      let currDistance = haversine(start, end, {unit: 'kilometer'});
-      distance2=Math.round((parseFloat(distance2) + ( Math.round(currDistance * 1000) / 1000))*1000)/1000;
+      let currDistance = haversine(start, end, { unit: 'kilometer' });
+      distance2 = Math.round((parseFloat(distance2) + (Math.round(currDistance * 1000) / 1000)) * 1000) / 1000;
       setDistance(distance2);
     }
+    if(currLocation.coords.speed > 0) {
     setCoordinates(runCoordinates.push(currLocation));
     setCurrentSpeed(currLocation.coords.speed);
-
     calculateAvgSpeed();
+    }
   };
 
-  
+
 
   //const onChange = (value) => setAverageSpeed(parseInt(value));
 
@@ -165,7 +171,7 @@ const ActionScreen = ({ navigation }) => {
               >
                 <Text style={styles.stopButtonText}> Stop run!</Text>
               </Button>
-            
+
               <Row style={styles.container}>
                 <Stopwatch
                   laps
@@ -182,7 +188,7 @@ const ActionScreen = ({ navigation }) => {
                 </Col>
                 <Col style={styles.paddingMarginZero}>
                   <Text style={styles.secondaryDataText}>
-                    {averageSpeed} km/h
+                    {averageSpeed} m/s
                   </Text>
                 </Col>
               </Row>
