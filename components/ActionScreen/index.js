@@ -9,10 +9,12 @@ import {
   StyleSheet,
   Animated,
   Dimensions,
+  Vibration
 } from "react-native";
 import React from "react";
 import { Stopwatch, Timer } from "react-native-stopwatch-timer";
-import { Card, Title, Button, TextInput } from "react-native-paper";
+import { Card, Title, Button, TextInput, Paragraph, Dialog, Portal } from "react-native-paper";
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import RNSpeedometer from "react-native-speedometer";
 import { TabView, SceneMap } from "react-native-tab-view";
 // import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
@@ -36,8 +38,14 @@ const ActionScreen = ({ navigation, goal, interval }) => {
   const [text, setText] = React.useState("Waiting...");
   const [index, setIndex] = React.useState(0);
   const [runCoordinates, setCoordinates] = React.useState([]);
+  const [message,setMessage] = React.useState(null);
+  const [visibleAlert, setVisibleAlert] = React.useState(false);
   const [location, setLocation] = useState();
   const [errorMsg, setErrorMsg] = useState(null);
+
+  // Vibrating message to the user
+  const VIBRATINGMS = 500;
+
   let timer;
   let almostTimer;
   const [routes] = React.useState([
@@ -79,11 +87,15 @@ const ActionScreen = ({ navigation, goal, interval }) => {
   }, []);
 
   const passedTime = () => {
-    console.log("Hamarosan lejár az idő barátom! Letelt az idő barátom!");
+    setMessage("Lejárt az idő! Vége a futásnak.");
+    Vibration.vibrate(VIBRATINGMS);
+    setVisibleAlert(true);
   };
 
   const almostPassedTime = () => {
-    console.log("Hamarosan lejár az idő barátom! Letelt az idő barátom!");
+    setMessage("Hamarosan lejár az idő!");
+    Vibration.vibrate(VIBRATINGMS);
+    setVisibleAlert(true);
   };
 
   const calculateAvgSpeed = () => {
@@ -234,6 +246,18 @@ const ActionScreen = ({ navigation, goal, interval }) => {
                 />
               </Row>
             </Grid>
+
+            <Portal>
+              <Dialog visible={visibleAlert} onDismiss={() => setVisibleAlert(false)}>
+                <Dialog.Title><Icon name="exclamation-triangle" size={30} color="#900" /> Figyelem!</Dialog.Title>
+                <Dialog.Content>
+                  <Paragraph>{message}</Paragraph>
+                </Dialog.Content>
+                <Dialog.Actions>
+                  <Button onPress={() => setVisibleAlert(false)}>Ok</Button>
+                </Dialog.Actions>
+              </Dialog>
+            </Portal>
           </SafeAreaView>
         </ScrollView>
       {/* )} */}
