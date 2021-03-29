@@ -11,22 +11,21 @@ import {
   Dimensions,
 } from "react-native";
 import React from "react";
-import Constants from "expo-constants";
 import { Stopwatch, Timer } from "react-native-stopwatch-timer";
 import { Card, Title, Button, TextInput } from "react-native-paper";
 import RNSpeedometer from "react-native-speedometer";
 import { TabView, SceneMap } from "react-native-tab-view";
-import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
+// import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { Col, Row, Grid } from "react-native-paper-grid";
 import * as Location from "expo-location";
 import { useState, useEffect } from "react";
-import MapComponent from "../MapComponent"
-import haversine from "haversine"
+import MapComponent from "../MapComponent";
+import haversine from "haversine";
 
 // This component is responsible for the main running process
 // navigation -- ??
-const ActionScreen = ({ navigation , goal, interval }) => {
-  const [isCompleted, setCompleted] = React.useState(false);
+const ActionScreen = ({ navigation, goal, interval }) => {
+  // const [isCompleted, setCompleted] = React.useState(false);
   const [stopwatchStart, setStopwatchStart] = React.useState(false);
   const [stopwatchReset, setStopwatchReset] = React.useState(false);
   const [averageSpeed, setAverageSpeed] = React.useState(0);
@@ -39,15 +38,18 @@ const ActionScreen = ({ navigation , goal, interval }) => {
   const [runCoordinates, setCoordinates] = React.useState([]);
   const [location, setLocation] = useState();
   const [errorMsg, setErrorMsg] = useState(null);
-  let timer
+  let timer;
+  let almostTimer;
   const [routes] = React.useState([
     { key: "first", title: "Speedometer" },
     { key: "second", title: "Map" },
   ]);
 
-  const MapTab = () => <MapComponent runCoordinates={runCoordinates} />
+  const MapTab = () => <MapComponent runCoordinates={runCoordinates} />;
 
-  const Speedometer = () => <RNSpeedometer maxValue={(currentSpeed > 7) ? 12: 7} value={currentSpeed} />;
+  const Speedometer = () => (
+    <RNSpeedometer maxValue={currentSpeed > 7 ? 12 : 7} value={currentSpeed} />
+  );
 
   const renderScene = SceneMap({
     first: Speedometer,
@@ -56,6 +58,7 @@ const ActionScreen = ({ navigation , goal, interval }) => {
 
   // ----------------------- METHODS ----------------------------
   useEffect(() => {
+    toggleStopwatch();
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
@@ -64,68 +67,80 @@ const ActionScreen = ({ navigation , goal, interval }) => {
       }
 
       Location.watchPositionAsync(
-        { accuracy: Location.Accuracy.BestForNavigation, distanceInterval: 5 },
-        updatePosition,
+        { accuracy: Location.Accuracy.BestForNavigation, distanceInterval: 10 },
+        updatePosition
       );
 
-      if(interval) {
-        let timer = setTimeout(passedTime, 0.8 * interval )
+      if (interval) {
+        almostTimer = setTimeout(almostPassedTime, 0.8 * interval);
+        timer = setTimeout(passedTime,interval )
       } //clearTimeout(timer)
     })();
   }, []);
 
   const passedTime = () => {
+    console.log("Hamarosan lejár az idő barátom! Letelt az idő barátom!");
+  };
 
-    console.log("Letelt az idő barátom!")
-  }
+  const almostPassedTime = () => {
+    console.log("Hamarosan lejár az idő barátom! Letelt az idő barátom!");
+  };
 
   const calculateAvgSpeed = () => {
     if (runCoordinates.length === 0) return;
     let sumSpeed = 0;
-    runCoordinates.forEach(corr => {
+    runCoordinates.forEach((corr) => {
       if (corr.speed > 0) {
-        sumSpeed = sumSpeed + corr.speed
+        sumSpeed = sumSpeed + corr.speed;
       }
     });
     setAverageSpeed(sumSpeed / runCoordinates.length);
-  }
+  };
 
-  let distance2 = 0;
+  let letDistance = 0;
   let arr = [];
+  let letLastTimeStamp;
+  let letCurrentSpeed;
+
   const updatePosition = (currLocation) => {
     if (runCoordinates.length !== 0) {
-
-      const lastLocation = runCoordinates[runCoordinates.length - 1];//last coordinate
+      const lastLocation = runCoordinates[runCoordinates.length - 1];
       let start = {
         latitude: lastLocation.latitude,
-        longitude: lastLocation.longitude
-      }
+        longitude: lastLocation.longitude,
+      };
       let end = {
         latitude: currLocation.coords.latitude,
-        longitude: currLocation.coords.longitude
-      }
-      let currDistance = haversine(start, end, { unit: 'kilometer' });
-      distance2 = Math.round((parseFloat(distance2) + (Math.round(currDistance * 1000) / 1000)) * 1000) / 1000;
-      setDistance(distance2);
+        longitude: currLocation.coords.longitude,
+      };
+      let currDistance = haversine(start, end, { unit: "kilometer" });
+      letDistance =
+        Math.round(
+          (parseFloat(letDistance) + Math.round(currDistance * 1000) / 1000) *
+            1000
+        ) / 1000;
+      setDistance(letDistance);
     }
-    if (currLocation.coords.speed >= 0) {
+    if (currLocation.coords.speed >= 0) { //Should we use this line, or not?
+      if(letLastTimeStamp && letDistance) {
+        letCurrentSpeed = currDistance/(letLastTimeStamp-currLocation.timestamp)
+      }
+      letLastTimeStamp = currLocation.timestamp
+
       console.log(arr.length);
       arr = [...arr, currLocation.coords];
       setCoordinates(arr);
-      setCurrentSpeed(currLocation.coords.speed);
+      setCurrentSpeed(letCurrentSpeed?letCurrentSpeed:0);
       calculateAvgSpeed();
     }
   };
 
-
-
   //const onChange = (value) => setAverageSpeed(parseInt(value));
 
-  const completeCountDown = () => {
-    setCompleted(true);
-    toggleStopwatch();
-    return [false, 0];
-  };
+  // const completeCountDown = () => {
+  //   setCompleted(true);
+  //   return [false, 0];
+  // };
 
   const toggleStopwatch = () => {
     setStopwatchStart(!stopwatchStart);
@@ -150,7 +165,7 @@ const ActionScreen = ({ navigation , goal, interval }) => {
 
   return (
     <React.Fragment>
-      {!isCompleted && (
+      {/* {!isCompleted && (
         <View style={styles.countDownContainer}>
           <CountdownCircleTimer
             isPlaying
@@ -169,11 +184,10 @@ const ActionScreen = ({ navigation , goal, interval }) => {
             )}
           </CountdownCircleTimer>
         </View>
-      )}
-      {isCompleted && (
+      )} */}
+      {/* {true && ( */}
         <ScrollView>
           <SafeAreaView style={styles.contentContainer}>
-
             <Grid style={styles.paddingMarginZero}>
               <Button
                 onPress={() => stopRunning()}
@@ -222,7 +236,7 @@ const ActionScreen = ({ navigation , goal, interval }) => {
             </Grid>
           </SafeAreaView>
         </ScrollView>
-      )}
+      {/* )} */}
     </React.Fragment>
   );
 };
@@ -250,12 +264,12 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: 0,
   },
-  countDownContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 8,
-  },
+  // countDownContainer: {
+  //   flex: 1,
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   padding: 8,
+  // },
   contentContainer: {
     padding: 8,
     marginHorizontal: 20,

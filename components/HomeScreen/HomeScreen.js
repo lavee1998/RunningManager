@@ -105,7 +105,7 @@ import {
             <Dialog.Button label="Submit" onPress={() => setTimeDialogVisible(false)} />
           </Dialog.Container>
   
-          <Button onPress={() => navigation.navigate("Action")} style={styles.startButton} mode="container"> <Text style={styles.startButtonText}> Start run!</Text></Button>
+          <Button onPress={() => navigation.navigate("CountDown")} style={styles.startButton} mode="container"> <Text style={styles.startButtonText}> Start run!</Text></Button>
         </SafeAreaView>
       </ScrollView>
     );
@@ -197,6 +197,21 @@ import {
       fontSize: 18,
     },
   });
+
+  const mapStateToProps = (state /*, ownProps*/) => ({
+    markers: state.markers,
+    //nextPage: state.stats.nextPage,
+  })
   
-  export default HomeScreen;
-  
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      // dispatching plain actions
+      addMarker: (type, id, latitude, longitude) =>
+        dispatch({
+          type: 'ADD_MARKER',
+          payload: { type: type, id: id, latitude: latitude, longitude: longitude },
+        }),
+    }
+  }
+
+  export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen)  
