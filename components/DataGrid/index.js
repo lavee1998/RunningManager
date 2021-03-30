@@ -9,9 +9,8 @@ import {
   } from "react-native";
   import React from "react";
   import { Col, Row, Grid } from "react-native-paper-grid";
-const DataGrid = ({ navigation }) => {
 
-
+const DataGrid = ({ navigation, runningId }) => {
     const [time, setTime] = React.useState(20.41);
     const [maxAlt, setMaxAlt]=React.useState(1100.1);
     const [speed, setSpeed]=React.useState(15.01);
@@ -19,7 +18,8 @@ const DataGrid = ({ navigation }) => {
     const [distance, setDistance]=React.useState(6.01);
     const [settedTime, setSettedTime]=React.useState(21);
     const [settedDistance, setSettedDistance]=React.useState(6);
-    const [date,setDate]=React.useState(0);
+    const [date, setDate]=React.useState(0);
+
     return (
       <React.Fragment>
           
