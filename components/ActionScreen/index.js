@@ -26,7 +26,7 @@ import haversine from "haversine";
 
 // This component is responsible for the main running process
 // navigation -- ??
-const ActionScreen = ({ navigation, goal, interval }) => {
+const ActionScreen = ({ navigation, goalDistance, interval }) => {
   // const [isCompleted, setCompleted] = React.useState(false);
   const [stopwatchStart, setStopwatchStart] = React.useState(false);
   const [stopwatchReset, setStopwatchReset] = React.useState(false);
@@ -42,6 +42,7 @@ const ActionScreen = ({ navigation, goal, interval }) => {
   const [visibleAlert, setVisibleAlert] = React.useState(false);
   const [location, setLocation] = useState();
   const [errorMsg, setErrorMsg] = useState(null);
+  const [distanceInformation, setDistanceInformation] = useState(true);
 
   // Vibrating message to the user
   const VIBRATINGMS = 500;
@@ -98,6 +99,19 @@ const ActionScreen = ({ navigation, goal, interval }) => {
     setVisibleAlert(true);
   };
 
+  const almostReachedDistance = () => {
+    setMessage("Hamarosan célba érsz!");
+    setDistanceInformation(false);
+    Vibration.vibrate(VIBRATINGMS);
+    setVisibleAlert(true);
+  }
+
+  const reachedDistance = () => {
+    setMessage("Elérted a kívánt útmennyiséget!");
+    Vibration.vibrate(VIBRATINGMS);
+    setVisibleAlert(true);
+  }
+
   const calculateAvgSpeed = () => {
     if (runCoordinates.length === 0) return;
     let sumSpeed = 0;
@@ -117,22 +131,32 @@ const ActionScreen = ({ navigation, goal, interval }) => {
   const updatePosition = (currLocation) => {
     if (runCoordinates.length !== 0) {
       const lastLocation = runCoordinates[runCoordinates.length - 1];
+
       let start = {
         latitude: lastLocation.latitude,
         longitude: lastLocation.longitude,
       };
+
       let end = {
         latitude: currLocation.coords.latitude,
         longitude: currLocation.coords.longitude,
       };
+
       let currDistance = haversine(start, end, { unit: "kilometer" });
-      letDistance =
-        Math.round(
-          (parseFloat(letDistance) + Math.round(currDistance * 1000) / 1000) *
-            1000
-        ) / 1000;
+      letDistance = Math.round((parseFloat(letDistance) + Math.round(currDistance * 1000) / 1000) * 1000) / 1000;
       setDistance(letDistance);
+
+      // we should inform the user only once
+      if(goalDistance * 0.95 <= letDistance && distanceInformation) {
+        almostReachedDistance();
+      }
+      goalDistance = 1;
+      letDistance = 2;
+      if(goalDistance <= letDistance) {
+        reachedDistance();
+      }
     }
+
     if (currLocation.coords.speed >= 0) { //Should we use this line, or not?
       if(letLastTimeStamp && letDistance) {
         letCurrentSpeed = currDistance/(letLastTimeStamp-currLocation.timestamp)
