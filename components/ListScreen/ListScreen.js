@@ -11,7 +11,7 @@ import {
   
   // This component is the main component. Here the user can configure his/her running parameters
   // navigation -- ??
-  const ListScreen = ({navigation}) => {
+  const ListScreen = ({ navigation }) => {
   const [selectedRunningId, setSelectedRunningId] = React.useState(0);
 
     return (
