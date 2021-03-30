@@ -26,7 +26,7 @@ import haversine from "haversine";
 
 // This component is responsible for the main running process
 // navigation -- ??
-const ActionScreen = ({ navigation, goalDistance, interval }) => {
+const ActionScreen = ({ navigation, goal, interval }) => {
   // const [isCompleted, setCompleted] = React.useState(false);
   const [stopwatchStart, setStopwatchStart] = React.useState(false);
   const [stopwatchReset, setStopwatchReset] = React.useState(false);
@@ -147,12 +147,11 @@ const ActionScreen = ({ navigation, goalDistance, interval }) => {
       setDistance(letDistance);
 
       // we should inform the user only once
-      if(goalDistance * 0.95 <= letDistance && distanceInformation) {
+      if(goal * 0.95 <= letDistance && distanceInformation) {
         almostReachedDistance();
       }
-      goalDistance = 1;
-      letDistance = 2;
-      if(goalDistance <= letDistance) {
+
+      if(goal <= letDistance) {
         reachedDistance();
       }
     }
@@ -230,7 +229,7 @@ const ActionScreen = ({ navigation, goalDistance, interval }) => {
                 style={styles.stopButton}
                 mode="container"
               >
-                <Text style={styles.stopButtonText}> Stop run!</Text>
+                <Text style={styles.stopButtonText}>{stopwatchStart ? "Stop Run!" : "Continue"}</Text>
               </Button>
 
               <Row style={styles.container}>
