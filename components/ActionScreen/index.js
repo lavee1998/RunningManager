@@ -9,10 +9,12 @@ import {
   StyleSheet,
   Animated,
   Dimensions,
+  Vibration
 } from "react-native";
 import React from "react";
 import { Stopwatch, Timer } from "react-native-stopwatch-timer";
-import { Card, Title, Button, TextInput } from "react-native-paper";
+import { Card, Title, Button, TextInput, Paragraph, Dialog, Portal } from "react-native-paper";
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import RNSpeedometer from "react-native-speedometer";
 import { TabView, SceneMap } from "react-native-tab-view";
 // import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
@@ -27,17 +29,25 @@ import haversine from "haversine";
 const ActionScreen = ({ navigation, goal, interval }) => {
   // const [isCompleted, setCompleted] = React.useState(false);
   const [stopwatchStart, setStopwatchStart] = React.useState(false);
-  const [stopwatchReset, setStopwatchReset] = React.useState(false);
+  //const [stopwatchReset, setStopwatchReset] = React.useState(false);
   const [averageSpeed, setAverageSpeed] = React.useState(0);
   const [currentSpeed, setCurrentSpeed] = React.useState(0);
-  const [currentTime, setCurrentTime] = React.useState();
+  const [currenTime, setCurrentTime] = React.useState();
   const [distance, setDistance] = React.useState(0);
   const initialLayout = { width: Dimensions.get("window").width };
   const [text, setText] = React.useState("Waiting...");
   const [index, setIndex] = React.useState(0);
   const [runCoordinates, setCoordinates] = React.useState([]);
+  const [message,setMessage] = React.useState(null);
+  const [visibleAlert, setVisibleAlert] = React.useState(false);
   const [location, setLocation] = useState();
   const [errorMsg, setErrorMsg] = useState(null);
+  const [distanceInformation, setDistanceInformation] = useState(true);
+  const [runningId, setRunningId] = useState(0);
+
+  // Vibrating message to the user
+  const VIBRATINGMS = 500;
+
   let timer;
   let almostTimer;
   const [routes] = React.useState([
@@ -75,16 +85,37 @@ const ActionScreen = ({ navigation, goal, interval }) => {
         almostTimer = setTimeout(almostPassedTime, 0.8 * interval);
         timer = setTimeout(passedTime,interval )
       } //clearTimeout(timer)
+
     })();
   }, []);
 
   const passedTime = () => {
-    console.log("Hamarosan lejár az idő barátom! Letelt az idő barátom!");
+    setMessage("Lejárt az idő! Vége a futásnak.");
+    Vibration.vibrate(VIBRATINGMS);
+    setVisibleAlert(true);
+    navigation.navigate("DataGrid", {runningId} );
   };
 
   const almostPassedTime = () => {
-    console.log("Hamarosan lejár az idő barátom! Letelt az idő barátom!");
+    setMessage("Hamarosan lejár az idő!");
+    Vibration.vibrate(VIBRATINGMS);
+    setVisibleAlert(true);
   };
+
+  const almostReachedDistance = () => {
+    setMessage("Hamarosan célba érsz!");
+    setDistanceInformation(false);
+    Vibration.vibrate(VIBRATINGMS);
+    setVisibleAlert(true);
+  }
+
+  const reachedDistance = () => {
+    setMessage("Elérted a kívánt útmennyiséget!");
+    Vibration.vibrate(VIBRATINGMS);
+    setVisibleAlert(true);
+    setIsRunningOver(true);
+    navigation.navigate("DataGrid", {runningId} );
+  }
 
   const calculateAvgSpeed = () => {
     if (runCoordinates.length === 0) return;
@@ -100,38 +131,48 @@ const ActionScreen = ({ navigation, goal, interval }) => {
   let letDistance = 0;
   let arr = [];
   let letLastTimeStamp;
-  let letCurrentSpeed = 0;
+  let letCurrentSpeed;
 
   const updatePosition = (currLocation) => {
     if (runCoordinates.length !== 0) {
       const lastLocation = runCoordinates[runCoordinates.length - 1];
+
       let start = {
         latitude: lastLocation.latitude,
         longitude: lastLocation.longitude,
       };
+
       let end = {
         latitude: currLocation.coords.latitude,
         longitude: currLocation.coords.longitude,
       };
+
       let currDistance = haversine(start, end, { unit: "kilometer" });
-      letDistance =
-        Math.round(
-          (parseFloat(letDistance) + Math.round(currDistance * 1000) / 1000) *
-            1000
-        ) / 1000;
+      letDistance = Math.round((parseFloat(letDistance) + Math.round(currDistance * 1000) / 1000) * 1000) / 1000;
       setDistance(letDistance);
+
+      // we should inform the user only once
+      if(goal * 0.95 <= letDistance && distanceInformation) {
+        almostReachedDistance();
+      }
+
+      if(goal <= letDistance) {
+        reachedDistance();
+      }
     }
+
     if (currLocation.coords.speed >= 0) { //Should we use this line, or not?
       if(letLastTimeStamp && letDistance) {
         letCurrentSpeed = currDistance/(letLastTimeStamp-currLocation.timestamp)
       }
+
       letLastTimeStamp = currLocation.timestamp
 
       console.log(arr.length);
       arr = [...arr, currLocation.coords];
-      arr.coords.speed = letCurrentSpeed
+      
       setCoordinates(arr);
-      setCurrentSpeed(letCurrentSpeed);
+      setCurrentSpeed(letCurrentSpeed?letCurrentSpeed:0);
       calculateAvgSpeed();
     }
   };
@@ -145,12 +186,6 @@ const ActionScreen = ({ navigation, goal, interval }) => {
 
   const toggleStopwatch = () => {
     setStopwatchStart(!stopwatchStart);
-    setStopwatchReset(false);
-  };
-
-  const resetStopwatch = () => {
-    setStopwatchStart(false);
-    setStopwatchReset(true);
   };
 
   const getFormattedTime = (time) => {
@@ -161,23 +196,33 @@ const ActionScreen = ({ navigation, goal, interval }) => {
 
   const stopRunning = () => {
     toggleStopwatch();
-
-    let currentRun = {
-      corrds: runCoordinates,
-      time: currentTime,
-      distance: distance,
-      name: 'Your run',
-
-    }
-    navigation.navigate(
-      'Details',
-      { currentRun },
-    );
+    navigation.navigate("DataGrid", {runningId} );
   };
   //gps
 
   return (
     <React.Fragment>
+      {/* {!isCompleted && (
+        <View style={styles.countDownContainer}>
+          <CountdownCircleTimer
+            isPlaying
+            duration={2}
+            onComplete={() => completeCountDown()}
+            colors={[
+              ["#004777", 0.4],
+              ["#F7B801", 0.4],
+              ["#A30000", 0.2],
+            ]}
+          >
+            {({ remainingTime, animatedColor }) => (
+              <Animated.Text style={{ color: animatedColor }}>
+                {remainingTime}
+              </Animated.Text>
+            )}
+          </CountdownCircleTimer>
+        </View>
+      )} */}
+      {/* {true && ( */}
         <ScrollView>
           <SafeAreaView style={styles.contentContainer}>
             <Grid style={styles.paddingMarginZero}>
@@ -186,7 +231,7 @@ const ActionScreen = ({ navigation, goal, interval }) => {
                 style={styles.stopButton}
                 mode="container"
               >
-                <Text style={styles.stopButtonText}> Stop run!</Text>
+                <Text style={styles.stopButtonText}>Stop Run!</Text>
               </Button>
 
               <Row style={styles.container}>
@@ -194,7 +239,6 @@ const ActionScreen = ({ navigation, goal, interval }) => {
                   laps
                   msecs
                   start={stopwatchStart}
-                  reset={stopwatchReset}
                   options={options}
                   getTime={(time) => getFormattedTime(time)}
                 />
@@ -226,8 +270,21 @@ const ActionScreen = ({ navigation, goal, interval }) => {
                 />
               </Row>
             </Grid>
+
+            <Portal>
+              <Dialog visible={visibleAlert} onDismiss={() => setVisibleAlert(false)}>
+                <Dialog.Title><Icon name="exclamation-triangle" size={30} color="#900" /> Figyelem!</Dialog.Title>
+                <Dialog.Content>
+                  <Paragraph>{message}</Paragraph>
+                </Dialog.Content>
+                <Dialog.Actions>
+                  <Button onPress={() => setVisibleAlert(false)}>Ok</Button>
+                </Dialog.Actions>
+              </Dialog>
+            </Portal>
           </SafeAreaView>
         </ScrollView>
+      {/* )} */}
     </React.Fragment>
   );
 };
@@ -316,20 +373,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => ({
-  interval: state.interval,
-  goal: state.distance
-});
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addRun: (interval) =>
-      dispatch({
-        type: "ADD_RUN",
-        payload: interval,
-      }),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ActionScreen);
-
+export default ActionScreen;

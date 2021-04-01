@@ -11,9 +11,8 @@ import {
   
   // This component is the main component. Here the user can configure his/her running parameters
   // navigation -- ??
-  const ListScreen = ({navigation}) => {
-
-    
+  const ListScreen = ({ navigation }) => {
+  const [selectedRunningId, setSelectedRunningId] = React.useState(0);
 
     return (
       <ScrollView>
@@ -65,7 +64,7 @@ import {
                   </Col>
                 </Row>
                 <Row>
-                <Button onPress={() => navigation.navigate("DataGrid")} style={styles.startButton} mode="container"> <Text style={styles.startButtonText}>show details</Text></Button>
+                <Button onPress={() => navigation.navigate("DataGrid", { runningId: selectedRunningId })} style={styles.startButton} mode="container"> <Text style={styles.startButtonText}>Show details</Text></Button>
                 </Row>
               </Grid>
           </SafeAreaView>

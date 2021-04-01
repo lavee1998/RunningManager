@@ -16,11 +16,7 @@ const DataGrid = ({ navigation, currentRun }) => {
     const [distance, setDistance]=React.useState(currentRun.distance);
     const [settedTime, setSettedTime]=React.useState(21);
     const [settedDistance, setSettedDistance]=React.useState(6);
-    const [date,setDate]=React.useState(0);
-
-    useEffect(() => {
-      
-    }, [])
+    const [date, setDate]=React.useState(0);
 
     return (
       <React.Fragment>
