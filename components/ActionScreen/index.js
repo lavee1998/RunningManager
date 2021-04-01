@@ -30,7 +30,7 @@ const ActionScreen = ({ navigation, goal, interval }) => {
   const [stopwatchReset, setStopwatchReset] = React.useState(false);
   const [averageSpeed, setAverageSpeed] = React.useState(0);
   const [currentSpeed, setCurrentSpeed] = React.useState(0);
-  const [currenTime, setCurrentTime] = React.useState();
+  const [currentTime, setCurrentTime] = React.useState();
   const [distance, setDistance] = React.useState(0);
   const initialLayout = { width: Dimensions.get("window").width };
   const [text, setText] = React.useState("Waiting...");
@@ -100,7 +100,7 @@ const ActionScreen = ({ navigation, goal, interval }) => {
   let letDistance = 0;
   let arr = [];
   let letLastTimeStamp;
-  let letCurrentSpeed;
+  let letCurrentSpeed = 0;
 
   const updatePosition = (currLocation) => {
     if (runCoordinates.length !== 0) {
@@ -129,8 +129,9 @@ const ActionScreen = ({ navigation, goal, interval }) => {
 
       console.log(arr.length);
       arr = [...arr, currLocation.coords];
+      arr.coords.speed = letCurrentSpeed
       setCoordinates(arr);
-      setCurrentSpeed(letCurrentSpeed?letCurrentSpeed:0);
+      setCurrentSpeed(letCurrentSpeed);
       calculateAvgSpeed();
     }
   };
@@ -160,32 +161,23 @@ const ActionScreen = ({ navigation, goal, interval }) => {
 
   const stopRunning = () => {
     toggleStopwatch();
+
+    let currentRun = {
+      corrds: runCoordinates,
+      time: currentTime,
+      distance: distance,
+      name: 'Your run',
+
+    }
+    navigation.navigate(
+      'Details',
+      { currentRun },
+    );
   };
   //gps
 
   return (
     <React.Fragment>
-      {/* {!isCompleted && (
-        <View style={styles.countDownContainer}>
-          <CountdownCircleTimer
-            isPlaying
-            duration={2}
-            onComplete={() => completeCountDown()}
-            colors={[
-              ["#004777", 0.4],
-              ["#F7B801", 0.4],
-              ["#A30000", 0.2],
-            ]}
-          >
-            {({ remainingTime, animatedColor }) => (
-              <Animated.Text style={{ color: animatedColor }}>
-                {remainingTime}
-              </Animated.Text>
-            )}
-          </CountdownCircleTimer>
-        </View>
-      )} */}
-      {/* {true && ( */}
         <ScrollView>
           <SafeAreaView style={styles.contentContainer}>
             <Grid style={styles.paddingMarginZero}>
@@ -236,7 +228,6 @@ const ActionScreen = ({ navigation, goal, interval }) => {
             </Grid>
           </SafeAreaView>
         </ScrollView>
-      {/* )} */}
     </React.Fragment>
   );
 };
@@ -325,4 +316,20 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ActionScreen;
+const mapStateToProps = (state) => ({
+  interval: state.interval,
+  goal: state.distance
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addRun: (interval) =>
+      dispatch({
+        type: "ADD_RUN",
+        payload: interval,
+      }),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActionScreen);
+

@@ -7,22 +7,23 @@ import {
     SafeAreaView,
     StyleSheet
   } from "react-native";
-  import React from "react";
+  import React, { useEffect } from "react";
   import { Col, Row, Grid } from "react-native-paper-grid";
-const DataGrid = ({ navigation }) => {
-
-
-    const [time, setTime] = React.useState(20.41);
+const DataGrid = ({ navigation, currentRun }) => {
+    const [time, setTime] = React.useState(currentRun.time);
     const [maxAlt, setMaxAlt]=React.useState(1100.1);
-    const [speed, setSpeed]=React.useState(15.01);
-    const [avgSpeed, setAvgSpeed]=React.useState(12.04);
-    const [distance, setDistance]=React.useState(6.01);
+    const [avgSpeed, setAvgSpeed]=React.useState(currentRun.avgSpeed);
+    const [distance, setDistance]=React.useState(currentRun.distance);
     const [settedTime, setSettedTime]=React.useState(21);
     const [settedDistance, setSettedDistance]=React.useState(6);
     const [date,setDate]=React.useState(0);
+
+    useEffect(() => {
+      
+    }, [])
+
     return (
       <React.Fragment>
-          
           <ScrollView>
           <View style={styles.pageTitleContainer}>
             <Text style={styles.pageTitle}>Daily run</Text>
