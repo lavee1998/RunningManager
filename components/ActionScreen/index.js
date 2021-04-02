@@ -23,16 +23,17 @@ import * as Location from "expo-location";
 import { useState, useEffect } from "react";
 import MapComponent from "../MapComponent";
 import haversine from "haversine";
+import {connect} from "react-redux"
 
 // This component is responsible for the main running process
 // navigation -- ??
-const ActionScreen = ({ navigation, goal, interval }) => {
+const ActionScreen = ({ navigation, goal, interval, startDate }) => {
   // const [isCompleted, setCompleted] = React.useState(false);
   const [stopwatchStart, setStopwatchStart] = React.useState(false);
   //const [stopwatchReset, setStopwatchReset] = React.useState(false);
   const [averageSpeed, setAverageSpeed] = React.useState(0);
   const [currentSpeed, setCurrentSpeed] = React.useState(0);
-  const [currenTime, setCurrentTime] = React.useState();
+  const [currentTime, setCurrentTime] = React.useState();
   const [distance, setDistance] = React.useState(0);
   const initialLayout = { width: Dimensions.get("window").width };
   const [text, setText] = React.useState("Waiting...");
@@ -114,6 +115,18 @@ const ActionScreen = ({ navigation, goal, interval }) => {
     Vibration.vibrate(VIBRATINGMS);
     setVisibleAlert(true);
     setIsRunningOver(true);
+    let currentRun = {
+      corrds: runCoordinates,
+      avgSpeed: avgSpeed,
+      time: currentTime, 
+      topSpeed: Math.max.apply(Math, runCoordinates.map(function(corrd) { return corrd.speed; })),
+      distance: distance,
+      interval: interval, //settime
+      goal: goal, //setDistance
+      startDate: startDate,
+      maxAltitude: Math.max.apply(Math, runCoordinates.map(function(corrd) { return corrd.altitude; })),
+
+    }
     navigation.navigate("DataGrid", {runningId} );
   }
 
@@ -196,33 +209,13 @@ const ActionScreen = ({ navigation, goal, interval }) => {
 
   const stopRunning = () => {
     toggleStopwatch();
+    addToRuns(runCoordinates)
     navigation.navigate("DataGrid", {runningId} );
   };
   //gps
 
   return (
     <React.Fragment>
-      {/* {!isCompleted && (
-        <View style={styles.countDownContainer}>
-          <CountdownCircleTimer
-            isPlaying
-            duration={2}
-            onComplete={() => completeCountDown()}
-            colors={[
-              ["#004777", 0.4],
-              ["#F7B801", 0.4],
-              ["#A30000", 0.2],
-            ]}
-          >
-            {({ remainingTime, animatedColor }) => (
-              <Animated.Text style={{ color: animatedColor }}>
-                {remainingTime}
-              </Animated.Text>
-            )}
-          </CountdownCircleTimer>
-        </View>
-      )} */}
-      {/* {true && ( */}
         <ScrollView>
           <SafeAreaView style={styles.contentContainer}>
             <Grid style={styles.paddingMarginZero}>
@@ -233,7 +226,6 @@ const ActionScreen = ({ navigation, goal, interval }) => {
               >
                 <Text style={styles.stopButtonText}>Stop Run!</Text>
               </Button>
-
               <Row style={styles.container}>
                 <Stopwatch
                   laps
@@ -270,7 +262,6 @@ const ActionScreen = ({ navigation, goal, interval }) => {
                 />
               </Row>
             </Grid>
-
             <Portal>
               <Dialog visible={visibleAlert} onDismiss={() => setVisibleAlert(false)}>
                 <Dialog.Title><Icon name="exclamation-triangle" size={30} color="#900" /> Figyelem!</Dialog.Title>
@@ -312,12 +303,6 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: 0,
   },
-  // countDownContainer: {
-  //   flex: 1,
-  //   justifyContent: "center",
-  //   alignItems: "center",
-  //   padding: 8,
-  // },
   contentContainer: {
     padding: 8,
     marginHorizontal: 20,
@@ -373,4 +358,17 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ActionScreen;
+
+const mapStateToProps = (state) => ({
+  interval: state.interval,
+  goal: state.goal,
+  startDate: state.startDate,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    ////
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActionScreen);

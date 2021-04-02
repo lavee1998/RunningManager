@@ -8,7 +8,7 @@ import Dialog from "react-native-dialog";
 
 // This component is the main component. Here the user can configure his/her running parameters
 // navigation -- ??
-const HomeScreen = ({ navigation, setInterval, setGoal}) => {
+const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate}) => {
   const [showDropDown, setShowDropDown] = React.useState(false);
   const [hours, setHours] = React.useState(0);
   const [minutes, setMinutes] = React.useState(0);
@@ -36,6 +36,9 @@ const HomeScreen = ({ navigation, setInterval, setGoal}) => {
       console.log(miliseconds, "milisecond")
       setInterval(miliseconds)
     }
+    let today = new Date();
+    setStartDate(today)
+    console.log("ez a jelenlegi dátum", today)
     navigation.navigate("CountDown")
   }
 
@@ -238,6 +241,12 @@ const mapDispatchToProps = (dispatch) => {
         type: "SET_DISTANCE",
         payload: distance,
       }),
+      setStartDate: (date) =>
+      dispatch({
+        type: "SET_START_DATE",
+        payload: date,
+      }),
+
   };
 };
 

@@ -9,6 +9,7 @@ import {
   } from "react-native";
   import React, { useEffect } from "react";
   import { Col, Row, Grid } from "react-native-paper-grid";
+  
 const DataGrid = ({ navigation, currentRun }) => {
     const [time, setTime] = React.useState(currentRun.time);
     const [maxAlt, setMaxAlt]=React.useState(1100.1);

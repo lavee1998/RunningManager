@@ -13,6 +13,7 @@ const initialState = {
   currentRunningType: null,
   distance: null,
   interval: null,
+  startDate: null,
 };
 
 function reducer(state = initialState, action) {
@@ -29,6 +30,8 @@ function reducer(state = initialState, action) {
       return { ...state, interval: action.payload };
     case SET_DISTANCE:
       return { ...state, goal: action.payload };
+    case SET_START_DATE:
+      return { ...state, startDate: action.payload }
     default:
       return state;
   }

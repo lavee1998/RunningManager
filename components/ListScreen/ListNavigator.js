@@ -1,5 +1,5 @@
 import ListScreen from "./ListScreen";
-import DataGrid from "../DataGrid";
+import DetailsScreen from "../DetailsScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 
