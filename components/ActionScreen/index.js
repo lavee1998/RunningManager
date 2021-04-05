@@ -93,7 +93,7 @@ const ActionScreen = ({ navigation, goal, interval, startDate }) => {
 
   const passedTime = () => {
     if(reachedTimeInformation) {
-      setMessage("Lejárt az idő! Vége a futásnak.");
+      setMessage("Lejárt az idő! Sikerült elérni a megadott intervallumot.");
       setReachedTimeInformation(false);
       Vibration.vibrate(VIBRATINGMS);
       setVisibleAlert(true);
@@ -368,9 +368,9 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = (state) => ({
-  interval: state.interval,
-  goal: state.goal,
-  startDate: state.startDate,
+  interval: state.reducer.interval,
+  goal: state.reducer.goal,
+  startDate: state.reducer.startDate,
 });
 
 const mapDispatchToProps = (dispatch) => {
