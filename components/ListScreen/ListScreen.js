@@ -69,7 +69,7 @@ const ListScreen = ({ navigation, runnings , removeRun, }) => {
           <Row>
             <Button
               onPress={() =>
-                navigation.navigate("Details", { runningId: selectedRunningId })
+                navigation.navigate("Details", { currentRun: selectedRunningId })
               }
               style={styles.startButton}
               mode="container"

@@ -114,17 +114,6 @@ const ActionScreen = ({ navigation, goal, interval, startDate }) => {
     Vibration.vibrate(VIBRATINGMS);
     setVisibleAlert(true);
     setIsRunningOver(true);
-    let currentRun = {
-      corrds: runCoordinates,
-      avgSpeed: avgSpeed,
-      time: currentTime, 
-      topSpeed: Math.max.apply(Math, runCoordinates.map(function(corrd) { return corrd.speed; })),
-      distance: distance,
-      interval: interval, //settime
-      goal: goal, //setDistance
-      startDate: startDate,
-      maxAltitude: Math.max.apply(Math, runCoordinates.map(function(corrd) { return corrd.altitude; })),
-    }
   }
 
   const calculateAvgSpeed = () => {
@@ -206,8 +195,22 @@ const ActionScreen = ({ navigation, goal, interval, startDate }) => {
 
   const stopRunning = () => {
     toggleStopwatch();
-    addToRuns(runCoordinates)
-    navigation.navigate("DataGrid", {runningId} );
+    //addToRuns(runCoordinates)
+
+    // test values
+    let currentRun = {
+      corrds: runCoordinates,
+      avgSpeed: 0,
+      time: 0, 
+      topSpeed: Math.max.apply(Math, runCoordinates.map(function(corrd) { return corrd.speed; })),
+      distance: distance,
+      interval: interval, //settime
+      goal: goal, //setDistance
+      startDate: startDate,
+      maxAltitude: Math.max.apply(Math, runCoordinates.map(function(corrd) { return corrd.altitude; })),
+    }
+
+    navigation.navigate("Details", {currentRun : currentRun} );
   };
   //gps
 
