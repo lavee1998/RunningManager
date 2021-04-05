@@ -13,9 +13,7 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
   const [hours, setHours] = React.useState(0);
   const [minutes, setMinutes] = React.useState(0);
   const [distance, setDistance] = React.useState(0);
-  const [isDistanceDialogVisible, setDistanceDialogVisible] = React.useState(
-    false
-  );
+  const [isDistanceDialogVisible, setDistanceDialogVisible] = React.useState(false);
   const [isTimeDialogVisible, setTimeDialogVisible] = React.useState(false);
   const [runType, setRunType] = React.useState(0);
 

@@ -28,7 +28,6 @@ import {connect} from "react-redux"
 // This component is responsible for the main running process
 // navigation -- ??
 const ActionScreen = ({ navigation, goal, interval, startDate }) => {
-  // const [isCompleted, setCompleted] = React.useState(false);
   const [stopwatchStart, setStopwatchStart] = React.useState(false);
   //const [stopwatchReset, setStopwatchReset] = React.useState(false);
   const [averageSpeed, setAverageSpeed] = React.useState(0);
@@ -43,8 +42,10 @@ const ActionScreen = ({ navigation, goal, interval, startDate }) => {
   const [visibleAlert, setVisibleAlert] = React.useState(false);
   const [location, setLocation] = useState();
   const [errorMsg, setErrorMsg] = useState(null);
-  const [distanceInformation, setDistanceInformation] = useState(true);
-  const [runningId, setRunningId] = useState(0);
+  const [almostReachedDistanceInformation, setAlmostReachedDistanceInformation] = useState(true);
+  const [reachedDistanceInformation, setReachedDistanceInformation] = useState(true);
+  const [almostReachedTimeInformation, setAlmostReachedTimeInformation] = useState(true);
+  const [reachedTimeInformation, setReachedTimeInformation] = useState(true);
 
   // Vibrating message to the user
   const VIBRATINGMS = 500;
@@ -84,33 +85,40 @@ const ActionScreen = ({ navigation, goal, interval, startDate }) => {
 
       if (interval) {
         almostTimer = setTimeout(almostPassedTime, 0.8 * interval);
-        timer = setTimeout(passedTime,interval )
+        timer = setTimeout(passedTime,interval);
       } //clearTimeout(timer)
 
     })();
   }, []);
 
   const passedTime = () => {
-    setMessage("Lejárt az idő! Vége a futásnak.");
-    Vibration.vibrate(VIBRATINGMS);
-    setVisibleAlert(true);
+    if(reachedTimeInformation) {
+      setMessage("Lejárt az idő! Vége a futásnak.");
+      setReachedTimeInformation(false);
+      Vibration.vibrate(VIBRATINGMS);
+      setVisibleAlert(true);
+    }
   };
 
   const almostPassedTime = () => {
-    setMessage("Hamarosan lejár az idő!");
-    Vibration.vibrate(VIBRATINGMS);
-    setVisibleAlert(true);
+    if(almostReachedTimeInformation) {
+      setMessage("Hamarosan lejár az idő!");
+      setAlmostReachedTimeInformation(false);
+      Vibration.vibrate(VIBRATINGMS);
+      setVisibleAlert(true); 
+    }
   };
 
   const almostReachedDistance = () => {
     setMessage("Hamarosan célba érsz!");
-    setDistanceInformation(false);
+    setAlmostReachedDistanceInformation(false);
     Vibration.vibrate(VIBRATINGMS);
     setVisibleAlert(true);
   }
 
   const reachedDistance = () => {
     setMessage("Elérted a kívánt útmennyiséget!");
+    setReachedDistanceInformation(false);
     Vibration.vibrate(VIBRATINGMS);
     setVisibleAlert(true);
     setIsRunningOver(true);
@@ -151,11 +159,11 @@ const ActionScreen = ({ navigation, goal, interval, startDate }) => {
       setDistance(letDistance);
 
       // we should inform the user only once
-      if(goal * 0.95 <= letDistance && distanceInformation) {
+      if(goal * 0.95 <= letDistance && almostReachedDistanceInformation) {
         almostReachedDistance();
       }
 
-      if(goal <= letDistance) {
+      if(goal <= letDistance && reachedDistanceInformation) {
         reachedDistance();
       }
     }
