@@ -102,7 +102,7 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
                   <Text style={styles.secondaryDataText}>Date (start)</Text>
                 </Col>
                 <Col style={styles.paddingMarginZero}>
-                  <Text style={styles.primaryDataText}>{Moment(currentRun.startDate).format('dddd MMM YYYY hh:mm')}</Text>
+                  <Text style={styles.primaryDataText}>{Moment(currentRun.startDate).format('Do MMM YYYY hh:mm')}</Text>
                 </Col>
               </Row>
               

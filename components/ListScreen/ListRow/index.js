@@ -10,7 +10,7 @@ import { Card, Title, Button, TextInput } from "react-native-paper";
 import { Col, Row, Grid } from "react-native-paper-grid";
 import { connect } from "react-redux";
 import { List } from 'react-native-paper';
-
+import Moment from 'moment';
 
 const ListRow = ({ run, i }) => {
   const [expanded, setExpanded] = React.useState(false);
@@ -38,7 +38,7 @@ const ListRow = ({ run, i }) => {
                   i % 2 == 0 ? styles.primaryDataText : styles.secondaryDataText
                 }
               >
-                {run.startDate}
+                {Moment(run.startDate).format('Do MMM YYYY')}
               </Text>
             </Col>
           </Text>
