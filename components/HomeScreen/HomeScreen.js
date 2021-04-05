@@ -38,7 +38,6 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
 
     let today = new Date();
     setStartDate(today)
-    console.log("ez a jelenlegi dátum", today)
     navigation.navigate("CountDown")
   }
 
@@ -105,19 +104,19 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
             <Dialog.Title>Time</Dialog.Title>
             <Dialog.Input
               label="Hours"
-              defaultValue="0"
+              placeholder="0"
+              defaultValue={hours}
               onChangeText={(hour) => setHours(hour)}
             ></Dialog.Input>
             <Dialog.Input
               label="Minutes"
-              defaultValue="0"
+              placeholder="0"
+              defaultValue={minutes}
               onChangeText={(minute) => setMinutes(minute)}
             ></Dialog.Input>
             <Dialog.Button
               label="Cancel"
               onPress={() => {
-                setHours(0);
-                setMinutes(0);
                 setTimeDialogVisible(false);
               }}
             />
