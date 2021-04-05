@@ -5,14 +5,39 @@ import {
   SAVE_RUNNING,
   SET_DISTANCE,
   SET_INTERVAL,
+  SET_START_DATE,
 } from "./actions";
 
-
 const initialState = {
-  runnings: [],
-  currentRunningType: null,
+  runnings: [
+    {
+      runCoordinates: [{}],
+      name: "Test run",
+      startDate: "2012-12-21",
+    },
+    {
+      runCoordinates: [{}],
+      name: "Test run",
+      startDate: "2012-12-21",
+    },
+    {
+      runCoordinates: [{}],
+      name: "Test run",
+      startDate: "2012-12-21",
+    },
+    {
+      runCoordinates: [{}],
+      name: "Test run",
+      startDate: "2012-12-21",
+    },
+    {
+      runCoordinates: [{}],
+      name: "Test run",
+      startDate: "2012-12-21",
+    },
+  ],
   distance: null,
-  interval: null,
+  interval: 312,
   startDate: null,
 };
 
@@ -31,7 +56,7 @@ function reducer(state = initialState, action) {
     case SET_DISTANCE:
       return { ...state, goal: action.payload };
     case SET_START_DATE:
-      return { ...state, startDate: action.payload }
+      return { ...state, startDate: action.payload };
     default:
       return state;
   }

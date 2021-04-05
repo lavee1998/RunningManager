@@ -15,7 +15,6 @@ import { store, persistor } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 
 const Tab = createMaterialBottomTabNavigator();
-const Stack = createStackNavigator();
 
 export default function App() {
   return (

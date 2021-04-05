@@ -2,12 +2,15 @@ import { ScrollView, View, Text, SafeAreaView, StyleSheet } from "react-native";
 import React, { Component, useEffect } from "react";
 import { Card, Title, Button, TextInput } from "react-native-paper";
 import { Col, Row, Grid } from "react-native-paper-grid";
+import ListRow from "./ListRow"
 import { connect } from "react-redux";
 
 // This component is the main component. Here the user can configure his/her running parameters
 // navigation -- ??
-const ListScreen = ({ navigation, runnings }) => {
+const ListScreen = ({ navigation, runnings , removeRun, }) => {
   const [selectedRunningId, setSelectedRunningId] = React.useState(0);
+
+  console.log(runnings, "test")
 
   return (
     <ScrollView>
@@ -17,16 +20,12 @@ const ListScreen = ({ navigation, runnings }) => {
 
       <SafeAreaView style={styles.containerStyle}>
         <Grid style={styles.gridStyle}>
-          {runnings.map((run) => (
-            <Row style={styles.paddingMarginZero}>
-              <Col style={styles.paddingMarginZero}>
-                <Text style={styles.primaryDataText}>{run.name}</Text>
-              </Col>
-              <Col style={styles.paddingMarginZero}>
-                <Text style={styles.primaryDataText}>{run.startDate}</Text>
-              </Col>
-            </Row>
-          ))}
+          {
+          runnings.map((run, i) => {
+            console.log(run)
+            return(
+            <ListRow run={run} i={i} /> 
+          )})}
             {/* <Row style={styles.paddingMarginZero}>
                     <Col style={styles.paddingMarginZero}>
                       <Text style={styles.primaryDataText}>example 1</Text>
@@ -194,7 +193,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state /*, ownProps*/) => ({
-  runnings: state.runnings,
+  runnings: state,
 });
 
 const mapDispatchToProps = (dispatch) => {

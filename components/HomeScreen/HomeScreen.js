@@ -8,7 +8,7 @@ import Dialog from "react-native-dialog";
 
 // This component is the main component. Here the user can configure his/her running parameters
 // navigation -- ??
-const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate}) => {
+const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
   const [showDropDown, setShowDropDown] = React.useState(false);
   const [hours, setHours] = React.useState(0);
   const [minutes, setMinutes] = React.useState(0);
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state /*, ownProps*/) => ({
-  //nextPage: state.stats.nextPage,
+  // interval: state.reducer.interval,
 });
 
 const mapDispatchToProps = (dispatch) => {
