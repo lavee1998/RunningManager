@@ -1,7 +1,6 @@
 import {
   ScrollView,
   View,
-  List,
   Text,
   SafeAreaView,
   StyleSheet,
@@ -10,19 +9,21 @@ import React, { Component, useEffect } from "react";
 import { Card, Title, Button, TextInput } from "react-native-paper";
 import { Col, Row, Grid } from "react-native-paper-grid";
 import { connect } from "react-redux";
+import { List } from 'react-native-paper';
+
 
 const ListRow = ({ run, i }) => {
   const [expanded, setExpanded] = React.useState(false);
 
+  console.log(run, i , "test2")
   const handlePress = () => setExpanded(!expanded);
 
   return (
-    <List.Section title="Accordions">
       <List.Accordion
         title={
-          <Row>
+          <Text>
             {" "}
-            <Col style={styles.paddingMarginZero}>
+            <Col>
               <Text
                 style={
                   i % 2 == 0 ? styles.primaryDataText : styles.secondaryDataText
@@ -31,7 +32,7 @@ const ListRow = ({ run, i }) => {
                 {run.name}
               </Text>
             </Col>
-            <Col style={styles.paddingMarginZero}>
+            <Col>
               <Text
                 style={
                   i % 2 == 0 ? styles.primaryDataText : styles.secondaryDataText
@@ -40,17 +41,14 @@ const ListRow = ({ run, i }) => {
                 {run.startDate}
               </Text>
             </Col>
-          </Row>
+          </Text>
         }
-        left={(props) => <List.Icon {...props} icon="folder" 
-        />}
         expanded={expanded}
         onPress={handlePress}
       >
         <List.Item title="First" />
         <List.Item title="Second item" />
       </List.Accordion>
-    </List.Section>
   );
 };
 

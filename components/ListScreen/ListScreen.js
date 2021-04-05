@@ -3,6 +3,8 @@ import React, { Component, useEffect } from "react";
 import { Card, Title, Button, TextInput } from "react-native-paper";
 import { Col, Row, Grid } from "react-native-paper-grid";
 import ListRow from "./ListRow"
+import { List } from 'react-native-paper';
+
 import { connect } from "react-redux";
 
 // This component is the main component. Here the user can configure his/her running parameters
@@ -19,12 +21,12 @@ const ListScreen = ({ navigation, runnings , removeRun, }) => {
       </View>
 
       <SafeAreaView style={styles.containerStyle}>
-        <Grid style={styles.gridStyle}>
+        <List.Section title="Accordions">
+
           {
           runnings.length && runnings.map((run, i) => {
             console.log(run)
             return(
-              
              <ListRow run={run} i={i} /> 
           )})}
             {/* <Row style={styles.paddingMarginZero}>
@@ -79,7 +81,7 @@ const ListScreen = ({ navigation, runnings , removeRun, }) => {
               <Text style={styles.startButtonText}>Show details</Text>
             </Button>
           </Row>
-        </Grid>
+          </List.Section>
       </SafeAreaView>
     </ScrollView>
   );
