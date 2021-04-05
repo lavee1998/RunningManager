@@ -43,7 +43,7 @@ const initialState = {
     },
   ],
   distance: null,
-  interval: 6000,
+  interval: null,
   startDate: null,
   currentRunning: null,
 };
