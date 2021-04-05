@@ -10,11 +10,12 @@ import {
   import React, { useEffect } from "react";
   import { Col, Row, Grid } from "react-native-paper-grid";
   
-const DataGrid = ({ navigation, currentRun }) => {
-    const [time, setTime] = React.useState(currentRun.time);
+const DetailsScreen = ({ navigation, currentRun }) => {
+    const [time, setTime] = React.useState(0);
     const [maxAlt, setMaxAlt]=React.useState(1100.1);
-    const [avgSpeed, setAvgSpeed]=React.useState(currentRun.avgSpeed);
-    const [distance, setDistance]=React.useState(currentRun.distance);
+    const [speed, setSpeed]=React.useState(0);
+    const [avgSpeed, setAvgSpeed]=React.useState(0);
+    const [distance, setDistance]=React.useState(0);
     const [settedTime, setSettedTime]=React.useState(21);
     const [settedDistance, setSettedDistance]=React.useState(6);
     const [date, setDate]=React.useState(0);
@@ -182,4 +183,5 @@ const styles = StyleSheet.create({
       fontWeight: "800",
     },
   });
-export default DataGrid;
+  
+export default DetailsScreen;

@@ -13,9 +13,7 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
   const [hours, setHours] = React.useState(0);
   const [minutes, setMinutes] = React.useState(0);
   const [distance, setDistance] = React.useState(0);
-  const [isDistanceDialogVisible, setDistanceDialogVisible] = React.useState(
-    false
-  );
+  const [isDistanceDialogVisible, setDistanceDialogVisible] = React.useState(false);
   const [isTimeDialogVisible, setTimeDialogVisible] = React.useState(false);
   const [runType, setRunType] = React.useState(0);
 
@@ -32,13 +30,12 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
       setGoal(distance)
     }
     if(hours || minutes ){
-      let miliseconds = hours + minutes
-      console.log(miliseconds, "milisecond")
-      setInterval(miliseconds)
+      let milliseconds = hours*3600000 + minutes*60000
+      setInterval(milliseconds)
     }
+
     let today = new Date();
     setStartDate(today)
-    console.log("ez a jelenlegi dátum", today)
     navigation.navigate("CountDown")
   }
 
@@ -105,19 +102,19 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
             <Dialog.Title>Time</Dialog.Title>
             <Dialog.Input
               label="Hours"
-              defaultValue="0"
+              placeholder="0"
+              defaultValue={hours}
               onChangeText={(hour) => setHours(hour)}
             ></Dialog.Input>
             <Dialog.Input
               label="Minutes"
-              defaultValue="0"
+              placeholder="0"
+              defaultValue={minutes}
               onChangeText={(minute) => setMinutes(minute)}
             ></Dialog.Input>
             <Dialog.Button
               label="Cancel"
               onPress={() => {
-                setHours(0);
-                setMinutes(0);
                 setTimeDialogVisible(false);
               }}
             />
