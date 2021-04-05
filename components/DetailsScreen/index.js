@@ -10,12 +10,20 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Col, Row, Grid } from "react-native-paper-grid";
 import Moment from 'moment';
+import { Button } from "react-native-paper";
+import { useState } from "react";
   
-const DetailsScreen = ({ navigation, currentRun }) => {
-  
+const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
+  const [alreadySavedRunning, SetAlreadySavedRunning] = useState(false);
+
   useEffect(() => {
     Moment.locale('hu');
-  }, [currentRun]);
+  }, []);
+
+  const saveCurrentRunning = () => {
+    saveRunning(currentRun);
+    SetAlreadySavedRunning(true);
+  }
 
   return (
       <React.Fragment>
@@ -23,89 +31,96 @@ const DetailsScreen = ({ navigation, currentRun }) => {
           <View style={styles.pageTitleContainer}>
             <Text style={styles.pageTitle}>Daily run</Text>
           </View>
-            <SafeAreaView style={styles.contentContainer}>
-  
-              <Grid style={styles.gridStyle}>
-                <Row style={styles.paddingMarginZero}>
-                  <Col style={styles.paddingMarginZero}>
-                    <Text style={styles.primaryDataText}>Time</Text>
-                  </Col>
-                  <Col style={styles.paddingMarginZero}>
-                    <Text style={styles.secondaryDataText}>
-                      {currentRun.time} min
-                    </Text>
-                  </Col>
-                </Row>
-                <Row style={styles.paddingMarginZero}>
-                  <Col style={styles.paddingMarginZero}>
-                    <Text style={styles.secondaryDataText}>Maximum altitude</Text>
-                  </Col>
-                  <Col style={styles.paddingMarginZero}>
-                    <Text style={styles.primaryDataText}>
-                      {currentRun.maxAltitude} m
-                    </Text>
-                  </Col>
-                </Row>
-                <Row style={styles.paddingMarginZero}>
-                  <Col style={styles.paddingMarginZero}>
-                    <Text style={styles.primaryDataText}>Top speed</Text>
-                  </Col>
-                  <Col style={styles.paddingMarginZero}>
-                    <Text style={styles.secondaryDataText}>
-                      {currentRun.topSpeed} km/h
-                    </Text>
-                  </Col>
-                </Row>
-  
-                <Row style={styles.paddingMarginZero}>
-                  <Col style={styles.paddingMarginZero}>
-                    <Text style={styles.secondaryDataText}>Average speed</Text>
-                  </Col>
-                  <Col style={styles.paddingMarginZero}>
-                    <Text style={styles.primaryDataText}>
-                      {currentRun.avgSpeed} km/h
-                    </Text>
-                  </Col>
-                </Row>
-                <Row style={styles.paddingMarginZero}>
-                  <Col style={styles.paddingMarginZero}>
-                    <Text style={styles.primaryDataText}>Distance</Text>
-                  </Col>
-                  <Col style={styles.paddingMarginZero}>
-                    <Text style={styles.secondaryDataText}>{currentRun.distance} km</Text>
-                  </Col>
-                </Row>
-                <Row style={styles.paddingMarginZero}>
-                  <Col style={styles.paddingMarginZero}>
-                    <Text style={styles.secondaryDataText}>Set time</Text>
-                  </Col>
-                  <Col style={styles.paddingMarginZero}>
-                    <Text style={styles.primaryDataText}>{ Math.round(currentRun.setTime * 0.00001667,2) } min</Text>
-                  </Col>
-                </Row>
-                <Row style={styles.paddingMarginZero}>
-                  <Col style={styles.paddingMarginZero}>
-                    <Text style={styles.primaryDataText}>Set distance</Text>
-                  </Col>
-                  <Col style={styles.paddingMarginZero}>
-                    <Text style={styles.secondaryDataText}>{currentRun.setDistance} km</Text>
-                  </Col>
-                </Row>
-                <Row style={styles.paddingMarginZero}>
-                  <Col style={styles.paddingMarginZero}>
-                    <Text style={styles.secondaryDataText}>Date (start)</Text>
-                  </Col>
-                  <Col style={styles.paddingMarginZero}>
-                    <Text style={styles.primaryDataText}>{Moment(currentRun.startDate).format('dddd MMM YYYY hh:mm')}</Text>
-                  </Col>
-                </Row>
-                
-                <Row style={styles.paddingMarginZero}>
-                    {/*map helye*/}
-                </Row>
-              </Grid>
-            </SafeAreaView>
+            <Grid style={styles.gridStyle}>
+              <Row style={styles.paddingMarginZero}>
+                <Col style={styles.paddingMarginZero}>
+                  <Text style={styles.primaryDataText}>Time</Text>
+                </Col>
+                <Col style={styles.paddingMarginZero}>
+                  <Text style={styles.secondaryDataText}>
+                    {currentRun.time} min
+                  </Text>
+                </Col>
+              </Row>
+              <Row style={styles.paddingMarginZero}>
+                <Col style={styles.paddingMarginZero}>
+                  <Text style={styles.secondaryDataText}>Maximum altitude</Text>
+                </Col>
+                <Col style={styles.paddingMarginZero}>
+                  <Text style={styles.primaryDataText}>
+                    {currentRun.maxAltitude} m
+                  </Text>
+                </Col>
+              </Row>
+              <Row style={styles.paddingMarginZero}>
+                <Col style={styles.paddingMarginZero}>
+                  <Text style={styles.primaryDataText}>Top speed</Text>
+                </Col>
+                <Col style={styles.paddingMarginZero}>
+                  <Text style={styles.secondaryDataText}>
+                    {currentRun.topSpeed} km/h
+                  </Text>
+                </Col>
+              </Row>
+
+              <Row style={styles.paddingMarginZero}>
+                <Col style={styles.paddingMarginZero}>
+                  <Text style={styles.secondaryDataText}>Average speed</Text>
+                </Col>
+                <Col style={styles.paddingMarginZero}>
+                  <Text style={styles.primaryDataText}>
+                    {currentRun.avgSpeed} km/h
+                  </Text>
+                </Col>
+              </Row>
+              <Row style={styles.paddingMarginZero}>
+                <Col style={styles.paddingMarginZero}>
+                  <Text style={styles.primaryDataText}>Distance</Text>
+                </Col>
+                <Col style={styles.paddingMarginZero}>
+                  <Text style={styles.secondaryDataText}>{currentRun.distance} km</Text>
+                </Col>
+              </Row>
+              <Row style={styles.paddingMarginZero}>
+                <Col style={styles.paddingMarginZero}>
+                  <Text style={styles.secondaryDataText}>Set time</Text>
+                </Col>
+                <Col style={styles.paddingMarginZero}>
+                  <Text style={styles.primaryDataText}>{ Math.round(currentRun.setTime * 0.00001667,2) } min</Text>
+                </Col>
+              </Row>
+              <Row style={styles.paddingMarginZero}>
+                <Col style={styles.paddingMarginZero}>
+                  <Text style={styles.primaryDataText}>Set distance</Text>
+                </Col>
+                <Col style={styles.paddingMarginZero}>
+                  <Text style={styles.secondaryDataText}>{currentRun.setDistance} km</Text>
+                </Col>
+              </Row>
+              <Row style={styles.paddingMarginZero}>
+                <Col style={styles.paddingMarginZero}>
+                  <Text style={styles.secondaryDataText}>Date (start)</Text>
+                </Col>
+                <Col style={styles.paddingMarginZero}>
+                  <Text style={styles.primaryDataText}>{Moment(currentRun.startDate).format('dddd MMM YYYY hh:mm')}</Text>
+                </Col>
+              </Row>
+              
+              <Row style={styles.paddingMarginZero}>
+                  {/*map helye*/}
+              </Row>
+            </Grid>
           </ScrollView>
+          { currentRun.id == 0 &&
+            <Button
+            onPress={saveCurrentRunning}
+            style={!alreadySavedRunning? styles.saveButton : styles.disabledSaveButton}
+            disabled={alreadySavedRunning}
+            mode="container"
+            >
+              <Text style={styles.saveButtonText}> Save running!</Text>
+            </Button>
+          }
       </React.Fragment>
     );
 }
@@ -173,12 +188,35 @@ const styles = StyleSheet.create({
       fontWeight: "800",
     },
   
-    stopButtonText: {
+    saveButton: {
+      marginBottom: 10,
+      marginTop: 10,
+      marginLeft: 50,
+      marginRight: 50,
+      backgroundColor: "orange",
+      borderWidth: 5,
+      borderColor: "orange",
+      borderRadius: 10,
+      height: 50
+    },
+
+    disabledSaveButton: {
+      marginBottom: 10,
+      marginTop: 10,
+      marginLeft: 50,
+      marginRight: 50,
+      backgroundColor: "navajowhite",
+      borderWidth: 5,
+      borderColor: "navajowhite",
+      borderRadius: 10,
+      height: 50
+    },
+  
+    saveButtonText: {
       color: "white",
       fontWeight: "900",
-      fontSize: 20,
-      fontWeight: "800",
-    },
+      fontSize: 15,
+    }
   });
   
   const mapStateToProps = (state) => ({
@@ -187,7 +225,21 @@ const styles = StyleSheet.create({
   
   const mapDispatchToProps = (dispatch) => {
     return {
-      ///
+      saveRunning: (currentRun) =>
+      dispatch({
+        type: "SAVE_RUNNING",
+        payload: {
+          corrds: currentRun.coords,
+          avgSpeed: currentRun.avgSpeed,
+          topSpeed: currentRun.topSpeed,
+          time: currentRun.time, 
+          distance: currentRun.distance,
+          setTime: currentRun.setTime,
+          setDistance: currentRun.setDistance,
+          startDate: currentRun.startDate,
+          maxAltitude: currentRun.maxAltitude,
+        },
+      }),
     };
   };
   
