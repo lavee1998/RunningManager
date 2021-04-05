@@ -193,6 +193,10 @@ const ActionScreen = ({ navigation, goal, interval, startDate, setCurrentRunning
 
   const toggleStopwatch = () => {
     setStopwatchStart(!stopwatchStart);
+    setAlmostReachedDistanceInformation(false);
+    setReachedTimeInformation(false);
+    setAlmostReachedTimeInformation(false);
+    setReachedTimeInformation(false);
   };
 
   const getFormattedTime = (time) => {
