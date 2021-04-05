@@ -32,10 +32,10 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
       setGoal(distance)
     }
     if(hours || minutes ){
-      let miliseconds = hours + minutes
-      console.log(miliseconds, "milisecond")
-      setInterval(miliseconds)
+      let milliseconds = hours*3600000 + minutes*60000
+      setInterval(milliseconds)
     }
+
     let today = new Date();
     setStartDate(today)
     console.log("ez a jelenlegi dátum", today)
