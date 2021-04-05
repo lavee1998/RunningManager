@@ -7,6 +7,7 @@ import {
   SET_INTERVAL,
   SET_START_DATE,
 } from "./actions";
+import { SAVE_CURRENTRUNNING } from "./runnings";
 
 const initialState = {
   runnings: [
@@ -37,8 +38,9 @@ const initialState = {
     },
   ],
   distance: null,
-  interval: 312,
+  interval: 6000,
   startDate: null,
+  currentRunning: null,
 };
 
 function reducer(state = initialState, action) {
@@ -57,6 +59,26 @@ function reducer(state = initialState, action) {
       return { ...state, goal: action.payload };
     case SET_START_DATE:
       return { ...state, startDate: action.payload };
+    case SAVE_CURRENTRUNNING:
+
+      let currRunning = {
+        corrds: action.payload.coords,
+        avgSpeed: action.payload.avgSpeed,
+        topSpeed: action.payload.topSpeed,
+        time: action.payload.time, 
+        distance: action.payload.distance,
+        setTime: action.payload.setTime, //settime
+        setDistance: action.payload.setDistance, //setDistance
+        startDate: action.payload.startDate,
+        maxAltitude: action.payload.maxAltitude,
+      }
+
+      state = {
+        ...state,
+        currentRunning: currRunning
+      };
+
+      return state;
     default:
       return state;
   }

@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 const ListScreen = ({ navigation, runnings , removeRun, }) => {
   const [selectedRunningId, setSelectedRunningId] = React.useState(0);
 
-  console.log(runnings, "test")
+  //console.log(runnings, "test")
 
   return (
     <ScrollView>

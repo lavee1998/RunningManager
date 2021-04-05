@@ -12,13 +12,12 @@ import {
 
 // This component is responsible for the Map
 // It will be integrated into different screens
-// location            -- used by the ActionSreen for current position
 // runCoordinates      -- passed by the components for displaying the markers on the map
 const MapComponent = ({ runCoordinates }) => {
   if (runCoordinates.length ){
 
-  console.log(runCoordinates.length);
-  console.log(runCoordinates[runCoordinates.length-1]);
+  //console.log(runCoordinates.length);
+  //console.log(runCoordinates[runCoordinates.length-1]);
     return (
     <View>
       <MapView showUserLocation followUserLocation loadingEnabled style={styles.map}>

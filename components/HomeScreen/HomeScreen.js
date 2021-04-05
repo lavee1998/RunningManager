@@ -238,7 +238,7 @@ const mapDispatchToProps = (dispatch) => {
         type: "SET_DISTANCE",
         payload: distance,
       }),
-      setStartDate: (date) =>
+    setStartDate: (date) =>
       dispatch({
         type: "SET_START_DATE",
         payload: date,
