@@ -1,4 +1,3 @@
-
 //TODO for details
 import {
     ScrollView,
@@ -7,20 +6,18 @@ import {
     SafeAreaView,
     StyleSheet
   } from "react-native";
-  import React, { useEffect } from "react";
-  import { Col, Row, Grid } from "react-native-paper-grid";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { Col, Row, Grid } from "react-native-paper-grid";
+import Moment from 'moment';
   
 const DetailsScreen = ({ navigation, currentRun }) => {
-    const [time, setTime] = React.useState(0);
-    const [maxAlt, setMaxAlt]=React.useState(1100.1);
-    const [speed, setSpeed]=React.useState(0);
-    const [avgSpeed, setAvgSpeed]=React.useState(0);
-    const [distance, setDistance]=React.useState(0);
-    const [settedTime, setSettedTime]=React.useState(21);
-    const [settedDistance, setSettedDistance]=React.useState(6);
-    const [date, setDate]=React.useState(0);
+  
+  useEffect(() => {
+    Moment.locale('hu');
+  }, [currentRun]);
 
-    return (
+  return (
       <React.Fragment>
           <ScrollView>
           <View style={styles.pageTitleContainer}>
@@ -35,7 +32,7 @@ const DetailsScreen = ({ navigation, currentRun }) => {
                   </Col>
                   <Col style={styles.paddingMarginZero}>
                     <Text style={styles.secondaryDataText}>
-                      {time} min
+                      {currentRun.time} min
                     </Text>
                   </Col>
                 </Row>
@@ -45,7 +42,7 @@ const DetailsScreen = ({ navigation, currentRun }) => {
                   </Col>
                   <Col style={styles.paddingMarginZero}>
                     <Text style={styles.primaryDataText}>
-                      {maxAlt} m
+                      {currentRun.maxAltitude} m
                     </Text>
                   </Col>
                 </Row>
@@ -55,7 +52,7 @@ const DetailsScreen = ({ navigation, currentRun }) => {
                   </Col>
                   <Col style={styles.paddingMarginZero}>
                     <Text style={styles.secondaryDataText}>
-                      {speed} km/h
+                      {currentRun.topSpeed} km/h
                     </Text>
                   </Col>
                 </Row>
@@ -66,7 +63,7 @@ const DetailsScreen = ({ navigation, currentRun }) => {
                   </Col>
                   <Col style={styles.paddingMarginZero}>
                     <Text style={styles.primaryDataText}>
-                      {avgSpeed} km/h
+                      {currentRun.avgSpeed} km/h
                     </Text>
                   </Col>
                 </Row>
@@ -75,7 +72,7 @@ const DetailsScreen = ({ navigation, currentRun }) => {
                     <Text style={styles.primaryDataText}>Distance</Text>
                   </Col>
                   <Col style={styles.paddingMarginZero}>
-                    <Text style={styles.secondaryDataText}>{distance} km</Text>
+                    <Text style={styles.secondaryDataText}>{currentRun.distance} km</Text>
                   </Col>
                 </Row>
                 <Row style={styles.paddingMarginZero}>
@@ -83,7 +80,7 @@ const DetailsScreen = ({ navigation, currentRun }) => {
                     <Text style={styles.secondaryDataText}>Set time</Text>
                   </Col>
                   <Col style={styles.paddingMarginZero}>
-                    <Text style={styles.primaryDataText}>{settedTime} min</Text>
+                    <Text style={styles.primaryDataText}>{ Math.round(currentRun.setTime * 0.00001667,2) } min</Text>
                   </Col>
                 </Row>
                 <Row style={styles.paddingMarginZero}>
@@ -91,7 +88,7 @@ const DetailsScreen = ({ navigation, currentRun }) => {
                     <Text style={styles.primaryDataText}>Set distance</Text>
                   </Col>
                   <Col style={styles.paddingMarginZero}>
-                    <Text style={styles.secondaryDataText}>{settedDistance} km</Text>
+                    <Text style={styles.secondaryDataText}>{currentRun.setDistance} km</Text>
                   </Col>
                 </Row>
                 <Row style={styles.paddingMarginZero}>
@@ -99,7 +96,7 @@ const DetailsScreen = ({ navigation, currentRun }) => {
                     <Text style={styles.secondaryDataText}>Date (start)</Text>
                   </Col>
                   <Col style={styles.paddingMarginZero}>
-                    <Text style={styles.primaryDataText}>{date}</Text>
+                    <Text style={styles.primaryDataText}>{Moment(currentRun.startDate).format('dddd MMM YYYY hh:mm')}</Text>
                   </Col>
                 </Row>
                 
@@ -184,4 +181,14 @@ const styles = StyleSheet.create({
     },
   });
   
-export default DetailsScreen;
+  const mapStateToProps = (state) => ({
+    currentRun: state.reducer.currentRunning
+  });
+  
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      ///
+    };
+  };
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(DetailsScreen);

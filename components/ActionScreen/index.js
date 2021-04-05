@@ -27,7 +27,7 @@ import {connect} from "react-redux"
 
 // This component is responsible for the main running process
 // navigation -- ??
-const ActionScreen = ({ navigation, goal, interval, startDate }) => {
+const ActionScreen = ({ navigation, goal, interval, startDate, setCurrentRunning }) => {
   const [stopwatchStart, setStopwatchStart] = React.useState(false);
   //const [stopwatchReset, setStopwatchReset] = React.useState(false);
   const [averageSpeed, setAverageSpeed] = React.useState(0);
@@ -175,7 +175,7 @@ const ActionScreen = ({ navigation, goal, interval, startDate }) => {
 
       letLastTimeStamp = currLocation.timestamp
 
-      console.log(arr.length);
+      //console.log(arr.length);
       arr = [...arr, currLocation.coords];
       
       setCoordinates(arr);
@@ -193,6 +193,10 @@ const ActionScreen = ({ navigation, goal, interval, startDate }) => {
 
   const toggleStopwatch = () => {
     setStopwatchStart(!stopwatchStart);
+    setAlmostReachedDistanceInformation(false);
+    setReachedTimeInformation(false);
+    setAlmostReachedTimeInformation(false);
+    setReachedTimeInformation(false);
   };
 
   const getFormattedTime = (time) => {
@@ -205,20 +209,19 @@ const ActionScreen = ({ navigation, goal, interval, startDate }) => {
     toggleStopwatch();
     //addToRuns(runCoordinates)
 
-    // test values
     let currentRun = {
       corrds: runCoordinates,
-      avgSpeed: 0,
-      time: 0, 
+      avgSpeed: averageSpeed,
       topSpeed: Math.max.apply(Math, runCoordinates.map(function(corrd) { return corrd.speed; })),
+      time: currentTime, 
       distance: distance,
-      interval: interval, //settime
-      goal: goal, //setDistance
+      setTime: interval, //settime
+      setDistance: goal, //setDistance
       startDate: startDate,
       maxAltitude: Math.max.apply(Math, runCoordinates.map(function(corrd) { return corrd.altitude; })),
     }
-
-    navigation.navigate("Details", {currentRun : currentRun} );
+    setCurrentRunning(currentRun);
+    navigation.navigate("Details");
   };
   //gps
 
@@ -375,7 +378,21 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    ////
+    setCurrentRunning: (currentRun) =>
+      dispatch({
+        type: "SAVE_CURRENTRUNNING",
+        payload: {
+          corrds: currentRun.coords,
+          avgSpeed: currentRun.avgSpeed,
+          topSpeed: currentRun.topSpeed,
+          time: currentRun.time, 
+          distance: currentRun.distance,
+          setTime: currentRun.setTime, //settime
+          setDistance: currentRun.setDistance, //setDistance
+          startDate: currentRun.startDate,
+          maxAltitude: currentRun.maxAltitude,
+        },
+      }),
   };
 };
 
