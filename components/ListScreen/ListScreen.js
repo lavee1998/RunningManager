@@ -21,10 +21,11 @@ const ListScreen = ({ navigation, runnings , removeRun, }) => {
       <SafeAreaView style={styles.containerStyle}>
         <Grid style={styles.gridStyle}>
           {
-          runnings.map((run, i) => {
+          runnings.length && runnings.map((run, i) => {
             console.log(run)
             return(
-            <ListRow run={run} i={i} /> 
+              
+             <ListRow run={run} i={i} /> 
           )})}
             {/* <Row style={styles.paddingMarginZero}>
                     <Col style={styles.paddingMarginZero}>
@@ -193,7 +194,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state /*, ownProps*/) => ({
-  runnings: state,
+  runnings: state.reducer.runnings,
 });
 
 const mapDispatchToProps = (dispatch) => {

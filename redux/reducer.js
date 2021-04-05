@@ -11,27 +11,27 @@ import {
 const initialState = {
   runnings: [
     {
-      runCoordinates: [{}],
+      runCoordinates: [{ speed: 0 }],
       name: "Test run",
       startDate: "2012-12-21",
     },
     {
-      runCoordinates: [{}],
+      runCoordinates: [{speed: 0}],
       name: "Test run",
       startDate: "2012-12-21",
     },
     {
-      runCoordinates: [{}],
+      runCoordinates: [{speed: 0}],
       name: "Test run",
       startDate: "2012-12-21",
     },
     {
-      runCoordinates: [{}],
+      runCoordinates: [{speed: 0}],
       name: "Test run",
       startDate: "2012-12-21",
     },
     {
-      runCoordinates: [{}],
+      runCoordinates: [{speed: 0}],
       name: "Test run",
       startDate: "2012-12-21",
     },
