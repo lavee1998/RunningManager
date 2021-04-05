@@ -94,7 +94,6 @@ const ActionScreen = ({ navigation, goal, interval, startDate }) => {
     setMessage("Lejárt az idő! Vége a futásnak.");
     Vibration.vibrate(VIBRATINGMS);
     setVisibleAlert(true);
-    navigation.navigate("DataGrid", {runningId} );
   };
 
   const almostPassedTime = () => {
@@ -125,9 +124,7 @@ const ActionScreen = ({ navigation, goal, interval, startDate }) => {
       goal: goal, //setDistance
       startDate: startDate,
       maxAltitude: Math.max.apply(Math, runCoordinates.map(function(corrd) { return corrd.altitude; })),
-
     }
-    navigation.navigate("DataGrid", {runningId} );
   }
 
   const calculateAvgSpeed = () => {
