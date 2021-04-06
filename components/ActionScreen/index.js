@@ -56,6 +56,7 @@ const ActionScreen = ({
   const [visibleAlert, setVisibleAlert] = React.useState(false);
   const [location, setLocation] = useState();
   const [errorMsg, setErrorMsg] = useState(null);
+  const [watchPositionStatus, setWatchPositionStatus] = React.useState()
   const [
     almostReachedDistanceInformation,
     setAlmostReachedDistanceInformation,
@@ -100,10 +101,13 @@ const ActionScreen = ({
         return;
       }
 
-      let watcher = await Location.watchPositionAsync(
-        { accuracy: Location.Accuracy.BestForNavigation, distanceInterval: 12 },
+
+      let watchPositionStatus = await Location.watchPositionAsync(
+        LOCATION_SETTINGS,
         updatePosition
       );
+
+      setWatchPositionStatus(watchPositionStatus)
 
       if (interval) {
         almostTimer = setTimeout(almostPassedTime, 0.8 * interval);
@@ -160,6 +164,10 @@ const ActionScreen = ({
   let arr = [];
   let letLastTimeStamp;
   let letCurrentSpeed;
+  let currDistance;
+
+  const LOCATION_SETTINGS = {
+  }
 
   const updatePosition = (currLocation) => {
     if (currLocation.coords.speed >= 0) {
@@ -176,10 +184,10 @@ const ActionScreen = ({
           longitude: currLocation.coords.longitude,
         };
 
-        let currDistance = haversine(start, end, { unit: "kilometer" });
+        currDistance = haversine(start, end, { unit: "kilometer" });
         letDistance =
           Math.round(
-            (parseFloat(letDistance) + Math.round(currDistance * 1000) / 1000) *
+            (parseFloat(distance) + Math.round(currDistance * 1000) / 1000) *
               1000
           ) / 1000;
         console.log(letDistance, "distance-test");
@@ -260,6 +268,7 @@ const ActionScreen = ({
         })
       ),
     };
+    watchPositionStatus.remove()
     setCurrentRunning(currentRun);
     navigation.navigate("Details");
   };

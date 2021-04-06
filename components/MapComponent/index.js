@@ -47,9 +47,6 @@ const MapComponent = ({ runCoordinates }) => {
     <MapView showUserLocation followUserLocation loadingEnabled style={styles.map}>
 
     <Polyline coordinates={runCoordinates} strokeWidth={5} />
-       
-      
-
     </MapView>
   </View>)
 };
