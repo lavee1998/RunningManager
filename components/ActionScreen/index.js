@@ -240,7 +240,7 @@ const ActionScreen = ({
     //addToRuns(runCoordinates)
 
     let currentRun = {
-      corrds: runCoordinates,
+      coords: runCoordinates,
       avgSpeed: averageSpeed,
       topSpeed: Math.max.apply(
         Math,
@@ -425,7 +425,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "SAVE_CURRENTRUNNING",
         payload: {
-          corrds: currentRun.coords,
+          coords: currentRun.coords,
           avgSpeed: currentRun.avgSpeed,
           topSpeed: currentRun.topSpeed,
           time: currentRun.time,

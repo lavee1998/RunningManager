@@ -29,46 +29,6 @@ const ListScreen = ({ navigation, runnings , removeRun, }) => {
             return(
              <ListRow run={run} i={i} /> 
           )})}
-            {/* <Row style={styles.paddingMarginZero}>
-                    <Col style={styles.paddingMarginZero}>
-                      <Text style={styles.primaryDataText}>example 1</Text>
-                    </Col>
-                    <Col style={styles.paddingMarginZero}>
-                      <Text style={styles.primaryDataText}>
-                        array[1]
-                      </Text>
-                    </Col>
-                  </Row>
-                  <Row style={styles.paddingMarginZero}>
-                    <Col style={styles.paddingMarginZero}>
-                      <Text style={styles.secondaryDataText}>example 2</Text>
-                    </Col>
-                    <Col style={styles.paddingMarginZero}>
-                      <Text style={styles.secondaryDataText}>
-                        array[2]
-                      </Text>
-                    </Col>
-                  </Row>
-                  <Row style={styles.paddingMarginZero}>
-                    <Col style={styles.paddingMarginZero}>
-                      <Text style={styles.primaryDataText}>example 3</Text>
-                    </Col>
-                    <Col style={styles.paddingMarginZero}>
-                      <Text style={styles.primaryDataText}>
-                        array[3]
-                      </Text>
-                    </Col>
-                  </Row>
-                  <Row style={styles.paddingMarginZero}>
-                    <Col style={styles.paddingMarginZero}>
-                      <Text style={styles.secondaryDataText}>example 4</Text>
-                    </Col>
-                    <Col style={styles.paddingMarginZero}>
-                      <Text style={styles.secondaryDataText}>
-                        array[4]
-                      </Text>
-                    </Col>
-                  </Row> */}
           <Row>
             <Button
               onPress={() =>
