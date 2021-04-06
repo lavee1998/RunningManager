@@ -12,7 +12,7 @@ import { Col, Row, Grid } from "react-native-paper-grid";
 import Moment from 'moment';
 import { Button } from "react-native-paper";
 import { useState } from "react";
-  
+import MapComponent from "../MapComponent";
 const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
   const [alreadySavedRunning, SetAlreadySavedRunning] = useState(false);
 
