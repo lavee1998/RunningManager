@@ -9,12 +9,20 @@ import {
   StyleSheet,
   Animated,
   Dimensions,
-  Vibration
+  Vibration,
 } from "react-native";
 import React from "react";
 import { Stopwatch, Timer } from "react-native-stopwatch-timer";
-import { Card, Title, Button, TextInput, Paragraph, Dialog, Portal } from "react-native-paper";
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import {
+  Card,
+  Title,
+  Button,
+  TextInput,
+  Paragraph,
+  Dialog,
+  Portal,
+} from "react-native-paper";
+import Icon from "react-native-vector-icons/FontAwesome5";
 import RNSpeedometer from "react-native-speedometer";
 import { TabView, SceneMap } from "react-native-tab-view";
 // import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
@@ -23,11 +31,17 @@ import * as Location from "expo-location";
 import { useState, useEffect } from "react";
 import MapComponent from "../MapComponent";
 import haversine from "haversine";
-import {connect} from "react-redux"
+import { connect } from "react-redux";
 
 // This component is responsible for the main running process
 // navigation -- ??
-const ActionScreen = ({ navigation, goal, interval, startDate, setCurrentRunning }) => {
+const ActionScreen = ({
+  navigation,
+  goal,
+  interval,
+  startDate,
+  setCurrentRunning,
+}) => {
   const [stopwatchStart, setStopwatchStart] = React.useState(false);
   //const [stopwatchReset, setStopwatchReset] = React.useState(false);
   const [averageSpeed, setAverageSpeed] = React.useState(0);
@@ -38,13 +52,21 @@ const ActionScreen = ({ navigation, goal, interval, startDate, setCurrentRunning
   const [text, setText] = React.useState("Waiting...");
   const [index, setIndex] = React.useState(0);
   const [runCoordinates, setCoordinates] = React.useState([]);
-  const [message,setMessage] = React.useState(null);
+  const [message, setMessage] = React.useState(null);
   const [visibleAlert, setVisibleAlert] = React.useState(false);
   const [location, setLocation] = useState();
   const [errorMsg, setErrorMsg] = useState(null);
-  const [almostReachedDistanceInformation, setAlmostReachedDistanceInformation] = useState(true);
-  const [reachedDistanceInformation, setReachedDistanceInformation] = useState(true);
-  const [almostReachedTimeInformation, setAlmostReachedTimeInformation] = useState(true);
+  const [
+    almostReachedDistanceInformation,
+    setAlmostReachedDistanceInformation,
+  ] = useState(true);
+  const [reachedDistanceInformation, setReachedDistanceInformation] = useState(
+    true
+  );
+  const [
+    almostReachedTimeInformation,
+    setAlmostReachedTimeInformation,
+  ] = useState(true);
   const [reachedTimeInformation, setReachedTimeInformation] = useState(true);
 
   // Vibrating message to the user
@@ -60,7 +82,7 @@ const ActionScreen = ({ navigation, goal, interval, startDate, setCurrentRunning
   const MapTab = () => <MapComponent runCoordinates={runCoordinates} />;
 
   const Speedometer = () => (
-    <RNSpeedometer maxValue={currentSpeed > 7 ? 12 : 7} value={currentSpeed} />
+    <RNSpeedometer maxValue={currentSpeed > 7 ? 40 : 7} value={currentSpeed} />
   );
 
   const renderScene = SceneMap({
@@ -78,21 +100,20 @@ const ActionScreen = ({ navigation, goal, interval, startDate, setCurrentRunning
         return;
       }
 
-      Location.watchPositionAsync(
-        { accuracy: Location.Accuracy.BestForNavigation, distanceInterval: 10 },
+      let watcher = await Location.watchPositionAsync(
+        { accuracy: Location.Accuracy.BestForNavigation, distanceInterval: 12 },
         updatePosition
       );
 
       if (interval) {
         almostTimer = setTimeout(almostPassedTime, 0.8 * interval);
-        timer = setTimeout(passedTime,interval);
+        timer = setTimeout(passedTime, interval);
       } //clearTimeout(timer)
-
     })();
   }, []);
 
   const passedTime = () => {
-    if(reachedTimeInformation) {
+    if (reachedTimeInformation) {
       setMessage("Lejárt az idő! Sikerült elérni a megadott intervallumot.");
       setReachedTimeInformation(false);
       Vibration.vibrate(VIBRATINGMS);
@@ -101,11 +122,11 @@ const ActionScreen = ({ navigation, goal, interval, startDate, setCurrentRunning
   };
 
   const almostPassedTime = () => {
-    if(almostReachedTimeInformation) {
+    if (almostReachedTimeInformation) {
       setMessage("Hamarosan lejár az idő!");
       setAlmostReachedTimeInformation(false);
       Vibration.vibrate(VIBRATINGMS);
-      setVisibleAlert(true); 
+      setVisibleAlert(true);
     }
   };
 
@@ -114,7 +135,7 @@ const ActionScreen = ({ navigation, goal, interval, startDate, setCurrentRunning
     setAlmostReachedDistanceInformation(false);
     Vibration.vibrate(VIBRATINGMS);
     setVisibleAlert(true);
-  }
+  };
 
   const reachedDistance = () => {
     setMessage("Elérted a kívánt útmennyiséget!");
@@ -122,7 +143,7 @@ const ActionScreen = ({ navigation, goal, interval, startDate, setCurrentRunning
     Vibration.vibrate(VIBRATINGMS);
     setVisibleAlert(true);
     setIsRunningOver(true);
-  }
+  };
 
   const calculateAvgSpeed = () => {
     if (runCoordinates.length === 0) return;
@@ -141,45 +162,54 @@ const ActionScreen = ({ navigation, goal, interval, startDate, setCurrentRunning
   let letCurrentSpeed;
 
   const updatePosition = (currLocation) => {
-    if (runCoordinates.length !== 0) {
-      const lastLocation = runCoordinates[runCoordinates.length - 1];
+    if (currLocation.coords.speed >= 0) {
+      if (runCoordinates.length !== 0) {
+        const lastLocation = runCoordinates[runCoordinates.length - 1];
 
-      let start = {
-        latitude: lastLocation.latitude,
-        longitude: lastLocation.longitude,
-      };
+        let start = {
+          latitude: lastLocation.latitude,
+          longitude: lastLocation.longitude,
+        };
 
-      let end = {
-        latitude: currLocation.coords.latitude,
-        longitude: currLocation.coords.longitude,
-      };
+        let end = {
+          latitude: currLocation.coords.latitude,
+          longitude: currLocation.coords.longitude,
+        };
 
-      let currDistance = haversine(start, end, { unit: "kilometer" });
-      letDistance = Math.round((parseFloat(letDistance) + Math.round(currDistance * 1000) / 1000) * 1000) / 1000;
-      setDistance(letDistance);
+        let currDistance = haversine(start, end, { unit: "kilometer" });
+        letDistance =
+          Math.round(
+            (parseFloat(letDistance) + Math.round(currDistance * 1000) / 1000) *
+              1000
+          ) / 1000;
+        console.log(letDistance, "distance-test");
+        setDistance(letDistance);
 
-      // we should inform the user only once
-      if(goal * 0.95 <= letDistance && almostReachedDistanceInformation) {
-        almostReachedDistance();
+        // we should inform the user only once
+        if (goal * 0.95 <= letDistance && almostReachedDistanceInformation) {
+          almostReachedDistance();
+        }
+
+        if (goal <= letDistance && reachedDistanceInformation) {
+          reachedDistance();
+        }
       }
 
-      if(goal <= letDistance && reachedDistanceInformation) {
-        reachedDistance();
-      }
-    }
-
-    if (currLocation.coords.speed >= 0) { //Should we use this line, or not?
-      if(letLastTimeStamp && letDistance) {
-        letCurrentSpeed = currDistance/(letLastTimeStamp-currLocation.timestamp)
+      //Should we use this line, or not?
+      if (letLastTimeStamp && letDistance) {
+        letCurrentSpeed =
+          currDistance /
+          ((letLastTimeStamp - currLocation.timestamp) * 1000) /
+          3600;
       }
 
-      letLastTimeStamp = currLocation.timestamp
+      letLastTimeStamp = currLocation.timestamp;
 
       //console.log(arr.length);
       arr = [...arr, currLocation.coords];
-      
+
       setCoordinates(arr);
-      setCurrentSpeed(letCurrentSpeed?letCurrentSpeed:0);
+      setCurrentSpeed(currLocation.coords.speed);
       calculateAvgSpeed();
     }
   };
@@ -212,14 +242,24 @@ const ActionScreen = ({ navigation, goal, interval, startDate, setCurrentRunning
     let currentRun = {
       corrds: runCoordinates,
       avgSpeed: averageSpeed,
-      topSpeed: Math.max.apply(Math, runCoordinates.map(function(corrd) { return corrd.speed; })),
-      time: currentTime, 
+      topSpeed: Math.max.apply(
+        Math,
+        runCoordinates.map(function (corrd) {
+          return corrd.speed;
+        })
+      ),
+      time: currentTime,
       distance: distance,
       setTime: interval, //settime
       setDistance: goal, //setDistance
       startDate: startDate,
-      maxAltitude: Math.max.apply(Math, runCoordinates.map(function(corrd) { return corrd.altitude; })),
-    }
+      maxAltitude: Math.max.apply(
+        Math,
+        runCoordinates.map(function (corrd) {
+          return corrd.altitude;
+        })
+      ),
+    };
     setCurrentRunning(currentRun);
     navigation.navigate("Details");
   };
@@ -227,65 +267,69 @@ const ActionScreen = ({ navigation, goal, interval, startDate, setCurrentRunning
 
   return (
     <React.Fragment>
-        <ScrollView>
-          <SafeAreaView style={styles.contentContainer}>
-            <Grid style={styles.paddingMarginZero}>
-              <Button
-                onPress={() => stopRunning()}
-                style={styles.stopButton}
-                mode="container"
-              >
-                <Text style={styles.stopButtonText}>Stop Run!</Text>
-              </Button>
-              <Row style={styles.container}>
-                <Stopwatch
-                  laps
-                  msecs
-                  start={stopwatchStart}
-                  options={options}
-                  getTime={(time) => getFormattedTime(time)}
-                />
-              </Row>
-              <Row style={styles.paddingMarginZero}>
-                <Col style={styles.paddingMarginZero}>
-                  <Text style={styles.primaryDataText}>Average Speed</Text>
-                </Col>
-                <Col style={styles.paddingMarginZero}>
-                  <Text style={styles.secondaryDataText}>
-                    {averageSpeed} m/s
-                  </Text>
-                </Col>
-              </Row>
-              <Row style={styles.paddingMarginZero}>
-                <Col style={styles.paddingMarginZero}>
-                  <Text style={styles.secondaryDataText}>Distance</Text>
-                </Col>
-                <Col style={styles.paddingMarginZero}>
-                  <Text style={styles.primaryDataText}>{distance} km</Text>
-                </Col>
-              </Row>
-              <Row style={styles.paddingMarginZero}>
-                <TabView
-                  navigationState={{ index, routes }}
-                  renderScene={renderScene}
-                  onIndexChange={setIndex}
-                  initialLayout={initialLayout}
-                />
-              </Row>
-            </Grid>
-            <Portal>
-              <Dialog visible={visibleAlert} onDismiss={() => setVisibleAlert(false)}>
-                <Dialog.Title><Icon name="exclamation-triangle" size={30} color="#900" /> Figyelem!</Dialog.Title>
-                <Dialog.Content>
-                  <Paragraph>{message}</Paragraph>
-                </Dialog.Content>
-                <Dialog.Actions>
-                  <Button onPress={() => setVisibleAlert(false)}>Ok</Button>
-                </Dialog.Actions>
-              </Dialog>
-            </Portal>
-          </SafeAreaView>
-        </ScrollView>
+      <ScrollView>
+        <SafeAreaView style={styles.contentContainer}>
+          <Grid style={styles.paddingMarginZero}>
+            <Button
+              onPress={() => stopRunning()}
+              style={styles.stopButton}
+              mode="container"
+            >
+              <Text style={styles.stopButtonText}>Stop Run!</Text>
+            </Button>
+            <Row style={styles.container}>
+              <Stopwatch
+                laps
+                msecs
+                start={stopwatchStart}
+                options={options}
+                getTime={(time) => getFormattedTime(time)}
+              />
+            </Row>
+            <Row style={styles.paddingMarginZero}>
+              <Col style={styles.paddingMarginZero}>
+                <Text style={styles.primaryDataText}>Average Speed</Text>
+              </Col>
+              <Col style={styles.paddingMarginZero}>
+                <Text style={styles.secondaryDataText}>{averageSpeed} m/s</Text>
+              </Col>
+            </Row>
+            <Row style={styles.paddingMarginZero}>
+              <Col style={styles.paddingMarginZero}>
+                <Text style={styles.secondaryDataText}>Distance</Text>
+              </Col>
+              <Col style={styles.paddingMarginZero}>
+                <Text style={styles.primaryDataText}>{distance} km</Text>
+              </Col>
+            </Row>
+            <Row style={styles.paddingMarginZero}>
+              <TabView
+                navigationState={{ index, routes }}
+                renderScene={renderScene}
+                onIndexChange={setIndex}
+                initialLayout={initialLayout}
+              />
+            </Row>
+          </Grid>
+          <Portal>
+            <Dialog
+              visible={visibleAlert}
+              onDismiss={() => setVisibleAlert(false)}
+            >
+              <Dialog.Title>
+                <Icon name="exclamation-triangle" size={30} color="#900" />{" "}
+                Figyelem!
+              </Dialog.Title>
+              <Dialog.Content>
+                <Paragraph>{message}</Paragraph>
+              </Dialog.Content>
+              <Dialog.Actions>
+                <Button onPress={() => setVisibleAlert(false)}>Ok</Button>
+              </Dialog.Actions>
+            </Dialog>
+          </Portal>
+        </SafeAreaView>
+      </ScrollView>
       {/* )} */}
     </React.Fragment>
   );
@@ -369,7 +413,6 @@ const styles = StyleSheet.create({
   },
 });
 
-
 const mapStateToProps = (state) => ({
   interval: state.reducer.interval,
   goal: state.reducer.goal,
@@ -385,7 +428,7 @@ const mapDispatchToProps = (dispatch) => {
           corrds: currentRun.coords,
           avgSpeed: currentRun.avgSpeed,
           topSpeed: currentRun.topSpeed,
-          time: currentRun.time, 
+          time: currentRun.time,
           distance: currentRun.distance,
           setTime: currentRun.setTime, //settime
           setDistance: currentRun.setDistance, //setDistance

@@ -16,11 +16,17 @@ import {
 const MapComponent = ({ runCoordinates }) => {
   if (runCoordinates.length ){
 
-  //console.log(runCoordinates.length);
-  //console.log(runCoordinates[runCoordinates.length-1]);
+  console.log(runCoordinates.length);
+  console.log(runCoordinates[runCoordinates.length-1]);
     return (
     <View>
-      <MapView showUserLocation followUserLocation loadingEnabled style={styles.map}>
+      <MapView initialRegion={{
+      latitude: runCoordinates[runCoordinates.length-1].latitude ,
+      longitude: runCoordinates[runCoordinates.length-1].longitude ,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    }}
+      loadingEnabled style={styles.map}>
         
         <Polyline coordinates={runCoordinates} strokeWidth={5} />
         
