@@ -105,10 +105,13 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
                   <Text style={styles.primaryDataText}>{Moment(currentRun.startDate).format('Do MMM YYYY hh:mm')}</Text>
                 </Col>
               </Row>
-              
-              <Row style={styles.paddingMarginZero}>
-                  {/*map helye*/}
-              </Row>
+              {currentRun.runCoordinates.length&&
+              (
+                  <SafeAreaView style={styles.contentContainer}> 
+                    <MapComponent runCoordinates={currentRun.runCoordinates} />
+                  </SafeAreaView>
+              )
+              }
             </Grid>
           </ScrollView>
           { currentRun.id == 0 &&
