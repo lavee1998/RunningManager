@@ -30,15 +30,6 @@ const MapComponent = ({ running, detailsView }) => {
           {detailsView && (
             <>
               <Polyline coordinates={running} strokeWidth={5} />
-              <Marker
-                coordinate={{
-                  latitude: running[running.length - 1].latitude,
-                  longitude:
-                    running[running.length - 1].longitude,
-                }}
-                title={"hali"}
-                description={"marker.description"}
-              />
               {running.map((corr) => {
                 return (
                   <Marker

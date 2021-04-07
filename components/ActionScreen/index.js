@@ -57,17 +57,9 @@ const ActionScreen = ({
   const [location, setLocation] = useState();
   const [errorMsg, setErrorMsg] = useState(null);
   const [watchPositionStatus, setWatchPositionStatus] = React.useState()
-  const [
-    almostReachedDistanceInformation,
-    setAlmostReachedDistanceInformation,
-  ] = useState(true);
-  const [reachedDistanceInformation, setReachedDistanceInformation] = useState(
-    true
-  );
-  const [
-    almostReachedTimeInformation,
-    setAlmostReachedTimeInformation,
-  ] = useState(true);
+  const [almostReachedDistanceInformation, setAlmostReachedDistanceInformation] = useState(true);
+  const [reachedDistanceInformation, setReachedDistanceInformation] = useState(true);
+  const [almostReachedTimeInformation, setAlmostReachedTimeInformation] = useState(true);
   const [reachedTimeInformation, setReachedTimeInformation] = useState(true);
 
   // Vibrating message to the user
@@ -135,17 +127,21 @@ const ActionScreen = ({
   };
 
   const almostReachedDistance = () => {
-    setMessage("Hamarosan célba érsz!");
-    setAlmostReachedDistanceInformation(false);
-    Vibration.vibrate(VIBRATINGMS);
-    setVisibleAlert(true);
+    if(almostReachedDistanceInformation) {
+      setMessage("Hamarosan célba érsz!");
+      setAlmostReachedDistanceInformation(false);
+      Vibration.vibrate(VIBRATINGMS);
+      setVisibleAlert(true);
+    }
   };
 
   const reachedDistance = () => {
-    setMessage("Elérted a kívánt útmennyiséget!");
-    setReachedDistanceInformation(false);
-    Vibration.vibrate(VIBRATINGMS);
-    setVisibleAlert(true);
+    if(reachedDistanceInformation) {
+      setMessage("Elérted a kívánt útmennyiséget!");
+      setReachedDistanceInformation(false);
+      Vibration.vibrate(VIBRATINGMS);
+      setVisibleAlert(true);
+    }
   };
 
   const calculateAvgSpeed = () => {
@@ -193,11 +189,11 @@ const ActionScreen = ({
         setDistance(letDistance);
 
         // we should inform the user only once
-        if (goal * 0.95 <= letDistance && almostReachedDistanceInformation) {
+        if (goal * 0.95 <= letDistance) {
           almostReachedDistance();
         }
 
-        if (goal <= letDistance && reachedDistanceInformation) {
+        if (goal <= letDistance) {
           reachedDistance();
         }
       }
