@@ -41,7 +41,7 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
                 style={styles.setButton}
                 onPress={() => setNameDialogVisible(true)}
               >
-                <Text style={styles.buttonText}>Add name to my run</Text>
+                <Text style={styles.buttonText}>Name of my run</Text>
               </Button>
               <Row style={styles.paddingMarginZero}>
                 <Col style={styles.paddingMarginZero}>
@@ -123,8 +123,8 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
                      <DialogInput
                       isDialogVisible={isNameDialogVisible}
                       title={"Name of my run"}
-                      message={"Write the name of your run!"}
-                      hintInput={"Daily run"}
+                      message={"Add name to your run!"}
+                      hintInput={"Example run"}
                       submitInput={(inputText) => {
                         currentRun.name=inputText;
                         setNameDialogVisible(false);
