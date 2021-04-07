@@ -16,8 +16,6 @@ import {
 const MapComponent = ({ runCoordinates }) => {
   if (runCoordinates.length ){
 
-  //console.log(runCoordinates.length);
-  //console.log(runCoordinates[runCoordinates.length-1]);
   return (
     <View>
       <MapView showUserLocation followUserLocation loadingEnabled style={styles.map} 

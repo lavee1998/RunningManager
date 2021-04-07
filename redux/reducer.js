@@ -65,6 +65,7 @@ function reducer(state = initialState, action) {
 
       let newRunning = {
         id: newId,
+        name:action.payload.name,
         runCoordinates: action.payload.coords,
         avgSpeed: action.payload.avgSpeed,
         topSpeed: action.payload.topSpeed,
@@ -94,6 +95,7 @@ function reducer(state = initialState, action) {
 
       let currRunning = {
         id: 0,
+        name:action.payload.name,
         runCoordinates: action.payload.coords,
         avgSpeed: action.payload.avgSpeed,
         topSpeed: action.payload.topSpeed,

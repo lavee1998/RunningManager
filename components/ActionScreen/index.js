@@ -252,8 +252,8 @@ const ActionScreen = ({
       avgSpeed: averageSpeed,
       topSpeed: Math.max.apply(
         Math,
-        runCoordinates.map(function (corrd) {
-          return corrd.speed;
+        runCoordinates.map(function (coord) {
+          return coord.speed;
         })
       ),
       time: currentTime,
@@ -263,8 +263,8 @@ const ActionScreen = ({
       startDate: startDate,
       maxAltitude: Math.max.apply(
         Math,
-        runCoordinates.map(function (corrd) {
-          return corrd.altitude;
+        runCoordinates.map(function (coord) {
+          return coord.altitude;
         })
       ),
     };
@@ -310,6 +310,7 @@ const ActionScreen = ({
               <Col style={styles.paddingMarginZero}>
                 <Text style={styles.primaryDataText}>{distance} km</Text>
               </Col>
+              
             </Row>
             <Row style={styles.paddingMarginZero}>
               <TabView

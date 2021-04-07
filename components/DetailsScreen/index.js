@@ -13,9 +13,13 @@ import Moment from 'moment';
 import { Button } from "react-native-paper";
 import { useState } from "react";
 import MapComponent from "../MapComponent";
-const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
-  const [alreadySavedRunning, SetAlreadySavedRunning] = useState(false);
 
+import DialogInput from "react-native-dialog-input";
+
+const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
+
+  const [isNameDialogVisible, setNameDialogVisible] = React.useState(false);
+  const [alreadySavedRunning, SetAlreadySavedRunning] = useState(false);
   useEffect(() => {
     Moment.locale('hu');
   }, []);
@@ -24,14 +28,21 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
     saveRunning(currentRun);
     SetAlreadySavedRunning(true);
   }
-
   return (
       <React.Fragment>
           <ScrollView>
-          <View style={styles.pageTitleContainer}>
-            <Text style={styles.pageTitle}>Daily run</Text>
-          </View>
+            <View style={styles.pageTitleContainer}>
+              <Text style={styles.pageTitle}>Daily run</Text>
+            </View>
+           
             <Grid style={styles.gridStyle}>
+              <Button
+                icon={currentRun.name == null ? "close" : "check"}
+                style={styles.setButton}
+                onPress={() => setNameDialogVisible(true)}
+              >
+                <Text style={styles.buttonText}>Add name to my run</Text>
+              </Button>
               <Row style={styles.paddingMarginZero}>
                 <Col style={styles.paddingMarginZero}>
                   <Text style={styles.primaryDataText}>Time</Text>
@@ -107,14 +118,28 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
               </Row>
               {currentRun.runCoordinates.length&&
               (
-                  <SafeAreaView style={styles.contentContainer}> 
+                
+                  <SafeAreaView style={styles.contentContainer}>
+                     <DialogInput
+                      isDialogVisible={isNameDialogVisible}
+                      title={"Name of my run"}
+                      message={"Write the name of your run!"}
+                      hintInput={"Daily run"}
+                      submitInput={(inputText) => {
+                        currentRun.name=inputText;
+                        setNameDialogVisible(false);
+                      }}
+                      closeDialog={() => {
+                        setNameDialogVisible(false);
+                      }}
+                    ></DialogInput>
                     <MapComponent runCoordinates={currentRun.runCoordinates} />
                   </SafeAreaView>
               )
               }
             </Grid>
           </ScrollView>
-          { currentRun.id == 0 &&
+          { currentRun.id == 0 && 
             <Button
             onPress={saveCurrentRunning}
             style={!alreadySavedRunning? styles.saveButton : styles.disabledSaveButton}
@@ -157,6 +182,22 @@ const styles = StyleSheet.create({
       padding: 2,
     },
   
+
+  setButton: {
+    marginBottom: 10,
+    marginTop: 10,
+    backgroundColor: "#E0E0E0",
+    fontWeight: "700",
+    color: "white",
+
+    shadowOffset: { width: 1, height: 1 },
+    shadowColor: "black",
+    shadowOpacity: 0.5,
+    padding: 10,
+    borderColor: "#56CCf2",
+    borderWidth: 3,
+    borderRadius: 8,
+  },
     pageTitleContainer: {
         flex: 0.8,
         backgroundColor: "#56CCf2",
@@ -190,7 +231,22 @@ const styles = StyleSheet.create({
       textAlign: "center",
       fontWeight: "800",
     },
-  
+
+    setButton: {
+      marginBottom: 10,
+      marginTop: 10,
+      backgroundColor: "#E0E0E0",
+      fontWeight: "700",
+      color: "white",
+      shadowOffset: { width: 1, height: 1 },
+      shadowColor: "black",
+      shadowOpacity: 0.5,
+      padding: 10,
+      borderColor: "#56CCf2",
+      borderWidth: 3,
+      borderRadius: 8,
+    },
+
     saveButton: {
       marginBottom: 10,
       marginTop: 10,
@@ -233,6 +289,7 @@ const styles = StyleSheet.create({
         type: "SAVE_RUNNING",
         payload: {
           corrds: currentRun.coords,
+          name: currentRun.name,
           avgSpeed: currentRun.avgSpeed,
           topSpeed: currentRun.topSpeed,
           time: currentRun.time, 
