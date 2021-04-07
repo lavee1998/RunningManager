@@ -146,7 +146,6 @@ const ActionScreen = ({
     setReachedDistanceInformation(false);
     Vibration.vibrate(VIBRATINGMS);
     setVisibleAlert(true);
-    setIsRunningOver(true);
   };
 
   const calculateAvgSpeed = () => {
@@ -312,14 +311,16 @@ const ActionScreen = ({
               </Col>
               
             </Row>
-            <Row style={styles.paddingMarginZero}>
+            <MapComponent running={runCoordinates} detailsView={false}/>
+
+            {/* <Row style={styles.paddingMarginZero}>
               <TabView
                 navigationState={{ index, routes }}
                 renderScene={renderScene}
                 onIndexChange={setIndex}
                 initialLayout={initialLayout}
               />
-            </Row>
+            </Row> */}
           </Grid>
           <Portal>
             <Dialog

@@ -133,7 +133,7 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
                         setNameDialogVisible(false);
                       }}
                     ></DialogInput>
-                    <MapComponent runCoordinates={currentRun.runCoordinates} />
+                    <MapComponent running={currentRun.runCoordinates}  detailsView={true}/>
                   </SafeAreaView>
               )
               }
