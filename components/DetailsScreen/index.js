@@ -36,13 +36,14 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
             </View>
            
             <Grid style={styles.gridStyle}>
+              {currentRun.id == 0 &&  
               <Button
                 icon={currentRun.name == "Default name" ? "close" : "check"}
                 style={styles.setButton}
                 onPress={() => setNameDialogVisible(true)}
               >
                 <Text style={styles.buttonText}>Name of my run</Text>
-              </Button>
+              </Button>}
               <Row style={styles.paddingMarginZero}>
                 <Col style={styles.paddingMarginZero}>
                   <Text style={styles.primaryDataText}>Time</Text>
@@ -69,7 +70,7 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
                 </Col>
                 <Col style={styles.paddingMarginZero}>
                   <Text style={styles.secondaryDataText}>
-                    {currentRun.topSpeed} km/h
+                    {currentRun.topSpeed.toFixed(3)} km/h
                   </Text>
                 </Col>
               </Row>
@@ -80,7 +81,7 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
                 </Col>
                 <Col style={styles.paddingMarginZero}>
                   <Text style={styles.primaryDataText}>
-                    {currentRun.avgSpeed} km/h
+                    {currentRun.avgSpeed.toFixed(3)} km/h
                   </Text>
                 </Col>
               </Row>
