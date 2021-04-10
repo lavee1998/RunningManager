@@ -100,7 +100,7 @@ function reducer(state = initialState, action) {
 
       let currRunning = {
         id: 0,
-        name:action.payload.name,
+        name: "Default name",
         runCoordinates: action.payload.coords,
         avgSpeed: action.payload.avgSpeed,
         topSpeed: action.payload.topSpeed,

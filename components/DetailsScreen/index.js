@@ -37,7 +37,7 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
            
             <Grid style={styles.gridStyle}>
               <Button
-                icon={currentRun.name == null ? "close" : "check"}
+                icon={currentRun.name == "Default name" ? "close" : "check"}
                 style={styles.setButton}
                 onPress={() => setNameDialogVisible(true)}
               >
