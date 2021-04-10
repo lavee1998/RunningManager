@@ -55,7 +55,7 @@ function reducer(state = initialState, action) {
       if(state.runnings.length == 0) {
         newId = 1;
       } else {
-        newId = state.runnings.length + 1;
+        newId = state.runnings[0].id + 1;  // the Redux puts the new elements to the beginning, thus there will be the biggest id.
       }
 
       let newRunning = {

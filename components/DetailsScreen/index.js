@@ -17,9 +17,9 @@ import MapComponent from "../MapComponent";
 import DialogInput from "react-native-dialog-input";
 
 const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
-
   const [isNameDialogVisible, setNameDialogVisible] = React.useState(false);
   const [alreadySavedRunning, SetAlreadySavedRunning] = useState(false);
+
   useEffect(() => {
     Moment.locale('hu');
   }, []);
