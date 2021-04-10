@@ -88,7 +88,10 @@ function reducer(state = initialState, action) {
       };
 
       return state;
-    case UPDATE_RUNNING: //!!MISSING
+    case UPDATE_RUNNING:
+
+      state.runnings.find(x => x.id == action.payload.id).name = action.payload.name;
+
       return state;
     case SET_INTERVAL:
       return { ...state, interval: action.payload };
