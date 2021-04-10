@@ -10,9 +10,6 @@ import { connect } from "react-redux";
 // This component is the main component. Here the user can configure his/her running parameters
 // navigation -- ??
 const ListScreen = ({ navigation, runnings , removeRun, }) => {
-  const [selectedRunningId, setSelectedRunningId] = React.useState(0);
-
-  //console.log(runnings, "test")
 
   return (
     <ScrollView>
@@ -21,26 +18,11 @@ const ListScreen = ({ navigation, runnings , removeRun, }) => {
       </View>
 
       <SafeAreaView style={styles.containerStyle}>
-        <List.Section title="Accordions">
-
-          {
-          runnings.length && runnings.map((run, i) => {
-            console.log(run)
+        <List.Section title="Runnings List">
+          {runnings.length && runnings.map((run, i) => {
             return(
              <ListRow run={run} i={i} /> 
           )})}
-          <Row>
-            <Button
-              onPress={() =>
-                navigation.navigate("Details", { currentRun: selectedRunningId })
-              }
-              style={styles.startButton}
-              mode="container"
-            >
-              {" "}
-              <Text style={styles.startButtonText}>Show details</Text>
-            </Button>
-          </Row>
           </List.Section>
       </SafeAreaView>
     </ScrollView>
@@ -50,7 +32,6 @@ const ListScreen = ({ navigation, runnings , removeRun, }) => {
 const styles = StyleSheet.create({
   containerStyle: {
     flex: 1,
-    marginHorizontal: 20,
     justifyContent: "center",
   },
   pageTitleContainer: {

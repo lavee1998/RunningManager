@@ -12,14 +12,17 @@ import { connect } from "react-redux";
 import { List } from 'react-native-paper';
 import Moment from 'moment';
 
-const ListRow = ({ run, i }) => {
+const ListRow = ({ run, i, deleteRunning }) => {
   const [expanded, setExpanded] = React.useState(false);
 
-  console.log(run, i , "test2")
   const handlePress = () => setExpanded(!expanded);
+  const onDelete = () => {
+    deleteRunning(i);
+  }
 
   return (
       <List.Accordion
+        style = {styles.gridStyle}
         title={
           <Text>
             {" "}
@@ -46,72 +49,18 @@ const ListRow = ({ run, i }) => {
         expanded={expanded}
         onPress={handlePress}
       >
-        <List.Item title="First" />
-        <List.Item title="Second item" />
+        <List.Item title="Rename running" left={props => <List.Icon {...props} icon="rename-box" />}/>
+        <List.Item title="Delete running" onPress={onDelete} left={props => <List.Icon {...props} icon="delete" />} />
+        <List.Item title="View details" left={props => <List.Icon {...props} icon="equal" />}/>
       </List.Accordion>
   );
 };
 
 const styles = StyleSheet.create({
-  containerStyle: {
-    flex: 1,
-    marginHorizontal: 20,
-    justifyContent: "center",
-  },
-  pageTitleContainer: {
-    flex: 0.8,
-    backgroundColor: "#56CCf2",
-    borderWidth: 5,
-    width: "80%",
-    borderColor: "#56CCf2",
-    borderBottomRightRadius: 20,
-    borderTopRightRadius: 20,
-    marginTop: 40,
-    marginBottom: 40,
-  },
   gridStyle: {
     margin: 0,
     padding: 0,
-
     justifyContent: "center",
-  },
-  pageTitle: {
-    alignSelf: "stretch",
-    textAlign: "center",
-    color: "white",
-    fontSize: 22,
-    padding: 20,
-    fontWeight: "900",
-  },
-
-  detailsContainer: {
-    backgroundColor: "orange",
-    padding: 20,
-    marginTop: 20,
-    marginBottom: 20,
-    borderColor: "orange",
-    borderWidth: 5,
-    borderRadius: 12,
-  },
-  detailsText: {
-    color: "white",
-    fontWeight: "400",
-  },
-
-  setButton: {
-    marginBottom: 10,
-    marginTop: 10,
-    backgroundColor: "#E0E0E0",
-    fontWeight: "700",
-    color: "white",
-
-    shadowOffset: { width: 1, height: 1 },
-    shadowColor: "black",
-    shadowOpacity: 0.5,
-    padding: 10,
-    borderColor: "#56CCf2",
-    borderWidth: 3,
-    borderRadius: 8,
   },
 
   paddingMarginZero: {
@@ -125,6 +74,7 @@ const styles = StyleSheet.create({
     backgroundColor: "lightgray",
     textAlign: "center",
   },
+
   secondaryDataText: {
     padding: 30,
     color: "white",
@@ -133,4 +83,19 @@ const styles = StyleSheet.create({
     fontWeight: "800",
   },
 });
-export default ListRow;
+
+const mapStateToProps = (state) => ({});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteRunning: (runningId) =>
+      dispatch({
+        type: "REMOVE_RUNNING",
+        payload: {
+          id: runningId
+        },
+      }),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListRow);
