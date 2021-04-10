@@ -11,16 +11,29 @@ import { Col, Row, Grid } from "react-native-paper-grid";
 import { connect } from "react-redux";
 import { List } from 'react-native-paper';
 import Moment from 'moment';
+import Dialog from "react-native-dialog";
 
 const ListRow = ({ run, i, deleteRunning }) => {
   const [expanded, setExpanded] = React.useState(false);
+  const [isDeleteDialogVisible, SetIsDeleteDialogVisible] = React.useState(false);
 
   const handlePress = () => setExpanded(!expanded);
+  
+  const onDeleteDialog = () => {
+    SetIsDeleteDialogVisible(true);
+  }
+
+  const onCancel = () => {
+    SetIsDeleteDialogVisible(false);
+  }
+
   const onDelete = () => {
     deleteRunning(run.id);
+    SetIsDeleteDialogVisible(false);
   }
 
   return (
+    <View>
       <List.Accordion
         style = {styles.gridStyle}
         title={
@@ -50,9 +63,18 @@ const ListRow = ({ run, i, deleteRunning }) => {
         onPress={handlePress}
       >
         <List.Item title="Rename running" left={props => <List.Icon {...props} icon="rename-box" />}/>
-        <List.Item title="Delete running" onPress={onDelete} left={props => <List.Icon {...props} icon="delete" />} />
+        <List.Item title="Delete running" onPress={onDeleteDialog} left={props => <List.Icon {...props} icon="delete" />} />
         <List.Item title="View details" left={props => <List.Icon {...props} icon="equal" />}/>
       </List.Accordion>
+      <Dialog.Container visible={isDeleteDialogVisible}>
+        <Dialog.Title>Running deletion</Dialog.Title>
+        <Dialog.Description>
+          Do you want to delete this running? You cannot undo this action.
+        </Dialog.Description>
+        <Dialog.Button label="Cancel" onPress={onCancel}/>
+        <Dialog.Button label="Delete" onPress={onDelete}/>
+      </Dialog.Container>
+    </View>
   );
 };
 
@@ -61,6 +83,7 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: 0,
     justifyContent: "center",
+    width: "100%"
   },
 
   paddingMarginZero: {
