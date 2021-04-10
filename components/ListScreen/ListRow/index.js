@@ -17,7 +17,7 @@ const ListRow = ({ run, i, deleteRunning }) => {
 
   const handlePress = () => setExpanded(!expanded);
   const onDelete = () => {
-    deleteRunning(i);
+    deleteRunning(run.id);
   }
 
   return (
