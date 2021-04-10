@@ -40,6 +40,7 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
               <Button
                 icon={currentRun.name == "Default name" ? "close" : "check"}
                 style={styles.setButton}
+                disabled={alreadySavedRunning}
                 onPress={() => setNameDialogVisible(true)}
               >
                 <Text style={styles.buttonText}>Name of my run</Text>

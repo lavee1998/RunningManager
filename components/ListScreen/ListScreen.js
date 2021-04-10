@@ -18,12 +18,17 @@ const ListScreen = ({ navigation, runnings , removeRun, }) => {
       </View>
 
       <SafeAreaView style={styles.containerStyle}>
-        <List.Section title="Runnings List">
+        {runnings.length > 0 &&
+          <List.Section title="Runnings List">
           {runnings.length && runnings.map((run, i) => {
             return(
              <ListRow run={run} i={i} /> 
           )})}
           </List.Section>
+        }
+        {runnings.length == 0 &&
+          <Text style={styles.noRunningsTextStyle}>No runnings to display</Text>
+        }
       </SafeAreaView>
     </ScrollView>
   );
@@ -34,6 +39,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
+
   pageTitleContainer: {
     flex: 0.8,
     backgroundColor: "#56CCf2",
@@ -45,12 +51,18 @@ const styles = StyleSheet.create({
     marginTop: 40,
     marginBottom: 40,
   },
+
   gridStyle: {
     margin: 0,
     padding: 0,
-
     justifyContent: "center",
   },
+
+  noRunningsTextStyle: {
+    fontSize: 20,
+    textAlign:"center"
+  },
+
   pageTitle: {
     alignSelf: "stretch",
     textAlign: "center",
@@ -60,50 +72,9 @@ const styles = StyleSheet.create({
     fontWeight: "900",
   },
 
-  detailsContainer: {
-    backgroundColor: "orange",
-    padding: 20,
-    marginTop: 20,
-    marginBottom: 20,
-    borderColor: "orange",
-    borderWidth: 5,
-    borderRadius: 12,
-  },
-  detailsText: {
-    color: "white",
-    fontWeight: "400",
-  },
-
-  setButton: {
-    marginBottom: 10,
-    marginTop: 10,
-    backgroundColor: "#E0E0E0",
-    fontWeight: "700",
-    color: "white",
-
-    shadowOffset: { width: 1, height: 1 },
-    shadowColor: "black",
-    shadowOpacity: 0.5,
-    padding: 10,
-    borderColor: "#56CCf2",
-    borderWidth: 3,
-    borderRadius: 8,
-  },
-
   paddingMarginZero: {
     margin: 0,
     padding: 0,
-  },
-  startButton: {
-    marginBottom: 10,
-    marginTop: 50,
-    backgroundColor: "#56CCf2",
-    borderWidth: 5,
-    borderColor: "#56CCf2",
-    borderRadius: 20,
-    padding: 10,
-    width: "100%",
-    justifyContent: "center",
   },
   primaryDataText: {
     padding: 30,
@@ -117,23 +88,7 @@ const styles = StyleSheet.create({
     backgroundColor: "gray",
     textAlign: "center",
     fontWeight: "800",
-  },
-
-  startButtonText: {
-    color: "white",
-    fontWeight: "900",
-    fontSize: 20,
-  },
-
-  buttonText: {
-    fontWeight: "800",
-    color: "black",
-    textShadowColor: "rgba(255, 255, 255, 1)",
-    textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 10,
-    shadowOpacity: 1,
-    fontSize: 18,
-  },
+  }
 });
 
 const mapStateToProps = (state /*, ownProps*/) => ({
