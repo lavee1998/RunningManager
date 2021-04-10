@@ -41,7 +41,7 @@ const ListRow = ({ run, i, deleteRunning }) => {
                   i % 2 == 0 ? styles.primaryDataText : styles.secondaryDataText
                 }
               >
-                {Moment(run.startDate).format('Do MMM YYYY')}
+                {Moment(run.startDate).format('llll')}
               </Text>
             </Col>
           </Text>

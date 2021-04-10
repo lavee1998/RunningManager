@@ -295,7 +295,7 @@ const ActionScreen = ({
                 <Text style={styles.primaryDataText}>Average Speed</Text>
               </Col>
               <Col style={styles.paddingMarginZero}>
-                <Text style={styles.secondaryDataText}>{averageSpeed} m/s</Text>
+                <Text style={styles.secondaryDataText}>{averageSpeed.toFixed(3)} m/s</Text>
               </Col>
             </Row>
             <Row style={styles.paddingMarginZero}>
