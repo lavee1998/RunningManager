@@ -16,13 +16,16 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
   const [isDistanceDialogVisible, setDistanceDialogVisible] = React.useState(false);
   const [isTimeDialogVisible, setTimeDialogVisible] = React.useState(false);
   const [runType, setRunType] = React.useState(0);
-
   // Running types
   const runTypeList = [
-    { value: 0, label: "Run based on time and distance", details: "Detail1" },
-    { value: 1, label: "Run based on time", details: "Detail2" },
-    { value: 2, label: "Run based on distance", details: "Detail3" },
-    { value: 3, label: "Free run", details: "Detail4" },
+    { value: 0, label: "Run based on time and distance", 
+        details: "In this option, an average speed will be calculated that you must maintain in order to reach your goal!" },
+    { value: 1, label: "Run based on time", 
+        details: "In this option, you can set goal time, it will be counted, and the application will warn you, that you reached 90% of goaltime." },
+    { value: 2, label: "Run based on distance", 
+        details: "In this option, you can set goal distance, the application will give information to you, that you reached 90% of goaldistance." },
+    { value: 3, label: "Free run", 
+        details: "In this case, you needn't set time or distance, just run as Forrest!" },
   ];
 
   const handleStartRun = () => {
@@ -38,7 +41,6 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
     setStartDate(today)
     navigation.navigate("CountDown")
   }
-
   return (
     <ScrollView>
       <View style={styles.pageTitleContainer}>
@@ -46,7 +48,7 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
       </View>
 
       <SafeAreaView style={styles.containerStyle}>
-        <DropDown
+        <DropDown style={styles.dropdownStyle}
           label={"Type of run"}
           mode={"outlined"}
           value={runType}
@@ -54,7 +56,7 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
           list={runTypeList}
           visible={showDropDown}
           showDropDown={() => setShowDropDown(true)}
-          onDismiss={() => setShowDropDown(false)}
+          onDismiss={() => {setHours(0);setMinutes(0);setDistance(0);setShowDropDown(false);}}
           inputProps={{
             right: <TextInput.Icon name={"menu-down"} />,
           }}
@@ -68,6 +70,7 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
           icon={distance == 0 ? "close" : "check"}
           style={styles.setButton}
           onPress={() => setDistanceDialogVisible(true)}
+          disabled={runType==0||runType==2?false:true}
         >
           <Text style={styles.buttonText}>Set distance</Text>
         </Button>
@@ -76,6 +79,8 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
           icon={hours == 0 && minutes == 0 ? "close" : "check"}
           style={styles.setButton}
           onPress={() => setTimeDialogVisible(true)}
+
+          disabled={runType==0||runType==1?false:true}
         >
           <Text style={styles.buttonText}>Set time</Text>
         </Button>
@@ -126,7 +131,7 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
         )}
 
         <Button
-          onPress={handleStartRun}
+          onPress={runType==0&&(distance==0||hours==0&&minutes==0)||runType==1&&hours==0&&minutes==0||runType==2&&distance==0?handleStartRun:handleStartRun}
           style={styles.startButton}
           mode="container"
         >
@@ -143,6 +148,9 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 20,
     justifyContent: "center",
+  },
+  dropdownStyle: {
+     
   },
   pageTitleContainer: {
     flex: 0.8,
