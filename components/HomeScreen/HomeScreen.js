@@ -9,7 +9,6 @@ import DropDown from "react-native-paper-dropdown";
 import DialogInput from "react-native-dialog-input";
 import Dialog from "react-native-dialog";
 
-import Icon from "react-native-vector-icons/FontAwesome5";
 // This component is the main component. Here the user can configure his/her running parameters
 // navigation -- ??
 const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
