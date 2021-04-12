@@ -25,7 +25,6 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning, tabNavigation }) =
       SetAlreadySavedRunning(true);
     }
   }, []);
-
   const saveCurrentRunning = () => {
     saveRunning(currentRun);
     console.log(currentRun, "save")
@@ -99,22 +98,37 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning, tabNavigation }) =
                   <Text style={styles.secondaryDataText}>{currentRun.distance} km</Text>
                 </Col>
               </Row>
+
+              {currentRun.setTime!=0 &&
               <Row style={styles.paddingMarginZero}>
                 <Col style={styles.paddingMarginZero}>
-                  <Text style={styles.secondaryDataText}>Set time</Text>
+                  <View>
+                    <Text style={styles.secondaryDataText}>Set time</Text>
+                  </View>
                 </Col>
                 <Col style={styles.paddingMarginZero}>
-                  <Text style={styles.primaryDataText}>{ Math.round(currentRun.setTime * 0.00001667,2) } min</Text>
+                  <View>
+                    <Text style={styles.primaryDataText}>{ Math.round(currentRun.setTime * 0.00001667,2) } min</Text>
+                  </View>
                 </Col>
               </Row>
+              }
+              
+              {currentRun.setDistance &&
               <Row style={styles.paddingMarginZero}>
-                <Col style={styles.paddingMarginZero}>
-                  <Text style={styles.primaryDataText}>Set distance</Text>
+                <Col style= {styles.paddingMarginZero}>
+                  <View>
+                    <Text style={currentRun.setTime!=0?styles.primaryDataText:styles.secondaryDataText}>Set distance</Text>
+                  </View>
                 </Col>
                 <Col style={styles.paddingMarginZero}>
-                  <Text style={styles.secondaryDataText}>{currentRun.setDistance} km</Text>
+                  <View>
+                    <Text style={currentRun.setTime!=0?styles.secondaryDataText:styles.primaryDataText}>{currentRun.setDistance} km</Text>
+                  </View>
                 </Col>
               </Row>
+              }
+
               <Row style={styles.paddingMarginZero}>
                 <Col style={styles.paddingMarginZero}>
                   <Text style={styles.secondaryDataText}>Date (start)</Text>
@@ -123,7 +137,8 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning, tabNavigation }) =
                   <Text style={styles.primaryDataText}>{Moment(currentRun.startDate).format('llll')}</Text>
                 </Col>
               </Row>
-              {currentRun.runCoordinates && currentRun.runCoordinates.length && 
+
+              {(currentRun.runCoordinates && currentRun.runCoordinates.length )&& 
               (
                 
                   <SafeAreaView style={styles.contentContainer}>
@@ -146,10 +161,10 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning, tabNavigation }) =
               }
             </Grid>
           </ScrollView>
-          { currentRun.id == 0 && 
+          { (currentRun.id == 0 && !alreadySavedRunning )&&
             <Button
             onPress={saveCurrentRunning}
-            style={!alreadySavedRunning? styles.saveButton : styles.disabledSaveButton}
+            style={styles.saveButton}
             disabled={alreadySavedRunning}
             mode="container"
             >
@@ -226,13 +241,16 @@ const styles = StyleSheet.create({
         fontWeight: "900",
       },
     primaryDataText: {
-      padding: 15,
+      paddingTop: 15,
+      paddingBottom:15,
       color: "black",
       backgroundColor: "#add8e6",
       textAlign: "center",
     },
     secondaryDataText: {
-      padding: 15,
+      paddingTop: 15,
+
+      paddingBottom:15,
       color: "black",
       backgroundColor: "#E0E0E0",
       textAlign: "center",

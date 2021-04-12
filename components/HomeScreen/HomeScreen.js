@@ -2,7 +2,7 @@ import { ScrollView, View, Text, SafeAreaView, StyleSheet } from "react-native";
 import React, { Component, useEffect } from "react";
 import {
   Button,
-  TextInput, Provider as PaperProvider
+  TextInput,
 } from "react-native-paper";
 import { connect, useDispatch } from "react-redux";
 import DropDown from "react-native-paper-dropdown";
@@ -34,7 +34,9 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
     { value: 3, label: "Free run", 
         details: "In this case, you needn't set time or distance, just run as Forrest!" },
   ];
-  
+  useEffect(() => {
+    setInterval=0;
+  }, []);
   const handleStartRun = () => {
     if(distance) {
       setGoal(distance)
@@ -77,7 +79,7 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
             onDismiss={() => {setHours(0);setMinutes(0);setDistance(0);setInterval(0);setShowDropDown(false);}}
             inputProps={{
               right: 
-              showDropDown?<TextInput.Icon name={"menu-down"} />:<TextInput.Icon name={"menu-up"} />,
+              showDropDown?<TextInput.Icon name={"menu-up"} />:<TextInput.Icon name={"menu-down"} />,
             }}/>
         <View style={styles.detailsContainer}>
           <Text style={styles.detailsText}>{runTypeList[runType].details}</Text>
