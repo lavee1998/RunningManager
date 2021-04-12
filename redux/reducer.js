@@ -102,7 +102,7 @@ function reducer(state = initialState, action) {
     case SAVE_CURRENTRUNNING:
 
       let currRunning = {
-        id: 0,
+        id: action.payload.id ? action.payload.id : 0,
         name: action.payload.name ? action.payload.name : "Default name",
         runCoordinates: action.payload.runCoordinates,
         avgSpeed: action.payload.avgSpeed,

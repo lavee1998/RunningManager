@@ -16,18 +16,24 @@ import MapComponent from "../MapComponent";
 
 import DialogInput from "react-native-dialog-input";
 
-const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
+const DetailsScreen = ({ navigation, currentRun, saveRunning, tabNavigation }) => {
   const [isNameDialogVisible, setNameDialogVisible] = React.useState(false);
   const [alreadySavedRunning, SetAlreadySavedRunning] = useState(false);
 
   console.log(currentRun, "curr-run-test")
+  console.log(tabNavigation, "tab-test")
   useEffect(() => {
     Moment.locale('hu');
+    if(currentRun.name !== "Default name") {
+      SetAlreadySavedRunning(true);
+    }
   }, []);
 
   const saveCurrentRunning = () => {
     saveRunning(currentRun);
     SetAlreadySavedRunning(true);
+
+    tabNavigation.navigate("List")
   }
   return (
       <React.Fragment>
