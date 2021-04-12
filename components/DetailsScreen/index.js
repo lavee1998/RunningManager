@@ -125,7 +125,7 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning, tabNavigation }) =
                   <Text style={styles.primaryDataText}>{Moment(currentRun.startDate).format('llll')}</Text>
                 </Col>
               </Row>
-              {currentRun.runCoordinates&& currentRun.runCoordinates.length && 
+              {currentRun.runCoordinates && currentRun.runCoordinates.length && 
               (
                 
                   <SafeAreaView style={styles.contentContainer}>

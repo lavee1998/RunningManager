@@ -433,7 +433,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "SAVE_CURRENTRUNNING",
         payload: {
-          coords: currentRun.coords,
+          runCoordinates: currentRun.runCoordinates,
           avgSpeed: currentRun.avgSpeed,
           topSpeed: currentRun.topSpeed,
           time: currentRun.time,

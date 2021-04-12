@@ -12,7 +12,7 @@ const HomeNavigator = ({navigation: tabNavigation}) => {
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Action" component={ActionScreen} />
       <Stack.Screen name="CountDown" component={CountDownScreen} />
-      <Stack.Screen name="Details" component={DetailsScreen} initialParams={{tabNavigation}} />
+      <Stack.Screen name="Details" component={DetailsScreen} initialParams={tabNavigation} />
     </Stack.Navigator>
   );
 };
