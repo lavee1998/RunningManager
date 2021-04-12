@@ -2,15 +2,14 @@ import { ScrollView, View, Text, SafeAreaView, StyleSheet } from "react-native";
 import React, { Component, useEffect } from "react";
 import { Card, Title, Button, TextInput } from "react-native-paper";
 import { Col, Row, Grid } from "react-native-paper-grid";
-import ListRow from "./ListRow"
-import { List } from 'react-native-paper';
+import ListRow from "./ListRow";
+import { List } from "react-native-paper";
 
 import { connect } from "react-redux";
 
 // This component is the main component. Here the user can configure his/her running parameters
 // navigation -- ??
-const ListScreen = ({ navigation, runnings , removeRun, setCurrentRunning }) => {
-
+const ListScreen = ({ navigation, runnings, removeRun, setCurrentRunning }) => {
   return (
     <ScrollView>
       <View style={styles.pageTitleContainer}>
@@ -18,17 +17,25 @@ const ListScreen = ({ navigation, runnings , removeRun, setCurrentRunning }) => 
       </View>
 
       <SafeAreaView style={styles.containerStyle}>
-        {runnings.length > 0 &&
+        {runnings.length > 0 && (
           <List.Section title="Runnings List">
-          {runnings.length && runnings.map((run, i) => {
-            return(
-             <ListRow key={i} setCurrentRunning={setCurrentRunning} navigation={navigation} run={run} i={i} /> 
-          )})}
+            {runnings.length &&
+              runnings.map((run, i) => {
+                return (
+                  <ListRow
+                    key={i}
+                    setCurrentRunning={setCurrentRunning}
+                    navigation={navigation}
+                    run={run}
+                    i={i}
+                  />
+                );
+              })}
           </List.Section>
-        }
-        {runnings.length == 0 &&
+        )}
+        {runnings.length == 0 && (
           <Text style={styles.noRunningsTextStyle}>No runnings to display</Text>
-        }
+        )}
       </SafeAreaView>
     </ScrollView>
   );
@@ -60,7 +67,7 @@ const styles = StyleSheet.create({
 
   noRunningsTextStyle: {
     fontSize: 20,
-    textAlign:"center"
+    textAlign: "center",
   },
 
   pageTitle: {
@@ -88,7 +95,7 @@ const styles = StyleSheet.create({
     backgroundColor: "gray",
     textAlign: "center",
     fontWeight: "800",
-  }
+  },
 });
 
 const mapStateToProps = (state /*, ownProps*/) => ({
@@ -119,7 +126,9 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "SAVE_CURRENTRUNNING",
         payload: {
-          coords: currentRun.coords,
+          id: currentRun.id,
+          name: currentRun.name,
+          runCoordinates: currentRun.runCoordinates,
           avgSpeed: currentRun.avgSpeed,
           topSpeed: currentRun.topSpeed,
           time: currentRun.time,

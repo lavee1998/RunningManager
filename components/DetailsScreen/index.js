@@ -13,15 +13,12 @@ import Moment from 'moment';
 import { Button } from "react-native-paper";
 import { useState } from "react";
 import MapComponent from "../MapComponent";
-
 import DialogInput from "react-native-dialog-input";
 
-const DetailsScreen = ({ navigation, currentRun, saveRunning, tabNavigation }) => {
+const DetailsScreen = ({ navigation, currentRun, saveRunning, tabNavigation }) => { //a tabNavigation még nem működik de nem létfontosságú
   const [isNameDialogVisible, setNameDialogVisible] = React.useState(false);
   const [alreadySavedRunning, SetAlreadySavedRunning] = useState(false);
 
-  console.log(currentRun, "curr-run-test")
-  console.log(tabNavigation, "tab-test")
   useEffect(() => {
     Moment.locale('hu');
     if(currentRun.name !== "Default name") {
@@ -31,15 +28,16 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning, tabNavigation }) =
 
   const saveCurrentRunning = () => {
     saveRunning(currentRun);
+    console.log(currentRun, "save")
     SetAlreadySavedRunning(true);
 
-    tabNavigation.navigate("List")
+    // tabNavigation.navigate("List")
   }
   return (
       <React.Fragment>
           <ScrollView>
             <View style={styles.pageTitleContainer}>
-              <Text style={styles.pageTitle}>Daily run</Text>
+              <Text style={styles.pageTitle}>{(alreadySavedRunning && currentRun.name != "Default name" )? currentRun.name : "Your run"}</Text>
             </View>
            
             <Grid style={styles.gridStyle}>
