@@ -13,7 +13,7 @@ import { List } from 'react-native-paper';
 import Moment from 'moment';
 import Dialog from "react-native-dialog";
 
-const ListRow = ({ run, i, deleteRunning, updateRunning, navigation }) => {
+const ListRow = ({ run, i, deleteRunning, updateRunning, navigation, setCurrentRunning }) => {
   const [expanded, setExpanded] = React.useState(false);
   const [isDeleteDialogVisible, SetIsDeleteDialogVisible] = React.useState(false);
   const [isNameChangeDialogVisible, SetIsNameChangeDialogVisible] = React.useState(false);
@@ -46,10 +46,21 @@ const ListRow = ({ run, i, deleteRunning, updateRunning, navigation }) => {
     SetIsNameChangeDialogVisible(false);
     updateRunning(run.id, newName);
   }
-  console.log(Moment(run.startDate).format('llll'), "data-test")
+
+  const onDetails = () => {
+    setCurrentRunning(run)
+  }
+
+  React.useEffect(() => {
+    navigation.navigate("Details")
+
+  }, [setCurrentRunning])
+
+  console.log(run, "list-run-test")
+
 
   return (
-    <View>
+    <View key={i}>
       <List.Accordion
         style = { i % 2 == 0 ? styles.gridStyleSecondary : styles.gridStylePrimary}
         title={
@@ -79,7 +90,7 @@ const ListRow = ({ run, i, deleteRunning, updateRunning, navigation }) => {
       >
         <List.Item title="Rename running" onPress={onChangeNameDialog} left={props => <List.Icon {...props} icon="rename-box" />}/>
         <List.Item title="Delete running" onPress={onDeleteDialog} left={props => <List.Icon {...props} icon="delete" />} />
-        <List.Item title="View details" left={props => <List.Icon {...props} icon="equal" />}/>
+        <List.Item title="View details" onPress={onDetails} left={props => <List.Icon {...props} icon="equal" />}/>
       </List.Accordion>
 
       <Dialog.Container visible={isDeleteDialogVisible}>

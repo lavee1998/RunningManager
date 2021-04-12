@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 
 // This component is the main component. Here the user can configure his/her running parameters
 // navigation -- ??
-const ListScreen = ({ navigation, runnings , removeRun, }) => {
+const ListScreen = ({ navigation, runnings , removeRun, setCurrentRunning }) => {
 
   return (
     <ScrollView>
@@ -22,7 +22,7 @@ const ListScreen = ({ navigation, runnings , removeRun, }) => {
           <List.Section title="Runnings List">
           {runnings.length && runnings.map((run, i) => {
             return(
-             <ListRow navigation={navigation} run={run} i={i} /> 
+             <ListRow key={i} setCurrentRunning={setCurrentRunning} navigation={navigation} run={run} i={i} /> 
           )})}
           </List.Section>
         }
@@ -115,6 +115,21 @@ const mapDispatchToProps = (dispatch) => {
       }),
     deleteRun: (runId) => dispatch({ type: "DELETE_RUN", payload: runId }),
     editRunName: (runId) => dispatch({ type: "EDIT_RUN", payload: runId }),
+    setCurrentRunning: (currentRun) =>
+      dispatch({
+        type: "SAVE_CURRENTRUNNING",
+        payload: {
+          coords: currentRun.coords,
+          avgSpeed: currentRun.avgSpeed,
+          topSpeed: currentRun.topSpeed,
+          time: currentRun.time,
+          distance: currentRun.distance,
+          setTime: currentRun.setTime, //settime
+          setDistance: currentRun.setDistance, //setDistance
+          startDate: currentRun.startDate,
+          maxAltitude: currentRun.maxAltitude,
+        },
+      }),
   };
 };
 

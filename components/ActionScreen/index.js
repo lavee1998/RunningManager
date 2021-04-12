@@ -243,7 +243,7 @@ const ActionScreen = ({
     //addToRuns(runCoordinates)
 
     let currentRun = {
-      coords: runCoordinates,
+      runCoordinates: runCoordinates,
       avgSpeed: averageSpeed,
       topSpeed: Math.max.apply(
         Math,
@@ -263,6 +263,7 @@ const ActionScreen = ({
         })
       ),
     };
+    console.log(runCoordinates, "runCoordinates-action-test")
     watchPositionStatus.remove()
     setCurrentRunning(currentRun);
     navigation.navigate("Details");

@@ -20,6 +20,7 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
   const [isNameDialogVisible, setNameDialogVisible] = React.useState(false);
   const [alreadySavedRunning, SetAlreadySavedRunning] = useState(false);
 
+  console.log(currentRun, "curr-run-test")
   useEffect(() => {
     Moment.locale('hu');
   }, []);
@@ -51,7 +52,7 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
                 </Col>
                 <Col style={styles.paddingMarginZero}>
                   <Text style={styles.secondaryDataText}>
-                    {currentRun.time} min
+                    {currentRun.time && currentRun.time}
                   </Text>
                 </Col>
               </Row>
@@ -61,7 +62,7 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
                 </Col>
                 <Col style={styles.paddingMarginZero}>
                   <Text style={styles.primaryDataText}>
-                    {currentRun.maxAltitude.toFixed(3)} m
+                    {currentRun.maxAltitude && currentRun.maxAltitude.toFixed(3)} m
                   </Text>
                 </Col>
               </Row>
@@ -71,7 +72,7 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
                 </Col>
                 <Col style={styles.paddingMarginZero}>
                   <Text style={styles.secondaryDataText}>
-                    {currentRun.topSpeed.toFixed(3)} km/h
+                    {currentRun.topSpeed && currentRun.topSpeed.toFixed(3)} km/h
                   </Text>
                 </Col>
               </Row>
@@ -82,7 +83,7 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
                 </Col>
                 <Col style={styles.paddingMarginZero}>
                   <Text style={styles.primaryDataText}>
-                    {currentRun.avgSpeed.toFixed(3)} km/h
+                    {currentRun.avgSpeed && currentRun.avgSpeed.toFixed(3)} km/h
                   </Text>
                 </Col>
               </Row>
@@ -118,7 +119,7 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
                   <Text style={styles.primaryDataText}>{Moment(currentRun.startDate).format('llll')}</Text>
                 </Col>
               </Row>
-              {currentRun.runCoordinates.length&&
+              {currentRun.runCoordinates&& currentRun.runCoordinates.length && 
               (
                 
                   <SafeAreaView style={styles.contentContainer}>
@@ -290,7 +291,7 @@ const styles = StyleSheet.create({
       dispatch({
         type: "SAVE_RUNNING",
         payload: {
-          corrds: currentRun.coords,
+          runCoordinates: currentRun.coords,
           name: currentRun.name,
           avgSpeed: currentRun.avgSpeed,
           topSpeed: currentRun.topSpeed,
