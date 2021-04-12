@@ -1,11 +1,15 @@
 import { ScrollView, View, Text, SafeAreaView, StyleSheet } from "react-native";
 import React, { Component, useEffect } from "react";
-import { Card, Title, Button, TextInput } from "react-native-paper";
+import {
+  Button,
+  TextInput,
+} from "react-native-paper";
 import { connect, useDispatch } from "react-redux";
 import DropDown from "react-native-paper-dropdown";
 import DialogInput from "react-native-dialog-input";
 import Dialog from "react-native-dialog";
 
+import Icon from "react-native-vector-icons/FontAwesome5";
 // This component is the main component. Here the user can configure his/her running parameters
 // navigation -- ??
 const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
@@ -16,6 +20,10 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
   const [isDistanceDialogVisible, setDistanceDialogVisible] = React.useState(false);
   const [isTimeDialogVisible, setTimeDialogVisible] = React.useState(false);
   const [runType, setRunType] = React.useState(0);
+  const [message, setMessage] = React.useState(null);
+  const [visibleAlert, setVisibleAlert] = React.useState(false);
+
+  const [alertAble, setAlertAble] = React.useState(false);
   // Running types
   const runTypeList = [
     { value: 0, label: "Run based on time and distance", 
@@ -41,6 +49,17 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
     setStartDate(today)
     navigation.navigate("CountDown")
   }
+  const onAlert = () =>{
+    if(alertAble){
+      setVisibleAlert(true);
+      if(runType==0)
+        setMessage("Set both of goalparameter please!");
+      else if(runType==1)
+        setMessage("Set goal time please!");
+      else 
+        setMessage("Set goal distance please!");
+    }
+  }
   return (
     <ScrollView>
       <View style={styles.pageTitleContainer}>
@@ -65,26 +84,29 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
         <View style={styles.detailsContainer}>
           <Text style={styles.detailsText}>{runTypeList[runType].details}</Text>
         </View>
+        
 
+
+        {(runType==0||runType==2)&&
         <Button
           icon={distance == 0 ? "close" : "check"}
           style={styles.setButton}
           onPress={() => setDistanceDialogVisible(true)}
-          disabled={runType==0||runType==2?false:true}
         >
           <Text style={styles.buttonText}>Set distance</Text>
         </Button>
-
+        }
+        {(runType==0||runType==1)&&
         <Button
           icon={hours == 0 && minutes == 0 ? "close" : "check"}
           style={styles.setButton}
           onPress={() => setTimeDialogVisible(true)}
 
-          disabled={runType==0||runType==1?false:true}
+          
         >
           <Text style={styles.buttonText}>Set time</Text>
         </Button>
-
+        }
         {[0, 2].includes(runType) && (
           <DialogInput
             isDialogVisible={isDistanceDialogVisible}
@@ -131,13 +153,22 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
         )}
 
         <Button
-          onPress={runType==0&&(distance==0||hours==0&&minutes==0)||runType==1&&hours==0&&minutes==0||runType==2&&distance==0?handleStartRun:handleStartRun}
+          onPress={runType==0&&(distance==0||hours==0&&minutes==0)||runType==1&&hours==0&&minutes==0||runType==2&&distance==0?()=>{setAlertAble(true);onAlert();}:handleStartRun}
           style={styles.startButton}
           mode="container"
         >
-          {" "}
           <Text style={styles.startButtonText}> Start run!</Text>
         </Button>
+            <Dialog.Container
+              visible={visibleAlert}
+            >
+              <Dialog.Title>
+                Alert!
+              </Dialog.Title>
+
+              <Text>{message}</Text>
+              <Dialog.Button label="ok" onPress={() => setVisibleAlert(false)}/>
+            </Dialog.Container>
       </SafeAreaView>
     </ScrollView>
   );
@@ -151,6 +182,8 @@ const styles = StyleSheet.create({
   },
   dropdownStyle: {
      
+    color: "black",
+    fontWeight: "400",
   },
   pageTitleContainer: {
     flex: 0.8,
