@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
       dispatch({
         type: "SAVE_RUNNING",
         payload: {
-          runCoordinates: currentRun.coords,
+          runCoordinates: currentRun.runCoordinates,
           name: currentRun.name,
           avgSpeed: currentRun.avgSpeed,
           topSpeed: currentRun.topSpeed,

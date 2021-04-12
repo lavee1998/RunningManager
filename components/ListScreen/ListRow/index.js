@@ -49,12 +49,9 @@ const ListRow = ({ run, i, deleteRunning, updateRunning, navigation, setCurrentR
 
   const onDetails = () => {
     setCurrentRunning(run)
+    navigation.navigate("Details")
   }
 
-  React.useEffect(() => {
-    navigation.navigate("Details")
-
-  }, [setCurrentRunning])
 
   console.log(run, "list-run-test")
 
