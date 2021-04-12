@@ -14,11 +14,11 @@ import { Button } from "react-native-paper";
 import { useState } from "react";
 import MapComponent from "../MapComponent";
 import DialogInput from "react-native-dialog-input";
-
+import Dialog from "react-native-dialog";
 const DetailsScreen = ({ navigation, currentRun, saveRunning, tabNavigation }) => { //a tabNavigation még nem működik de nem létfontosságú
   const [isNameDialogVisible, setNameDialogVisible] = React.useState(false);
   const [alreadySavedRunning, SetAlreadySavedRunning] = useState(false);
-
+  const [visibleAlert, setVisibleAlert] = React.useState(false);
   useEffect(() => {
     Moment.locale('hu');
     if(currentRun.name !== "Default name") {
@@ -29,7 +29,7 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning, tabNavigation }) =
     saveRunning(currentRun);
     console.log(currentRun, "save")
     SetAlreadySavedRunning(true);
-
+    setVisibleAlert(true);
     // tabNavigation.navigate("List")
   }
   return (
@@ -161,6 +161,14 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning, tabNavigation }) =
               }
             </Grid>
           </ScrollView>
+          <Dialog.Container
+            visible={visibleAlert}
+          >
+            <Dialog.Title>
+              Successfully saved!
+            </Dialog.Title>
+            <Dialog.Button label="ok" onPress={() => setVisibleAlert(false)}/>
+          </Dialog.Container>
           { (currentRun.id == 0 && !alreadySavedRunning )&&
             <Button
             onPress={saveCurrentRunning}
