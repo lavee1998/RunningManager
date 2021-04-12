@@ -13,7 +13,7 @@ import { List } from 'react-native-paper';
 import Moment from 'moment';
 import Dialog from "react-native-dialog";
 
-const ListRow = ({ run, i, deleteRunning, updateRunning }) => {
+const ListRow = ({ run, i, deleteRunning, updateRunning, navigation }) => {
   const [expanded, setExpanded] = React.useState(false);
   const [isDeleteDialogVisible, SetIsDeleteDialogVisible] = React.useState(false);
   const [isNameChangeDialogVisible, SetIsNameChangeDialogVisible] = React.useState(false);
@@ -46,15 +46,15 @@ const ListRow = ({ run, i, deleteRunning, updateRunning }) => {
     SetIsNameChangeDialogVisible(false);
     updateRunning(run.id, newName);
   }
+  console.log(Moment(run.startDate).format('llll'), "data-test")
 
   return (
     <View>
       <List.Accordion
-        style = {styles.gridStyle}
+        style = { i % 2 == 0 ? styles.gridStyleSecondary : styles.gridStylePrimary}
         title={
-          <Text>
-            {" "}
-            <Col>
+          <Text >
+            <Col inline nopad>
               <Text
                 style={
                   i % 2 == 0 ? styles.primaryDataText : styles.secondaryDataText
@@ -63,7 +63,7 @@ const ListRow = ({ run, i, deleteRunning, updateRunning }) => {
                 {run.name}
               </Text>
             </Col>
-            <Col>
+            <Col inline nopad>
               <Text
                 style={
                   i % 2 == 0 ? styles.primaryDataText : styles.secondaryDataText
@@ -106,10 +106,22 @@ const ListRow = ({ run, i, deleteRunning, updateRunning }) => {
 };
 
 const styles = StyleSheet.create({
-  gridStyle: {
+  gridStylePrimary: {
     margin: 0,
     padding: 0,
     justifyContent: "center",
+    backgroundColor: "lightgray",
+    textAlign: "center",
+    color: "black",
+    width: "100%"
+  },
+  gridStyleSecondary: {
+    margin: 0,
+    padding: 0,
+    justifyContent: "center",
+    backgroundColor: "gray",
+    color: "white",
+    textAlign: "center",
     width: "100%"
   },
 
@@ -119,18 +131,18 @@ const styles = StyleSheet.create({
   },
 
   primaryDataText: {
-    padding: 30,
-    color: "black",
-    backgroundColor: "lightgray",
+    padding: 20,
+     color: "white",
+    // backgroundColor: "lightgray",
     textAlign: "center",
   },
 
   secondaryDataText: {
-    padding: 30,
-    color: "white",
-    backgroundColor: "gray",
+    padding: 20,
+     color: "black",
+    // backgroundColor: "gray",
     textAlign: "center",
-    fontWeight: "800",
+    // fontWeight: "800",
   },
 });
 

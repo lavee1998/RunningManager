@@ -22,7 +22,7 @@ const ListScreen = ({ navigation, runnings , removeRun, }) => {
           <List.Section title="Runnings List">
           {runnings.length && runnings.map((run, i) => {
             return(
-             <ListRow run={run} i={i} /> 
+             <ListRow navigation={navigation} run={run} i={i} /> 
           )})}
           </List.Section>
         }
