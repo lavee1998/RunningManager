@@ -2,7 +2,7 @@ import { ScrollView, View, Text, SafeAreaView, StyleSheet } from "react-native";
 import React, { Component, useEffect } from "react";
 import {
   Button,
-  TextInput,
+  TextInput, Provider as PaperProvider
 } from "react-native-paper";
 import { connect, useDispatch } from "react-redux";
 import DropDown from "react-native-paper-dropdown";
@@ -28,13 +28,13 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
     { value: 0, label: "Run based on time and distance", 
         details: "In this option, an average speed will be calculated that you must maintain in order to reach your goal!" },
     { value: 1, label: "Run based on time", 
-        details: "In this option, you can set goal time, it will be counted, and the application will warn you, that you reached 90% of goaltime." },
+        details: "In this option, you can set goal time, it will be counted, and the application will warn you, that you reached 90% of goal time." },
     { value: 2, label: "Run based on distance", 
-        details: "In this option, you can set goal distance, the application will give information to you, that you reached 90% of goaldistance." },
+        details: "In this option, you can set goal distance, the application will give information to you, that you reached 90% of goal distance." },
     { value: 3, label: "Free run", 
         details: "In this case, you needn't set time or distance, just run as Forrest!" },
   ];
-
+  
   const handleStartRun = () => {
     if(distance) {
       setGoal(distance)
@@ -64,28 +64,24 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
       <View style={styles.pageTitleContainer}>
         <Text style={styles.pageTitle}>Get Started!</Text>
       </View>
-
+      
       <SafeAreaView style={styles.containerStyle}>
-        <DropDown style={styles.dropdownStyle}
-          label={"Type of run"}
-          mode={"outlined"}
-          value={runType}
-          setValue={setRunType}
-          list={runTypeList}
-          visible={showDropDown}
-          showDropDown={() => setShowDropDown(true)}
-          onDismiss={() => {setHours(0);setMinutes(0);setDistance(0);setShowDropDown(false);}}
-          inputProps={{
-            right: <TextInput.Icon name={"menu-down"} />,
-          }}
-        />
-
+          <DropDown 
+            label={"Type of run"}
+            mode={"outlined"}
+            value={runType}
+            setValue={setRunType}
+            list={runTypeList}
+            visible={showDropDown}
+            showDropDown={() => setShowDropDown(true)}
+            onDismiss={() => {setHours(0);setMinutes(0);setDistance(0);setInterval(0);setShowDropDown(false);}}
+            inputProps={{
+              right: 
+              showDropDown?<TextInput.Icon name={"menu-down"} />:<TextInput.Icon name={"menu-up"} />,
+            }}/>
         <View style={styles.detailsContainer}>
           <Text style={styles.detailsText}>{runTypeList[runType].details}</Text>
         </View>
-        
-
-
         {(runType==0||runType==2)&&
         <Button
           icon={distance == 0 ? "close" : "check"}
@@ -100,8 +96,6 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
           icon={hours == 0 && minutes == 0 ? "close" : "check"}
           style={styles.setButton}
           onPress={() => setTimeDialogVisible(true)}
-
-          
         >
           <Text style={styles.buttonText}>Set time</Text>
         </Button>
@@ -158,16 +152,16 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
         >
           <Text style={styles.startButtonText}> Start run!</Text>
         </Button>
-            <Dialog.Container
-              visible={visibleAlert}
-            >
-              <Dialog.Title>
-                Alert!
-              </Dialog.Title>
+        <Dialog.Container
+          visible={visibleAlert}
+        >
+          <Dialog.Title>
+            Alert!
+          </Dialog.Title>
 
-              <Text>{message}</Text>
-              <Dialog.Button label="ok" onPress={() => setVisibleAlert(false)}/>
-            </Dialog.Container>
+          <Text>{message}</Text>
+          <Dialog.Button label="ok" onPress={() => setVisibleAlert(false)}/>
+        </Dialog.Container>
       </SafeAreaView>
     </ScrollView>
   );
