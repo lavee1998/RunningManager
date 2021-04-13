@@ -21,6 +21,7 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
   const [runType, setRunType] = React.useState(0);
   const [message, setMessage] = React.useState(null);
   const [visibleAlert, setVisibleAlert] = React.useState(false);
+  const [notValidNumber, setNotValidNumber] = React.useState(false);
 
   const [alertAble, setAlertAble] = React.useState(false);
   // Running types
@@ -49,6 +50,28 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
     let today = new Date();
     setStartDate(today)
     navigation.navigate("CountDown")
+  }
+  const hourValidator = (hour)=>
+  {
+    if(hour){
+      setNotValidNumber(false);
+      setHours(hour);
+    }
+    else{
+     setNotValidNumber(true);
+     setHours(0);
+    }
+  }
+  const minuteValidator = (minute)=>
+  {
+    if(minute){
+      setNotValidNumber(false);
+      setMinutes(minute);
+    }
+    else{
+     setNotValidNumber(true);
+     setMinutes(0);
+    }
   }
   const onAlert = () =>{
     if(alertAble){
@@ -122,17 +145,22 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
         {[0, 1].includes(runType) && (
           <Dialog.Container visible={isTimeDialogVisible}>
             <Dialog.Title>Time</Dialog.Title>
+            {notValidNumber&&
+            <Dialog.Description>
+              Please provide valid number!
+            </Dialog.Description>
+            }
             <Dialog.Input
               label="Hours"
               placeholder="0"
               defaultValue={hours}
-              onChangeText={(hour) => setHours(hour)}
+              onChangeText={(hour) => {!isNaN(hour)&&Math.floor(hour)==hour?hourValidator(hour):hourValidator(false)}}
             ></Dialog.Input>
             <Dialog.Input
               label="Minutes"
               placeholder="0"
               defaultValue={minutes}
-              onChangeText={(minute) => setMinutes(minute)}
+              onChangeText={(minute) => {!isNaN(minute)&&Math.floor(minute)==minute?minuteValidator(minute):minuteValidator(false)}}
             ></Dialog.Input>
             <Dialog.Button
               label="Cancel"
@@ -142,7 +170,7 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
             />
             <Dialog.Button
               label="Submit"
-              onPress={() => setTimeDialogVisible(false)}
+              onPress={() => {(Math.floor(minutes)==minutes&&minutes>=0)||(Math.floor(hours)==hours&&hours>=0)?setTimeDialogVisible(false):null}}
             />
           </Dialog.Container>
         )}
