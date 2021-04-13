@@ -175,7 +175,7 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
         )}
 
         <Button
-          onPress={()=>{runType==0&&(distance==0||hours==0&&minutes==0)||runType==1&&hours==0&&minutes==0||runType==2&&distance==0?onAlert(true):handleStartRun;}}
+          onPress={()=>{runType==0&&(distance==0||hours==0&&minutes==0)||runType==1&&hours==0&&minutes==0||runType==2&&distance==0?onAlert(true):handleStartRun();}}
           style={styles.startButton}
           mode="container"
         >
