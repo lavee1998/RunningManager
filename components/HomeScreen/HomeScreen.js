@@ -22,8 +22,6 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
   const [message, setMessage] = React.useState(null);
   const [visibleAlert, setVisibleAlert] = React.useState(false);
   const [notValidNumber, setNotValidNumber] = React.useState(false);
-
-  const [alertAble, setAlertAble] = React.useState(false);
   // Running types
   const runTypeList = [
     { value: 0, label: "Run based on time and distance", 
@@ -73,7 +71,7 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
      setMinutes(0);
     }
   }
-  const onAlert = () =>{
+  const onAlert = (alertAble) =>{
     if(alertAble){
       setVisibleAlert(true);
       if(runType==0)
@@ -84,6 +82,7 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
         setMessage("Set goal distance please!");
     }
   }
+
   return (
     <ScrollView>
       <View style={styles.pageTitleContainer}>
@@ -176,7 +175,7 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
         )}
 
         <Button
-          onPress={runType==0&&(distance==0||hours==0&&minutes==0)||runType==1&&hours==0&&minutes==0||runType==2&&distance==0?()=>{setAlertAble(true);onAlert();}:handleStartRun}
+          onPress={()=>{runType==0&&(distance==0||hours==0&&minutes==0)||runType==1&&hours==0&&minutes==0||runType==2&&distance==0?onAlert(true):handleStartRun;}}
           style={styles.startButton}
           mode="container"
         >
