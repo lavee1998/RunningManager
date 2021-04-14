@@ -41,6 +41,7 @@ const ActionScreen = ({
   startDate,
   setCurrentRunning,
 }) => {
+
   const [stopwatchStart, setStopwatchStart] = React.useState(false);
   //const [stopwatchReset, setStopwatchReset] = React.useState(false);
   const [averageSpeed, setAverageSpeed] = React.useState(0);
@@ -59,7 +60,6 @@ const ActionScreen = ({
   const [reachedDistanceInformation, setReachedDistanceInformation] = useState(true);
   const [almostReachedTimeInformation, setAlmostReachedTimeInformation] = useState(true);
   const [reachedTimeInformation, setReachedTimeInformation] = useState(true);
-  const startTime=Date.now();
   // Vibrating message to the user
   const VIBRATINGMS = 500;
 
@@ -162,7 +162,7 @@ const ActionScreen = ({
     }
   }
   const toFixing=(num,dec)=>{
-    decimal=Math.pow(10,dec);
+    const decimal=Math.pow(10,dec);
     return Math.floor(num*decimal)/decimal;
   }
 
@@ -218,7 +218,7 @@ const ActionScreen = ({
               currD=parseFloat(currD)+getDistance( arr[arr.length - i],arr[arr.length - i-1]);
             }
             
-            arr[arr.length-1].speed= calculateAvg(currD ,  arr[arr.length - 1].timestamp-arr[arr.length - 3].timestamp); //interpolated curr speed
+            arr[arr.length-1].speed= calculateAvg(currD ,  arr[arr.length - 1].timestamp-arr[arr.length - 4].timestamp); //interpolated curr speed
             setCurrentSpeed(arr[arr.length-1].speed);
             tooSlow(arr[arr.length-1].speed<slow);
           } else  setCurrentSpeed(0);
