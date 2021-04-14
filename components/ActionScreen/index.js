@@ -32,7 +32,6 @@ import { useState, useEffect } from "react";
 import MapComponent from "../MapComponent";
 import haversine from "haversine";
 import { connect } from "react-redux";
-
 // This component is responsible for the main running process
 // navigation -- ??
 const ActionScreen = ({
@@ -46,7 +45,6 @@ const ActionScreen = ({
   //const [stopwatchReset, setStopwatchReset] = React.useState(false);
   const [averageSpeed, setAverageSpeed] = React.useState(0);
   const [currentSpeed, setCurrentSpeed] = React.useState(0);
-  const [currentTime, setCurrentTime] = React.useState();
   const [distance, setDistance] = React.useState(0);
   const initialLayout = { width: Dimensions.get("window").width };
   const [text, setText] = React.useState("Waiting...");
@@ -61,12 +59,10 @@ const ActionScreen = ({
   const [reachedDistanceInformation, setReachedDistanceInformation] = useState(true);
   const [almostReachedTimeInformation, setAlmostReachedTimeInformation] = useState(true);
   const [reachedTimeInformation, setReachedTimeInformation] = useState(true);
-
+  const startTime=Date.now();
   // Vibrating message to the user
   const VIBRATINGMS = 500;
 
-  let timer;
-  let almostTimer;
   const [routes] = React.useState([
     { key: "first", title: "Speedometer" },
     { key: "second", title: "Map" },
@@ -77,13 +73,18 @@ const ActionScreen = ({
   const Speedometer = () => (
     <RNSpeedometer maxValue={currentSpeed > 7 ? 40 : 7} value={currentSpeed} />
   );
-
+  
   const renderScene = SceneMap({
     first: Speedometer,
     second: MapTab,
   });
-
+  let timer;
+  let almostTimer;
   // ----------------------- METHODS ----------------------------
+  
+  const LOCATION_SETTINGS = {accuracy:6,
+    distanceInterval:0, timeInterval:4000
+  }
   useEffect(() => {
     toggleStopwatch();
     (async () => {
@@ -102,8 +103,8 @@ const ActionScreen = ({
       setWatchPositionStatus(watchPositionStatus)
 
       if (interval) {
-        almostTimer = setTimeout(almostPassedTime, 0.8 * interval);
-        timer = setTimeout(passedTime, interval);
+        this.almostTimer = setTimeout(almostPassedTime, 0.8 * interval);
+        this.timer = setTimeout(passedTime, interval);
       } //clearTimeout(timer)
     })();
   }, []);
@@ -144,77 +145,103 @@ const ActionScreen = ({
     }
   };
 
-  const calculateAvgSpeed = () => {
-    if (runCoordinates.length === 0) return;
-    let sumSpeed = 0;
-    runCoordinates.forEach((corr) => {
-      if (corr.speed > 0) {
-        sumSpeed = sumSpeed + corr.speed;
-      }
-    });
-    setAverageSpeed(sumSpeed / runCoordinates.length);
-  };
-
-  let letDistance = 0;
-  let arr = [];
-  let letLastTimeStamp;
-  let letCurrentSpeed;
-  let currDistance;
-
-  const LOCATION_SETTINGS = {
+  const tooSlow=(slow)=>{
+    if(slow){
+      console.log("lassú");
+    }
+    else{
+      console.log("Nem lassú");
+    }
+  }
+  const isStopped=(stopped)=>{
+    if(stopped){
+      console.log("állsz");
+    }
+    else{
+      console.log("mész");
+    }
+  }
+  const toFixing=(num,dec)=>{
+    decimal=Math.pow(10,dec);
+    return Math.floor(num*decimal)/decimal;
   }
 
+  let arr = [];
+  let warned = 0;
+  let letDistance=0;
+
+  const calculateAvg=(dist,timeInt)=>{
+    return toFixing((parseFloat(dist)/
+    (Math.abs(parseFloat(timeInt )) /3600000)),1);
+  }
+
+  const getDistance=(startLoc,endLoc)=>{
+    let start = {
+      latitude: startLoc.latitude,
+      longitude: startLoc.longitude,
+    };
+    let end = {
+      latitude: endLoc.latitude,
+      longitude: endLoc.longitude,
+    };
+   
+    const dist=haversine(start, end, { unit: "kilometer" });
+        return dist;
+    
+  }
   const updatePosition = (currLocation) => {
-    if (currLocation.coords.speed >= 0) {
-      if (runCoordinates.length !== 0) {
-        const lastLocation = runCoordinates[runCoordinates.length - 1];
+      if (arr.length !== 0) {
+        const lastTimeStamp = arr[arr.length - 1].timestamp; 
+        const lastLocation = arr[arr.length - 1];
+        
+        const currDistance= getDistance(lastLocation,currLocation.coords);
 
-        let start = {
-          latitude: lastLocation.latitude,
-          longitude: lastLocation.longitude,
-        };
+        
+        currLocation.coords.speed = calculateAvg(currDistance,currLocation.timestamp-lastTimeStamp);
+        setAverageSpeed(calculateAvg(letDistance,currLocation.timestamp-arr[0].timestamp));
+        if(currDistance>0.005){
+          letDistance =toFixing((parseFloat(letDistance) + currDistance),3) ;
+          setDistance(letDistance);
+          isStopped(!(currDistance>0.005));
+        }
+        if(currLocation.coords.speed<40){
+          
+       
+          currLocation.coords.timestamp= currLocation.timestamp;
+          arr = [...arr, currLocation.coords];
 
-        let end = {
-          latitude: currLocation.coords.latitude,
-          longitude: currLocation.coords.longitude,
-        };
+          const slow=5;
+          if(arr.length>3){ //moving avg
+            let currD=0;
+            for(let i=1;i<4;i++)
+            {
+              currD=parseFloat(currD)+getDistance( arr[arr.length - i],arr[arr.length - i-1]);
+            }
+            
+            arr[arr.length-1].speed= calculateAvg(currD ,  arr[arr.length - 1].timestamp-arr[arr.length - 3].timestamp); //interpolated curr speed
+            setCurrentSpeed(arr[arr.length-1].speed);
+            tooSlow(arr[arr.length-1].speed<slow);
+          } else  setCurrentSpeed(0);
+          
+          setCoordinates(arr);
+        } 
 
-        currDistance = haversine(start, end, { unit: "kilometer" });
-        letDistance =
-          Math.round(
-            (parseFloat(distance) + Math.round(currDistance * 1000) / 1000) *
-              1000
-          ) / 1000;
-        console.log(letDistance, "distance-test");
-        setDistance(letDistance);
-
-        // we should inform the user only once
-        if (goal * 0.95 <= letDistance) {
+        if (goal * 0.95 <= letDistance&& warned===0) {
+          warned=warned+1;
           almostReachedDistance();
         }
-
-        if (goal <= letDistance) {
+        if (goal <= letDistance&&warned===1) {
+          warned=warned+1;
           reachedDistance();
         }
+      }else{
+        currLocation.coords.speed=0 ;
+        currLocation.coords.timestamp= currLocation.timestamp;
+        arr = [...arr, currLocation.coords];
+        setCoordinates(arr);
       }
-
-      //Should we use this line, or not?
-      if (letLastTimeStamp && letDistance) {
-        letCurrentSpeed =
-          currDistance /
-          ((letLastTimeStamp - currLocation.timestamp) * 1000) /
-          3600;
-      }
-
-      letLastTimeStamp = currLocation.timestamp;
-
-      //console.log(arr.length);
-      arr = [...arr, currLocation.coords];
-
-      setCoordinates(arr);
-      setCurrentSpeed(currLocation.coords.speed);
-      calculateAvgSpeed();
-    }
+      
+      
   };
 
   //const onChange = (value) => setAverageSpeed(parseInt(value));
@@ -232,16 +259,24 @@ const ActionScreen = ({
     setReachedTimeInformation(false);
   };
 
-  const getFormattedTime = (time) => {
-    if (!stopwatchStart) {
-      setCurrentTime(time);
-    }
-  };
-
+  const getHHMMSS=(ms) => {
+    const seconds = Math.floor((ms / 1000) % 60);
+    const minutes = Math.floor((ms / 1000 / 60) % 60);
+    const hours = Math.floor((ms  / 1000 / 3600 ) % 24)
+  
+    const humanized = [
+      hours<10?"0"+hours.toString():hours.toString(),
+      minutes<10?"0"+minutes.toString():minutes.toString(),
+      seconds<10?"0"+seconds.toString():seconds.toString(),
+    ].join(':');
+  
+    return humanized;
+  }
   const stopRunning = () => {
     toggleStopwatch();
     //addToRuns(runCoordinates)
-
+    clearTimeout(this.timer);
+    clearTimeout(this.almostTimer);
     let currentRun = {
       runCoordinates: runCoordinates,
       avgSpeed: averageSpeed,
@@ -251,7 +286,7 @@ const ActionScreen = ({
           return coord.speed;
         })
       ),
-      time: currentTime,
+      time: getHHMMSS(Date.now()-runCoordinates[0].timestamp),
       distance: distance,
       setTime: interval, //settime
       setDistance: goal, //setDistance
@@ -288,7 +323,6 @@ const ActionScreen = ({
                 msecs
                 start={stopwatchStart}
                 options={options}
-                getTime={(time) => getFormattedTime(time)}
               />
             </Row>
             <Row style={styles.paddingMarginZero}>
@@ -296,7 +330,15 @@ const ActionScreen = ({
                 <Text style={styles.primaryDataText}>Average Speed</Text>
               </Col>
               <Col style={styles.paddingMarginZero}>
-                <Text style={styles.secondaryDataText}>{averageSpeed.toFixed(3)} m/s</Text>
+                <Text style={styles.secondaryDataText}>{averageSpeed.toFixed(1)} km/h</Text>
+              </Col>
+            </Row>
+            <Row style={styles.paddingMarginZero}>
+              <Col style={styles.paddingMarginZero}>
+                <Text style={styles.primaryDataText}>Current Speed</Text>
+              </Col>
+              <Col style={styles.paddingMarginZero}>
+                <Text style={styles.secondaryDataText}>{currentSpeed.toFixed(1)} km/h</Text>
               </Col>
             </Row>
             <Row style={styles.paddingMarginZero}>
