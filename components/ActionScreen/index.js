@@ -211,14 +211,14 @@ const ActionScreen = ({
           arr = [...arr, currLocation.coords];
 
           const slow=5;
-          if(arr.length>3){ //moving avg
+          if(arr.length>4){ //moving avg
             let currD=0;
-            for(let i=1;i<4;i++)
+            for(let i=1;i<3;i++)
             {
               currD=parseFloat(currD)+getDistance( arr[arr.length - i],arr[arr.length - i-1]);
             }
             
-            arr[arr.length-1].speed= calculateAvg(currD ,  arr[arr.length - 1].timestamp-arr[arr.length - 4].timestamp); //interpolated curr speed
+            arr[arr.length-1].speed= calculateAvg(currD ,  arr[arr.length - 1].timestamp-arr[arr.length - 3].timestamp); //interpolated curr speed
             setCurrentSpeed(arr[arr.length-1].speed);
             tooSlow(arr[arr.length-1].speed<slow);
           } else  setCurrentSpeed(0);
