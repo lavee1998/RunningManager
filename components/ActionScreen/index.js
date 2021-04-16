@@ -161,7 +161,7 @@ const ActionScreen = ({
   let arr = [];
   let warned = 0;
   let letDistance=0;
-
+  let first=false;
   const calculateAvg=(dist,timeInt)=>{
     return toFixing((parseFloat(dist)/
     (Math.abs(parseFloat(timeInt )) /3600000)),1);
@@ -182,7 +182,7 @@ const ActionScreen = ({
     
   }
   const updatePosition = (currLocation) => {
-      if (arr.length !== 0) {
+      if (arr.length > 1) {
         const lastTimeStamp = arr[arr.length - 1].timestamp; 
         const lastLocation = arr[arr.length - 1];
         
@@ -228,10 +228,15 @@ const ActionScreen = ({
           reachedDistance();
         }
       }else{
+        if(first){
+
         currLocation.coords.speed=0 ;
         currLocation.coords.timestamp= currLocation.timestamp;
         arr = [...arr, currLocation.coords];
         setCoordinates(arr);
+
+        }
+        first=true;
       }
       
       
