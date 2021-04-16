@@ -4,7 +4,8 @@ import {
     View,
     Text,
     SafeAreaView,
-    StyleSheet
+    StyleSheet,
+    Dimensions
   } from "react-native";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
@@ -12,19 +13,38 @@ import { Col, Row, Grid } from "react-native-paper-grid";
 import Moment from 'moment';
 import { Button } from "react-native-paper";
 import { useState } from "react";
+import { TabView, SceneMap } from "react-native-tab-view";
 import MapComponent from "../MapComponent";
 import DialogInput from "react-native-dialog-input";
 import Dialog from "react-native-dialog";
+
 const DetailsScreen = ({ navigation, currentRun, saveRunning, tabNavigation }) => { //a tabNavigation még nem működik de nem létfontosságú
   const [isNameDialogVisible, setNameDialogVisible] = React.useState(false);
   const [alreadySavedRunning, SetAlreadySavedRunning] = useState(false);
   const [visibleAlert, setVisibleAlert] = React.useState(false);
+  const [index, setIndex] = React.useState(0);
+  const initialLayout = { width: Dimensions.get("window").width };
+
+  const MapTab = () => <MapComponent running={currentRun.runCoordinates}  detailsView={true} />;
+  const ChartTab = () => <View><Text>Semmi</Text></View>
+
+  const renderScene = SceneMap({
+    first: MapTab,
+    second: ChartTab,
+  });
+
+  const [routes] = React.useState([
+    { key: "first", title: "Map" },
+    { key: "second", title: "Chart" },
+  ]);
+  
   useEffect(() => {
     Moment.locale('hu');
     if(currentRun.name !== "Default name") {
       SetAlreadySavedRunning(true);
     }
   }, []);
+
   const saveCurrentRunning = () => {
     saveRunning(currentRun);
     console.log(currentRun, "save")
@@ -138,6 +158,15 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning, tabNavigation }) =
                 </Col>
               </Row>
 
+              <Row style={styles.paddingMarginZero}>
+                <TabView
+                  navigationState={{ index, routes }}
+                  renderScene={renderScene}
+                  onIndexChange={setIndex}
+                  initialLayout={initialLayout}
+                />
+              </Row>
+
               {(currentRun.runCoordinates && currentRun.runCoordinates.length )&& 
               (
                 
@@ -155,7 +184,6 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning, tabNavigation }) =
                         setNameDialogVisible(false);
                       }}
                     ></DialogInput>
-                    <MapComponent running={currentRun.runCoordinates}  detailsView={true}/>
                   </SafeAreaView>
               )
               }
@@ -169,7 +197,7 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning, tabNavigation }) =
             </Dialog.Title>
             <Dialog.Button label="ok" onPress={() => setVisibleAlert(false)}/>
           </Dialog.Container>
-          { (currentRun.id == 0 && !alreadySavedRunning )&&
+          { currentRun.id == 0 &&
             <Button
             onPress={saveCurrentRunning}
             style={styles.saveButton}

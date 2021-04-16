@@ -24,7 +24,6 @@ import {
 } from "react-native-paper";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import RNSpeedometer from "react-native-speedometer";
-import { TabView, SceneMap } from "react-native-tab-view";
 // import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { Col, Row, Grid } from "react-native-paper-grid";
 import * as Location from "expo-location";
@@ -47,9 +46,7 @@ const ActionScreen = ({
   const [averageSpeed, setAverageSpeed] = React.useState(0);
   const [currentSpeed, setCurrentSpeed] = React.useState(0);
   const [distance, setDistance] = React.useState(0);
-  const initialLayout = { width: Dimensions.get("window").width };
   const [text, setText] = React.useState("Waiting...");
-  const [index, setIndex] = React.useState(0);
   const [runCoordinates, setCoordinates] = React.useState([]);
   const [message, setMessage] = React.useState(null);
   const [visibleAlert, setVisibleAlert] = React.useState(false);
@@ -63,21 +60,7 @@ const ActionScreen = ({
   // Vibrating message to the user
   const VIBRATINGMS = 500;
   const  [tooSlow,setTooSlow]=React.useState(false);
-  const [routes] = React.useState([
-    { key: "first", title: "Speedometer" },
-    { key: "second", title: "Map" },
-  ]);
 
-  const MapTab = () => <MapComponent runCoordinates={runCoordinates} />;
-
-  const Speedometer = () => (
-    <RNSpeedometer maxValue={currentSpeed > 7 ? 40 : 7} value={currentSpeed} />
-  );
-  
-  const renderScene = SceneMap({
-    first: Speedometer,
-    second: MapTab,
-  });
   let timer;
   let almostTimer;
   // ----------------------- METHODS ----------------------------
@@ -356,15 +339,6 @@ const ActionScreen = ({
               
             </Row>
             <MapComponent running={runCoordinates} detailsView={false}/>
-
-            {/* <Row style={styles.paddingMarginZero}>
-              <TabView
-                navigationState={{ index, routes }}
-                renderScene={renderScene}
-                onIndexChange={setIndex}
-                initialLayout={initialLayout}
-              />
-            </Row> */}
           </Grid>
           <Portal>
             <Dialog
