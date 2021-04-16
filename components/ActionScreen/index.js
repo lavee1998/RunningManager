@@ -144,7 +144,7 @@ const ActionScreen = ({
   let arr = [];
   let warned = 0;
   let letDistance=0;
-  let first=false;
+  let first=3;
   const calculateAvg=(dist,timeInt)=>{
     return toFixing((parseFloat(dist)/
     (Math.abs(parseFloat(timeInt )) /3600000)),1);
@@ -174,10 +174,10 @@ const ActionScreen = ({
         
         currLocation.coords.speed = calculateAvg(currDistance,currLocation.timestamp-lastTimeStamp);
         setAverageSpeed(calculateAvg(letDistance,currLocation.timestamp-arr[0].timestamp));
-        if(currDistance>0.005&&currLocation.coords.speed<40){
+        if(currDistance>0.010&&currLocation.coords.speed<40){
           letDistance =toFixing((parseFloat(letDistance) + currDistance),3) ;
           setDistance(letDistance);
-          isStopped(!(currDistance>0.005));
+          isStopped(!(currDistance>0.010));
         }
         if(currLocation.coords.speed<40){
           
@@ -211,7 +211,7 @@ const ActionScreen = ({
           reachedDistance();
         }
       }else{
-        if(first){
+        if(first===0){
 
         currLocation.coords.speed=0 ;
         currLocation.coords.timestamp= currLocation.timestamp;
@@ -219,7 +219,7 @@ const ActionScreen = ({
         setCoordinates(arr);
 
         }
-        first=true;
+        first=first -1;
       }
       
       
@@ -253,6 +253,7 @@ const ActionScreen = ({
   
     return humanized;
   }
+  
   const stopRunning = () => {
     toggleStopwatch();
     //addToRuns(runCoordinates)
@@ -260,6 +261,10 @@ const ActionScreen = ({
     clearTimeout(this.timer);
     clearTimeout(this.almostTimer);
     }
+    let arr2Saved=[];
+    for(let i=0;i<arr.length;i +10)
+      arr2Saved=[...arr2Saved,arr[i]];
+    setCoordinates(arr2Saved);
     let currentRun = {
       runCoordinates: runCoordinates,
       avgSpeed: averageSpeed,
