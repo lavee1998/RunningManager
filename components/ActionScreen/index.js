@@ -258,8 +258,8 @@ const ActionScreen = ({
     toggleStopwatch();
     //addToRuns(runCoordinates)
     if(interval){
-    clearTimeout(this.timer);
-    clearTimeout(this.almostTimer);
+      clearTimeout(this.timer);
+      clearTimeout(this.almostTimer);
     }
     let arr2Saved=[];
     for(let i=0;i<arr.length;i +10)
@@ -328,22 +328,17 @@ const ActionScreen = ({
             </Row>
             <Row style={styles.paddingMarginZero}>
               <Col style={styles.paddingMarginZero}>
-                <Text style={styles.primaryDataText}>Current Speed</Text>
-              </Col>
-              <Col style={styles.paddingMarginZero}>
-                <Text style={styles.secondaryDataText}>{currentSpeed.toFixed(1)} km/h</Text>
-              </Col>
-            </Row>
-            <Row style={styles.paddingMarginZero}>
-              <Col style={styles.paddingMarginZero}>
                 <Text style={styles.secondaryDataText}>Distance</Text>
               </Col>
               <Col style={styles.paddingMarginZero}>
                 <Text style={styles.primaryDataText}>{distance} km</Text>
               </Col>
               
+            </Row >
+            <Row style={styles.speedometerrow}>
+              <RNSpeedometer maxValue={currentSpeed > 10 ? currentSpeed>40?100:40 : 10} value={currentSpeed} size={300}/>
             </Row>
-            <MapComponent running={runCoordinates} detailsView={false}/>
+             <MapComponent running={runCoordinates} detailsView={false}/>
           </Grid>
           <Portal>
             <Dialog
@@ -384,9 +379,10 @@ const options = {
 };
 
 const styles = StyleSheet.create({
-  scene: {
-    backgroundColor: "#ff4081",
+  speedometerrow: {
     flex: 1,
+    justifyContent: "center",
+    marginBottom: 50
   },
   paddingMarginZero: {
     margin: 0,
