@@ -111,7 +111,7 @@ const ActionScreen = ({
 
   const passedTime = () => {
     if (reachedTimeInformation) {
-      setMessage("Lejárt az idő! Sikerült elérni a megadott intervallumot.");
+      setMessage("Time is over! You reached the previously set distance.");
       setReachedTimeInformation(false);
       Vibration.vibrate(VIBRATINGMS);
       setVisibleAlert(true);
@@ -120,7 +120,7 @@ const ActionScreen = ({
 
   const almostPassedTime = () => {
     if (almostReachedTimeInformation) {
-      setMessage("Hamarosan lejár az idő!");
+      setMessage("The time is almost over!");
       setAlmostReachedTimeInformation(false);
       Vibration.vibrate(VIBRATINGMS);
       setVisibleAlert(true);
@@ -129,7 +129,7 @@ const ActionScreen = ({
 
   const almostReachedDistance = () => {
     if(almostReachedDistanceInformation) {
-      setMessage("Hamarosan célba érsz!");
+      setMessage("You almost reached the previously set distance!");
       setAlmostReachedDistanceInformation(false);
       Vibration.vibrate(VIBRATINGMS);
       setVisibleAlert(true);
@@ -138,7 +138,7 @@ const ActionScreen = ({
 
   const reachedDistance = () => {
     if(reachedDistanceInformation) {
-      setMessage("Elérted a kívánt útmennyiséget!");
+      setMessage("You reached the previously set distance!");
       setReachedDistanceInformation(false);
       Vibration.vibrate(VIBRATINGMS);
       setVisibleAlert(true);
@@ -373,7 +373,7 @@ const ActionScreen = ({
             >
               <Dialog.Title>
                 <Icon name="exclamation-triangle" size={30} color="#900" />{" "}
-                Figyelem!
+                Warning!
               </Dialog.Title>
               <Dialog.Content>
                 <Paragraph>{message}</Paragraph>
