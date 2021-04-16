@@ -62,7 +62,7 @@ const ActionScreen = ({
   const [reachedTimeInformation, setReachedTimeInformation] = useState(true);
   // Vibrating message to the user
   const VIBRATINGMS = 500;
-
+  const  [tooSlow,setTooSlow]=React.useState(false);
   const [routes] = React.useState([
     { key: "first", title: "Speedometer" },
     { key: "second", title: "Map" },
@@ -83,7 +83,7 @@ const ActionScreen = ({
   // ----------------------- METHODS ----------------------------
   
   const LOCATION_SETTINGS = {accuracy:6,
-    distanceInterval:0, timeInterval:4000
+    distanceInterval:0, timeInterval:2000
   }
   useEffect(() => {
     toggleStopwatch();
@@ -145,14 +145,6 @@ const ActionScreen = ({
     }
   };
 
-  const tooSlow=(slow)=>{
-    if(slow){
-      console.log("lassú");
-    }
-    else{
-      console.log("Nem lassú");
-    }
-  }
   const isStopped=(stopped)=>{
     if(stopped){
       console.log("állsz");
@@ -199,7 +191,7 @@ const ActionScreen = ({
         
         currLocation.coords.speed = calculateAvg(currDistance,currLocation.timestamp-lastTimeStamp);
         setAverageSpeed(calculateAvg(letDistance,currLocation.timestamp-arr[0].timestamp));
-        if(currDistance>0.005){
+        if(currDistance>0.005&&currLocation.coords.speed<40){
           letDistance =toFixing((parseFloat(letDistance) + currDistance),3) ;
           setDistance(letDistance);
           isStopped(!(currDistance>0.005));
@@ -211,17 +203,18 @@ const ActionScreen = ({
           arr = [...arr, currLocation.coords];
 
           const slow=5;
-          if(arr.length>4){ //moving avg
+          
+          if(arr.length>7){ //moving avg
             let currD=0;
-            for(let i=1;i<3;i++)
+            for(let i=1;i<6;i++)
             {
               currD=parseFloat(currD)+getDistance( arr[arr.length - i],arr[arr.length - i-1]);
             }
             
-            arr[arr.length-1].speed= calculateAvg(currD ,  arr[arr.length - 1].timestamp-arr[arr.length - 3].timestamp); //interpolated curr speed
+            arr[arr.length-1].speed= calculateAvg(currD ,  arr[arr.length - 1].timestamp-arr[arr.length - 7].timestamp); //interpolated curr speed
             setCurrentSpeed(arr[arr.length-1].speed);
-            tooSlow(arr[arr.length-1].speed<slow);
-          } else  setCurrentSpeed(0);
+            setTooSlow(arr[arr.length-1].speed<slow);
+          } else  currLocation.coords.speed=0;
           
           setCoordinates(arr);
         } 
@@ -275,8 +268,10 @@ const ActionScreen = ({
   const stopRunning = () => {
     toggleStopwatch();
     //addToRuns(runCoordinates)
+    if(interval){
     clearTimeout(this.timer);
     clearTimeout(this.almostTimer);
+    }
     let currentRun = {
       runCoordinates: runCoordinates,
       avgSpeed: averageSpeed,
@@ -325,6 +320,11 @@ const ActionScreen = ({
                 options={options}
               />
             </Row>
+            {tooSlow&&
+            <Row style={styles.container}>
+              <Text style={styles.speedWarn}>You are too slow!</Text>
+            </Row> 
+            }
             <Row style={styles.paddingMarginZero}>
               <Col style={styles.paddingMarginZero}>
                 <Text style={styles.primaryDataText}>Average Speed</Text>
@@ -407,6 +407,11 @@ const styles = StyleSheet.create({
   paddingMarginZero: {
     margin: 0,
     padding: 0,
+  },
+  speedWarn: {
+    color: "red",
+    fontWeight: "900",
+    fontSize: 30
   },
   contentContainer: {
     padding: 8,
