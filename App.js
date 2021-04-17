@@ -13,6 +13,7 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import { Provider } from 'react-redux';
 import { store, persistor } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
+import AppNavigation from "./AppNavigation"
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -21,13 +22,16 @@ export default function App() {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <PaperProvider>
-          <NavigationContainer>
+          <AppNavigation />
+          {/* <NavigationContainer>
             <Tab.Navigator initialRouteName="home" activeColor="#ffffff">
-          
               <Tab.Screen
+              
                 name="home"
                 component={HomeScreen}
+                
                 options={{
+                  
                   tabBarLabel: "Get started",
                   tabBarIcon: ({ color }) => (
                     <MaterialCommunityIcons name="run-fast" color={color} size={26} />
@@ -45,7 +49,7 @@ export default function App() {
                 }}
               />
             </Tab.Navigator>
-          </NavigationContainer>
+          </NavigationContainer> */}
         </PaperProvider>
       </PersistGate>
     </Provider>

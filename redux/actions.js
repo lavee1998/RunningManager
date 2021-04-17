@@ -5,3 +5,4 @@ export const UPDATE_RUNNING = 'UPDATE_RUNNING';
 export const SET_DISTANCE = 'SET_DISTANCE';
 export const SET_INTERVAL = 'SET_INTERVAL';
 export const SET_START_DATE = 'SET_START_DATE'
+export const SET_IS_RUNNING = 'SET_IS_RUNNING'

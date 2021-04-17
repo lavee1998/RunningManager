@@ -39,6 +39,7 @@ const ActionScreen = ({
   interval,
   startDate,
   setCurrentRunning,
+  setIsRunning, //WIP
 }) => {
   const [stopwatchStart, setStopwatchStart] = React.useState(false);
   //const [stopwatchReset, setStopwatchReset] = React.useState(false);
@@ -79,6 +80,7 @@ const ActionScreen = ({
   };
   useEffect(() => {
     toggleStopwatch();
+    setIsRunning(true);
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
@@ -269,6 +271,7 @@ const ActionScreen = ({
 
   const stopRunning = () => {
     toggleStopwatch();
+    setIsRunning(false);
     //addToRuns(runCoordinates)
     if (interval) {
       clearTimeout(this.timer);
@@ -470,6 +473,11 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    setIsRunning: (isRunning) =>
+      dispatch({
+        type: "SET_IS_RUNNING",
+        payload: isRunning,
+      }),
     setCurrentRunning: (currentRun) =>
       dispatch({
         type: "SAVE_CURRENTRUNNING",
