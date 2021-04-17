@@ -27,7 +27,7 @@ const [index, setIndex] = React.useState(0);
 const initialLayout = { width: Dimensions.get("window").width };
 
 const MapTab = () => <MapComponent running={currentRun.runCoordinates}  detailsView={true} />;
-const ChartTab = () => <View><Text><ChartComponent /></Text></View>
+const ChartTab = () => <View><Text><ChartComponent {...currentRun} /></Text></View>
 
 const renderScene = SceneMap({
   first: MapTab,
@@ -170,7 +170,6 @@ return (
 
             {(currentRun.runCoordinates && currentRun.runCoordinates.length )&& 
             (
-              
                 <SafeAreaView style={styles.contentContainer}>
                    <DialogInput
                     isDialogVisible={isNameDialogVisible}

@@ -44,10 +44,10 @@ const chartConfig = {
   },
 };
 
-const Chart = ({ currentRun }) => {
+const Chart = ({ runCoordinates }) => {
   const data = [];
 
-  currentRun.runCoordinates.forEach((coor) => {
+  runCoordinates.forEach((coor) => {
     data.push(coor["speed"]);
   });
 
