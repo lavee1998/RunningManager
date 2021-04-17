@@ -67,7 +67,7 @@ const MapComponent = ({ running, detailsView }) => {
 
 const styles = StyleSheet.create({
   map: {
-    height: Dimensions.get("window").height * 0.7,
+    height: Dimensions.get("window").height * 0.5,
   },
 });
 
