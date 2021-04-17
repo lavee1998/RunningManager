@@ -176,7 +176,7 @@ const ActionScreen = ({
   };
 
   const updatePosition = (currLocation) => {
-    if (arr.length > 1) {
+    if (arr.length ) {
       const lastTimeStamp = arr[arr.length - 1].timestamp;
       const lastLocation = arr[arr.length - 1];
 
@@ -193,10 +193,14 @@ const ActionScreen = ({
         letDistance = toFixing(parseFloat(letDistance) + currDistance, 3);
         setDistance(letDistance);
         isStopped(!(currDistance > 0.01));
-      }
-      if (currLocation.coords.speed < 40) {
+
         currLocation.coords.timestamp = currLocation.timestamp;
         arr = [...arr, currLocation.coords];
+      }else{
+        arr = [...arr, arr[arr.length-1]];
+        arr[arr.length-1].timestamp=currLocation.timestamp;
+      } 
+      if (currLocation.coords.speed < 40) {
 
         const slow = 5;
 

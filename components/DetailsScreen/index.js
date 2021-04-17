@@ -168,8 +168,6 @@ return (
               />
             </Row>
 
-            {(currentRun.runCoordinates && currentRun.runCoordinates.length )&& 
-            (
                 <SafeAreaView style={styles.contentContainer}>
                    <DialogInput
                     isDialogVisible={isNameDialogVisible}
@@ -185,8 +183,6 @@ return (
                     }}
                   ></DialogInput>
                 </SafeAreaView>
-            )
-            }
           </Grid>
         </ScrollView>
         <Dialog.Container
