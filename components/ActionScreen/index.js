@@ -96,8 +96,8 @@ const ActionScreen = ({
       setWatchPositionStatus(watchPositionStatus);
 
       if (interval) {
-        this.almostTimer = setTimeout(almostPassedTime, 0.8 * interval);
-        this.timer = setTimeout(passedTime, interval);
+        almostTimer = setTimeout(almostPassedTime, 0.8 * interval);
+        timer = setTimeout(passedTime, interval);
       } //clearTimeout(timer)
     })();
   }, []);
@@ -174,7 +174,7 @@ const ActionScreen = ({
     const dist = haversine(start, end, { unit: "kilometer" });
     return dist;
   };
-
+  let lastTm=0;
   const updatePosition = (currLocation) => {
     if (arr.length ) {
       const lastTimeStamp = arr[arr.length - 1].timestamp;
@@ -184,7 +184,7 @@ const ActionScreen = ({
 
       currLocation.coords.speed = calculateAvg(
         currDistance,
-        currLocation.timestamp - lastTimeStamp
+        currLocation.timestamp - lastTm?lastTm:lastTimeStamp
       );
       setAverageSpeed(
         calculateAvg(letDistance, currLocation.timestamp - arr[0].timestamp)
@@ -193,10 +193,13 @@ const ActionScreen = ({
         letDistance = toFixing(parseFloat(letDistance) + currDistance, 3);
         setDistance(letDistance);
         isStopped(!(currDistance > 0.01));
-
+        lastTm=0;
         currLocation.coords.timestamp = currLocation.timestamp;
         arr = [...arr, currLocation.coords];
       }else{
+
+        if(!lastTm)
+          lastTm=arr[arr.length-1].timestamp;
         arr = [...arr, arr[arr.length-1]];
         arr[arr.length-1].timestamp=currLocation.timestamp;
       } 
@@ -278,8 +281,8 @@ const ActionScreen = ({
     setIsRunning(false);
     //addToRuns(runCoordinates)
     if (interval) {
-      clearTimeout(this.timer);
-      clearTimeout(this.almostTimer);
+      clearTimeout(timer);
+      clearTimeout(almostTimer);
     }
     let arr2Saved = [];
     for (let i = 0; i < arr.length; i + 10) arr2Saved = [...arr2Saved, arr[i]];
