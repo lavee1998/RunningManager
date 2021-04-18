@@ -1,38 +1,25 @@
 import {
   ScrollView,
-  View,
-  Image,
   Text,
   SafeAreaView,
-  TouchableHighlight,
-  TouchableOpacity,
   StyleSheet,
-  Animated,
-  Dimensions,
   Vibration,
 } from "react-native";
 import React from "react";
 import { Stopwatch, Timer } from "react-native-stopwatch-timer";
-import {
-  Card,
-  Title,
-  Button,
-  TextInput,
-  Paragraph,
-  Dialog,
-  Portal,
-} from "react-native-paper";
+import { Button, Paragraph, Dialog, Portal } from "react-native-paper";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import RNSpeedometer from "react-native-speedometer";
-// import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { Col, Row, Grid } from "react-native-paper-grid";
 import * as Location from "expo-location";
 import { useState, useEffect } from "react";
 import MapComponent from "../MapComponent";
-import haversine from "haversine";
 import { connect } from "react-redux";
-// This component is responsible for the main running process
-// navigation -- ??
+import getDistance from "./getDistance";
+import isStopped from "./isStopped";
+import getHHMMSS from "./getHHMMSS";
+import toFixing from "./toFixing";
+import calculateAvg from "./calculateAvg";
 const ActionScreen = ({
   navigation,
   goal,
@@ -42,16 +29,12 @@ const ActionScreen = ({
   setIsRunning, //WIP
 }) => {
   const [stopwatchStart, setStopwatchStart] = React.useState(false);
-  //const [stopwatchReset, setStopwatchReset] = React.useState(false);
   const [averageSpeed, setAverageSpeed] = React.useState(0);
   const [currentSpeed, setCurrentSpeed] = React.useState(0);
   const [distance, setDistance] = React.useState(0);
-  const [text, setText] = React.useState("Waiting...");
   const [runCoordinates, setCoordinates] = React.useState([]);
   const [message, setMessage] = React.useState(null);
   const [visibleAlert, setVisibleAlert] = React.useState(false);
-  const [location, setLocation] = useState();
-  const [errorMsg, setErrorMsg] = useState(null);
   const [watchPositionStatus, setWatchPositionStatus] = React.useState();
   const [
     almostReachedDistanceInformation,
@@ -71,13 +54,19 @@ const ActionScreen = ({
 
   let timer;
   let almostTimer;
-  // ----------------------- METHODS ----------------------------
+  let lastTm = 0;
+  let arr = [];
+  let warned = 0;
+  let letDistance = 0;
+  let first = 3;
 
   const LOCATION_SETTINGS = {
     accuracy: 6,
     distanceInterval: 0,
     timeInterval: 2000,
   };
+  // ----------------------- METHODS ----------------------------
+
   useEffect(() => {
     toggleStopwatch();
     setIsRunning(true);
@@ -138,45 +127,8 @@ const ActionScreen = ({
     }
   };
 
-  const isStopped = (stopped) => {
-    if (stopped) {
-      console.log("állsz");
-    } else {
-      console.log("mész");
-    }
-  };
-  const toFixing = (num, dec) => {
-    const decimal = Math.pow(10, dec);
-    return Math.floor(num * decimal) / decimal;
-  };
-
-  let arr = [];
-  let warned = 0;
-  let letDistance = 0;
-  let first = 3;
-  const calculateAvg = (dist, timeInt) => {
-    return toFixing(
-      parseFloat(dist) / (Math.abs(parseFloat(timeInt)) / 3600000),
-      1
-    );
-  };
-
-  const getDistance = (startLoc, endLoc) => {
-    let start = {
-      latitude: startLoc.latitude,
-      longitude: startLoc.longitude,
-    };
-    let end = {
-      latitude: endLoc.latitude,
-      longitude: endLoc.longitude,
-    };
-
-    const dist = haversine(start, end, { unit: "kilometer" });
-    return dist;
-  };
-  let lastTm=0;
   const updatePosition = (currLocation) => {
-    if (arr.length ) {
+    if (arr.length) {
       const lastTimeStamp = arr[arr.length - 1].timestamp;
       const lastLocation = arr[arr.length - 1];
 
@@ -184,7 +136,7 @@ const ActionScreen = ({
 
       currLocation.coords.speed = calculateAvg(
         currDistance,
-        currLocation.timestamp - lastTm?lastTm:lastTimeStamp
+        currLocation.timestamp - lastTm ? lastTm : lastTimeStamp
       );
       setAverageSpeed(
         calculateAvg(letDistance, currLocation.timestamp - arr[0].timestamp)
@@ -193,18 +145,15 @@ const ActionScreen = ({
         letDistance = toFixing(parseFloat(letDistance) + currDistance, 3);
         setDistance(letDistance);
         isStopped(!(currDistance > 0.01));
-        lastTm=0;
+        lastTm = 0;
         currLocation.coords.timestamp = currLocation.timestamp;
         arr = [...arr, currLocation.coords];
-      }else{
-
-        if(!lastTm)
-          lastTm=arr[arr.length-1].timestamp;
-        arr = [...arr, arr[arr.length-1]];
-        arr[arr.length-1].timestamp=currLocation.timestamp;
-      } 
+      } else {
+        if (!lastTm) lastTm = arr[arr.length - 1].timestamp;
+        arr = [...arr, arr[arr.length - 1]];
+        arr[arr.length - 1].timestamp = currLocation.timestamp;
+      }
       if (currLocation.coords.speed < 40) {
-
         const slow = 5;
 
         if (arr.length > 7) {
@@ -247,33 +196,12 @@ const ActionScreen = ({
     }
   };
 
-  //const onChange = (value) => setAverageSpeed(parseInt(value));
-
-  // const completeCountDown = () => {
-  //   setCompleted(true);
-  //   return [false, 0];
-  // };
-
   const toggleStopwatch = () => {
     setStopwatchStart(!stopwatchStart);
     setAlmostReachedDistanceInformation(false);
     setReachedTimeInformation(false);
     setAlmostReachedTimeInformation(false);
     setReachedTimeInformation(false);
-  };
-
-  const getHHMMSS = (ms) => {
-    const seconds = Math.floor((ms / 1000) % 60);
-    const minutes = Math.floor((ms / 1000 / 60) % 60);
-    const hours = Math.floor((ms / 1000 / 3600) % 24);
-
-    const humanized = [
-      hours < 10 ? "0" + hours.toString() : hours.toString(),
-      minutes < 10 ? "0" + minutes.toString() : minutes.toString(),
-      seconds < 10 ? "0" + seconds.toString() : seconds.toString(),
-    ].join(":");
-
-    return humanized;
   };
 
   const stopRunning = () => {
