@@ -39,8 +39,8 @@ const MapComponent = ({ running, detailsView }) => {
                       longitude:
                         corr.longitude,
                     }}
-                    title={"Aktuális adatok"}
-                    description={`Sebesség: ${corr.speed} `}
+                    title={"Actual datas"}
+                    description={`Speed: ${corr.speed} `}
                   />
                 );
               })}

@@ -63,7 +63,7 @@ const ActionScreen = ({
   const LOCATION_SETTINGS = {
     accuracy: 6,
     distanceInterval: 0,
-    timeInterval: 2000,
+    //timeInterval: 2000,
   };
   // ----------------------- METHODS ----------------------------
 
@@ -133,25 +133,31 @@ const ActionScreen = ({
       const lastLocation = arr[arr.length - 1];
 
       const currDistance = getDistance(lastLocation, currLocation.coords);
-
       currLocation.coords.speed = calculateAvg(
         currDistance,
-        currLocation.timestamp - lastTm ? lastTm : lastTimeStamp
+        currLocation.timestamp - (lastTm ? lastTm : lastTimeStamp)
       );
       setAverageSpeed(
         calculateAvg(letDistance, currLocation.timestamp - arr[0].timestamp)
       );
-      if (currDistance > 0.01 && currLocation.coords.speed < 40) {
+
+      if (currDistance > 0.005 && currLocation.coords.speed < 40) {
         letDistance = toFixing(parseFloat(letDistance) + currDistance, 3);
         setDistance(letDistance);
-        isStopped(!(currDistance > 0.01));
+        isStopped(!(currDistance > 0.005));
         lastTm = 0;
         currLocation.coords.timestamp = currLocation.timestamp;
         arr = [...arr, currLocation.coords];
       } else {
         if (!lastTm) lastTm = arr[arr.length - 1].timestamp;
-        arr = [...arr, arr[arr.length - 1]];
-        arr[arr.length - 1].timestamp = currLocation.timestamp;
+        currLocation.coords.accuracy=arr[arr.length - 1].accuracy;
+        currLocation.coords.altitude=arr[arr.length - 1].altitude;
+        currLocation.coords.altitudeAccuracy=arr[arr.length - 1].altitudeAccuracy;
+        currLocation.coords.heading=arr[arr.length - 1].heading;
+        currLocation.coords.latitude=arr[arr.length - 1].latitude;
+        currLocation.coords.longitude=arr[arr.length - 1].longitude;
+        currLocation.coords.timestamp = currLocation.timestamp;
+        arr = [...arr, currLocation.coords];
       }
       if (currLocation.coords.speed < 40) {
         const slow = 5;
@@ -164,14 +170,13 @@ const ActionScreen = ({
               parseFloat(currD) +
               getDistance(arr[arr.length - i], arr[arr.length - i - 1]);
           }
-
           arr[arr.length - 1].speed = calculateAvg(
             currD,
             arr[arr.length - 1].timestamp - arr[arr.length - 7].timestamp
           ); //interpolated curr speed
           setCurrentSpeed(arr[arr.length - 1].speed);
           setTooSlow(arr[arr.length - 1].speed < slow);
-        } else currLocation.coords.speed = 0;
+        } else arr[arr.length-1].speed = 0;
 
         setCoordinates(arr);
       }
@@ -214,7 +219,6 @@ const ActionScreen = ({
     }
     let arr2Saved = [];
     for (let i = 0; i < arr.length; i + 10) arr2Saved = [...arr2Saved, arr[i]];
-    setCoordinates(arr2Saved);
     let currentRun = {
       runCoordinates: runCoordinates,
       avgSpeed: averageSpeed,
@@ -284,7 +288,7 @@ const ActionScreen = ({
             <Row style={styles.speedometerrow}>
               <RNSpeedometer
                 maxValue={
-                  currentSpeed > 10 ? (currentSpeed > 40 ? 100 : 40) : 10
+                 currentSpeed > 40 ? 100 : 40
                 }
                 value={currentSpeed}
                 size={300}
