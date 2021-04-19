@@ -24,6 +24,12 @@ const AppNavigation = ({ isRunning }) => {
         <Tab.Screen
           name="home"
           component={HomeScreen}
+          listeners={{
+            tabPress: (e) => {
+              // Prevent default action
+              if (isRunning) e.preventDefault();
+            },
+          }}
           options={{
             tabBarLabel: "Get started",
             tabBarIcon: ({ color }) => (
