@@ -30,6 +30,7 @@ const chartConfig = {
     marginHorizontal: 9,
     textAlign: "center",
     color: "#012345",
+    
   },
   propsForHorizontalLabels: {
     marginHorizontal: 9,
