@@ -6,8 +6,12 @@ import { View, StyleSheet, Dimensions } from "react-native";
 // It will be integrated into different screens
 // running      -- passed by the components for displaying the markers on the map
 const MapComponent = ({ running, detailsView }) => {
+ 
   // console.log("running-test",running)
   if (running.length) {
+     running = running.filter(function(value, index, Arr) {
+      return index % 2 == 0;
+  });
     return (
       <View>
         <MapView
