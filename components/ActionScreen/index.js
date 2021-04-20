@@ -93,7 +93,7 @@ const ActionScreen = ({
 
   const passedTime = () => {
     if (reachedTimeInformation) {
-      setMessage("Time is over! You reached the previously set distance.");
+      setMessage("Time is over! You reached the previously set time.");
       setReachedTimeInformation(false);
       Vibration.vibrate(VIBRATINGMS);
       setVisibleAlert(true);
@@ -214,6 +214,7 @@ const ActionScreen = ({
     setIsRunning(false);
     //addToRuns(runCoordinates)
     if (interval) {
+      console.log("van interval")
       clearTimeout(timer);
       clearTimeout(almostTimer);
     }
@@ -240,7 +241,7 @@ const ActionScreen = ({
         })
       ),
     };
-    console.log(runCoordinates, "runCoordinates-action-test");
+   // console.log(runCoordinates, "runCoordinates-action-test");
     watchPositionStatus.remove();
     setCurrentRunning(currentRun);
     navigation.navigate("Details");
