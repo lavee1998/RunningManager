@@ -15,6 +15,8 @@ import * as Location from "expo-location";
 import { useState, useEffect } from "react";
 import MapComponent from "../MapComponent";
 import { connect } from "react-redux";
+import getCopiedLocation from "./getCopiedLocation";
+import getDistanceOfLastElements from "./getDistanceOfLastElements";
 import getDistance from "./getDistance";
 import isStopped from "./isStopped";
 import getHHMMSS from "./getHHMMSS";
@@ -126,12 +128,11 @@ const ActionScreen = ({
       setVisibleAlert(true);
     }
   };
-
   const updatePosition = (currLocation) => {
     if (arr.length) {
       const lastTimeStamp = arr[arr.length - 1].timestamp;
       const lastLocation = arr[arr.length - 1];
-
+      const slow = 5;
       const currDistance = getDistance(lastLocation, currLocation.coords);
       currLocation.coords.speed = calculateAvg(
         currDistance,
@@ -150,28 +151,15 @@ const ActionScreen = ({
         arr = [...arr, currLocation.coords];
       } else {
         if (!lastTm) lastTm = arr[arr.length - 1].timestamp;
-        currLocation.coords.accuracy=arr[arr.length - 1].accuracy;
-        currLocation.coords.altitude=arr[arr.length - 1].altitude;
-        currLocation.coords.altitudeAccuracy=arr[arr.length - 1].altitudeAccuracy;
-        currLocation.coords.heading=arr[arr.length - 1].heading;
-        currLocation.coords.latitude=arr[arr.length - 1].latitude;
-        currLocation.coords.longitude=arr[arr.length - 1].longitude;
-        currLocation.coords.timestamp = currLocation.timestamp;
-        arr = [...arr, currLocation.coords];
+        arr = [...arr, getCopiedLocation(arr,currLocation).coords];
       }
       if (currLocation.coords.speed < 40) {
-        const slow = 5;
 
-        if (arr.length > 7) {
-          //moving avg
-          let currD = 0;
-          for (let i = 1; i < 6; i++) {
-            currD =
-              parseFloat(currD) +
-              getDistance(arr[arr.length - i], arr[arr.length - i - 1]);
-          }
+
+        if (arr.length > 7) { //moving avg
+          
           arr[arr.length - 1].speed = calculateAvg(
-            currD,
+            getDistanceOfLastElements(arr,6),
             arr[arr.length - 1].timestamp - arr[arr.length - 7].timestamp
           ); //interpolated curr speed
           setCurrentSpeed(arr[arr.length - 1].speed);
