@@ -38,6 +38,7 @@
     "react-native-countdown-circle-timer": "^2.5.0",
     "react-native-dialog": "^6.2.0",
     "react-native-dialog-input": "^1.0.8",
+    "react-native-dropdown-picker": "^5.0.0",
     "react-native-gesture-handler": "~1.8.0",
     "react-native-localize": "^2.0.2",
     "react-native-maps": "0.27.1",
