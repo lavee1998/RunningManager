@@ -97,17 +97,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "SAVE_CURRENTRUNNING",
         payload: {
-          id: currentRun.id,
-          name: currentRun.name,
-          runCoordinates: currentRun.runCoordinates,
-          avgSpeed: currentRun.avgSpeed,
-          topSpeed: currentRun.topSpeed,
-          time: currentRun.time,
-          distance: currentRun.distance,
-          setTime: currentRun.setTime, //settime
-          setDistance: currentRun.setDistance, //setDistance
-          startDate: currentRun.startDate,
-          maxAltitude: currentRun.maxAltitude,
+         ...currentRun
         },
       }),
   };
