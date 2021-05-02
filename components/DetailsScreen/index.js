@@ -34,9 +34,18 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
   const [index, setIndex] = React.useState(0);
   const initialLayout = { width: Dimensions.get("window").width };
 
+  useEffect(() => {
+    Moment.locale("hu");
+    if (currentRun.name !== "Default name") {
+      SetAlreadySavedRunning(true);
+    }
+  }, []);
+
+  // Tabs
   const MapTab = () => (
     <MapComponent running={currentRun.runCoordinates} detailsView={true} />
   );
+
   const SpeedChart = () => (
     <View>
       <Text>
@@ -53,41 +62,30 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
     </View>
   );
 
-  const renderScenePrimary = SceneMap({
-    //first: MapTab,
-    first: SpeedChart,
-    second: DistanceTimeChart,
-
-    // second: (currentRun.setTime ? true : undefined),
-    // third: (currentRun.setDistance ? DistanceChart : undefined)
-  });
-
-  const renderSceneSecondary = SceneMap({
-    //first: MapTab,
+  // Routes for the TabView
+  const renderSceneForFreeRunning = SceneMap({
     first: MapTab,
     second: SpeedChart,
-
-    // second: (currentRun.setTime ? true : undefined),
-    // third: (currentRun.setDistance ? DistanceChart : undefined)
   });
 
-  const [routesPrimary] = React.useState([
-    { key: "first", title: "Speed" },
-    { key: "second", title: "Achievement" },
+  const renderSceneForNonFreeRunning = SceneMap({
+    first: MapTab,
+    second: SpeedChart,
+    third: DistanceTimeChart,
+  });
+
+  const [routesForFreeRunning] = React.useState([
+    { key: "first", title: "Map" },
+    { key: "second", title: "Speed chart" }
   ]);
 
-  const [routesSecondary] = React.useState([
+  const [routesForNonFreeRunning] = React.useState([
     { key: "first", title: "Map" },
     { key: "second", title: "Speed chart" },
+    { key: "third", title: "Achievement"} // When the user previously set a Time/Distance an Achievement Tab will be displayed too
   ]);
 
-  useEffect(() => {
-    Moment.locale("hu");
-    if (currentRun.name !== "Default name") {
-      SetAlreadySavedRunning(true);
-    }
-  }, []);
-
+  // Saving the Current Running to the permanent memory
   const saveCurrentRunning = () => {
     saveRunning(currentRun);
     SetAlreadySavedRunning(true);
@@ -176,7 +174,7 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
             </Col>
           </Row>
 
-          {currentRun.setTime !== 0 && (
+          {currentRun.setTime > 0 && (
             <Row style={styles.paddingMarginZero}>
               <Col style={styles.paddingMarginZero}>
                 <View>
@@ -193,18 +191,18 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
             </Row>
           )}
 
-          {currentRun.setDistance && (
+          {currentRun.setDistance > 0 && (
             <Row style={styles.paddingMarginZero}>
               <Col style={styles.paddingMarginZero}>
                 <View>
-                  <Text style={currentRun.setTime != 0 ? styles.secondaryDataText : styles.primaryDataText}>
+                  <Text style={currentRun.setTime > 0 ? styles.secondaryDataText : styles.primaryDataText}>
                     Set distance
                   </Text>
                 </View>
               </Col>
               <Col style={styles.paddingMarginZero}>
                 <View>
-                  <Text style={currentRun.setTime != 0 ? styles.primaryDataText : styles.secondaryDataText}>
+                  <Text style={currentRun.setTime > 0 ? styles.primaryDataText : styles.secondaryDataText}>
                     {currentRun.setDistance} km
                   </Text>
                 </View>
@@ -216,14 +214,14 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
             <Row style={styles.paddingMarginZero}>
               <TabView
                 navigationState={
-                  currentRun.setTime !== 0 || currentRun.setDistance !== 0
-                    ? { index, routes: routesPrimary }
-                    : { index, routes: routesSecondary }
+                  currentRun.setTime || currentRun.setDistance
+                    ? { index, routes: routesForNonFreeRunning }
+                    : { index, routes: routesForFreeRunning }
                 }
                 renderScene={
-                  currentRun.setTime !== 0 || currentRun.setDistance !== 0
-                    ? renderScenePrimary
-                    : renderSceneSecondary
+                  currentRun.setTime || currentRun.setDistance
+                    ? renderSceneForNonFreeRunning
+                    : renderSceneForFreeRunning
                 }
                 onIndexChange={setIndex}
                 initialLayout={initialLayout}

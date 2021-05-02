@@ -1,11 +1,6 @@
-import {
-    Dimensions,
-  } from "react-native";
-  import React  from "react";
-  
-  import {
-    ProgressChart,
-  } from "react-native-chart-kit";
+import { Dimensions } from "react-native";
+import React  from "react";
+import { ProgressChart } from "react-native-chart-kit";
   
   const graphStyle = {
     marginHorizontal: 8,
@@ -34,45 +29,30 @@ import {
     },
   };
 
-  
-  
-  const Chart = ({  runCoordinates, time, setTime, distance, setDistance , timeStamp}) => {
-    // const data = [];
-  
-    // console.log(runCoordinates)
-    // runCoordinates.forEach((coor) => {
-    //   data.push(coor["speed"]);
-    // });
+  const Chart = ({ setTime, timeStamp, distance, setDistance}) => {
 
     let data = {
-        labels: [], // optional
-        data: []
-      };
+      labels: [], // optional
+      data: [],
+      colors: []
+    };
 
-      if( setTime !== 0){
-        data.labels.push("Set time")
-        let value = timeStamp /setTime 
-        console.log(timeStamp, setTime, value )
-        data.data.push(value)
-      }
+    if(setTime !== 0) {
+      data.labels.push("Set time");
+      let value = timeStamp / setTime;
+      value = value > 1 ? 1 : value;
+      data.data.push(value);
+    }
 
-      if( setDistance !== 0){
-        data.labels.push("Set distance")
-        let value = distance /setDistance 
-        value = value > 1 ? 1 : value
-        data.data.push(value)
-        console.log(distance, setDistance, "távolság")
-      }
-    
-
-console.log("itt vagyok", data)
-
-let data2 = {
-    labels: ["haliho"], // optional
-    data: [1]
-  };
+    if(setDistance !== 0) {
+      data.labels.push("Set distance");
+      let value = distance / setDistance;
+      value = value > 1 ? 1 : value;
+      data.data.push(value);
+    }
   
-    return (<ProgressChart
+    return (
+      <ProgressChart
         data={data}
         width={Dimensions.get("window").width} // from react-native
         height={300}
@@ -80,39 +60,8 @@ let data2 = {
         radius={32}
         chartConfig={chartConfig}
         hideLegend={false}
-      />)
-    //   )
-    // return (
-    //   <LineChart
-    //     data={{
-    //       datasets: [
-    //         {
-    //           data: data,
-    //           strokeWidth: 4, // optional
-    //         },
-    //       ],
-    //       legend: ["Your speed as a function of time"], // optional
-    //     }}
-    //     width={Dimensions.get("window").width} // from react-native
-    //     height={300}
-    //     // yAxisLabel=""
-    //     yAxisSuffix="km/h"
-    //     yAxisInterval={1} // optional, defaults to 1
-    //     chartConfig={chartConfig}
-    //     bezier
-    //     opacity={1}
-    //     withDots={false}
-    //     style={{
-    //       marginVertical: 8,
-    //       marginHorizontal: 0,
-    //       paddingHorizontal: 0,
-    //       margin: 0,
-    //       opacity: 1,
-    //     }}
-    //     withVerticalLabels={false}
-    //     withInnerLines={false}
-    //   />
-    // );
+      />
+    )
   };
   
   export default Chart;
