@@ -292,7 +292,7 @@ const ActionScreen = ({
                 size={300}
               />
             </Row>
-            
+
             <MapComponent running={runCoordinates} detailsView={false} />
           </Grid>
           <Portal>

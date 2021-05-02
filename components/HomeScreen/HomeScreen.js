@@ -10,8 +10,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 // navigation  -- navigation
 // setInterval -- the set millisec based on the hours + minutes 
 // setGoal     -- the set distance based on the km
-// setStartDate -- should be removed from here
-const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
+const HomeScreen = ({ navigation, setInterval, setGoal }) => {
   const [hours, setHours] = React.useState(0);
   const [minutes, setMinutes] = React.useState(0);
   const [distance, setDistance] = React.useState(0);
@@ -50,9 +49,6 @@ const HomeScreen = ({ navigation, setInterval, setGoal, setStartDate }) => {
       let milliseconds = hours*3600000 + minutes*60000
       setInterval(milliseconds)
     }
-
-    let today = new Date();
-    setStartDate(today)
     navigation.navigate("CountDown")
   }
 
@@ -319,14 +315,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "SET_DISTANCE",
         payload: distance,
-      }),
-
-    setStartDate: (date) =>
-      dispatch({
-        type: "SET_START_DATE",
-        payload: date,
-      }),
-
+      })
   };
 };
 
