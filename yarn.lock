@@ -2125,6 +2125,13 @@
     "mime-types" "~2.1.24"
     "negotiator" "0.6.2"
 
+"accordion-collapse-react-native@^1.0.0":
+  "integrity" "sha512-WIGfznOVux+Y3rDljzxc9rEL4mMEB54io6/GVsw7EWmA041JDNYmPj4HSBRSqHqW/YZ+iK3eG0v5WG2Wz1SvSg=="
+  "resolved" "https://registry.npmjs.org/accordion-collapse-react-native/-/accordion-collapse-react-native-1.0.0.tgz"
+  "version" "1.0.0"
+  dependencies:
+    "lodash.get" "4.4.2"
+
 "acorn-globals@^4.3.2":
   "integrity" "sha512-clfQEh21R+D0leSbUdWf3OcfqyaCSAQ8Ryq00bofSekfr9W8u1jyYZo6ir0xu9Gtcf7BjcHJpnbZH7JOCpP60A=="
   "resolved" "https://registry.npmjs.org/acorn-globals/-/acorn-globals-4.3.4.tgz"
@@ -5681,6 +5688,11 @@
   "resolved" "https://registry.npmjs.org/lodash.frompairs/-/lodash.frompairs-4.0.1.tgz"
   "version" "4.0.1"
 
+"lodash.get@4.4.2":
+  "integrity" "sha1-LRd/ZS+jHpObRDjVNBSZ36OCXpk="
+  "resolved" "https://registry.npmjs.org/lodash.get/-/lodash.get-4.4.2.tgz"
+  "version" "4.4.2"
+
 "lodash.isequal@^4.5.0":
   "integrity" "sha1-QVxEePK8wwEgwizhDtMib30+GOA="
   "resolved" "https://registry.npmjs.org/lodash.isequal/-/lodash.isequal-4.5.0.tgz"
@@ -7230,7 +7242,17 @@
   "resolved" "https://registry.npmjs.org/react-refresh/-/react-refresh-0.4.3.tgz"
   "version" "0.4.3"
 
-"react-test-renderer@^16.11.0", "react-test-renderer@~16.11.0":
+"react-test-renderer@^16.14.0":
+  "integrity" "sha512-L8yPjqPE5CZO6rKsKXRO/rVPiaCOy0tQQJbC+UjPNlobl5mad59lvPjwFsQHTvL03caVDIVr9x9/OSgDe6I5Eg=="
+  "resolved" "https://registry.npmjs.org/react-test-renderer/-/react-test-renderer-16.14.0.tgz"
+  "version" "16.14.0"
+  dependencies:
+    "object-assign" "^4.1.1"
+    "prop-types" "^15.6.2"
+    "react-is" "^16.8.6"
+    "scheduler" "^0.19.1"
+
+"react-test-renderer@~16.11.0":
   "integrity" "sha512-nh9gDl8R4ut+ZNNb2EeKO5VMvTKxwzurbSMuGBoKtjpjbg8JK/u3eVPVNi1h1Ue+eYK9oSzJjb+K3lzLxyA4ag=="
   "resolved" "https://registry.npmjs.org/react-test-renderer/-/react-test-renderer-16.11.0.tgz"
   "version" "16.11.0"

@@ -33,7 +33,7 @@ const ListScreen = ({ navigation, runnings, removeRun, setCurrentRunning }) => {
               })}
           </List.Section>
         )}
-        {runnings.length == 0 && (
+        {runnings.length === 0 && (
           <Text style={styles.noRunningsTextStyle}>No runnings to display</Text>
         )}
       </SafeAreaView>
@@ -42,11 +42,6 @@ const ListScreen = ({ navigation, runnings, removeRun, setCurrentRunning }) => {
 };
 
 const styles = StyleSheet.create({
-  containerStyle: {
-    flex: 1,
-    justifyContent: "center",
-  },
-
   pageTitleContainer: {
     flex: 0.8,
     backgroundColor: "#56CCf2",
@@ -57,12 +52,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     marginTop: 40,
     marginBottom: 40,
-  },
-
-  gridStyle: {
-    margin: 0,
-    padding: 0,
-    justifyContent: "center",
   },
 
   noRunningsTextStyle: {
@@ -77,24 +66,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     padding: 20,
     fontWeight: "900",
-  },
-
-  paddingMarginZero: {
-    margin: 0,
-    padding: 0,
-  },
-  primaryDataText: {
-    padding: 30,
-    color: "black",
-    backgroundColor: "lightgray",
-    textAlign: "center",
-  },
-  secondaryDataText: {
-    padding: 30,
-    color: "white",
-    backgroundColor: "gray",
-    textAlign: "center",
-    fontWeight: "800",
   },
 });
 

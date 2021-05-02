@@ -14,6 +14,8 @@ import { Provider } from 'react-redux';
 import { store, persistor } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import AppNavigation from "./AppNavigation"
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 const Tab = createMaterialBottomTabNavigator();
 

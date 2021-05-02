@@ -10,7 +10,7 @@ const MapComponent = ({ running, detailsView }) => {
   // console.log("running-test",running)
   if (running.length) {
      running = running.filter(function(value, index, Arr) {
-      return index % 2 == 0;
+      return index % 4 == 0;
   });
     return (
       <View>

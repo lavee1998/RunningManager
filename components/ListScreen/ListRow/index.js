@@ -1,11 +1,15 @@
-import { ScrollView, View, Text, SafeAreaView, StyleSheet } from "react-native";
-import React, { Component, useEffect } from "react";
-import { Card, Title, Button, TextInput } from "react-native-paper";
-import { Col, Row, Grid } from "react-native-paper-grid";
+import { View, Text, StyleSheet } from "react-native";
+import React from "react";
+import { Col, Row } from "react-native-paper-grid";
 import { connect } from "react-redux";
 import { List } from "react-native-paper";
 import Moment from "moment";
 import Dialog from "react-native-dialog";
+import {
+  Collapse,
+  CollapseHeader,
+  CollapseBody,
+} from "accordion-collapse-react-native";
 
 const ListRow = ({
   run,
@@ -58,54 +62,57 @@ const ListRow = ({
     navigation.navigate("Details");
   };
 
-  console.log(run, "list-run-test");
-
   return (
-    <View key={i}>
-      <List.Accordion
+    <View>
+      <Collapse
         style={i % 2 == 0 ? styles.gridStyleSecondary : styles.gridStylePrimary}
-        title={
-          <Text>
-            <Col inline nopad>
-              <Text
-                style={
-                  i % 2 == 0 ? styles.primaryDataText : styles.secondaryDataText
-                }
-              >
-                {run.name}
-              </Text>
-            </Col>
-            <Col inline nopad>
-              <Text
-                style={
-                  i % 2 == 0 ? styles.primaryDataText : styles.secondaryDataText
-                }
-              >
-                {Moment(run.startDate).format("llll")}
-              </Text>
-            </Col>
-          </Text>
-        }
-        expanded={expanded}
-        onPress={handlePress}
       >
-        <List.Item
-          title="Rename running"
-          onPress={onChangeNameDialog}
-          left={(props) => <List.Icon {...props} icon="rename-box" />}
-        />
-        <List.Item
-          title="Delete running"
-          onPress={onDeleteDialog}
-          left={(props) => <List.Icon {...props} icon="delete" />}
-        />
-        <List.Item
-          title="View details"
-          onPress={onDetails}
-          left={(props) => <List.Icon {...props} icon="equal" />}
-        />
-      </List.Accordion>
-
+        <CollapseHeader>
+          <View>
+            <Row>
+              <Col>
+                <Text
+                  style={
+                    i % 2 == 0
+                      ? styles.primaryDataText
+                      : styles.secondaryDataText
+                  }
+                >
+                  {run.name}
+                </Text>
+              </Col>
+              <Col>
+                <Text
+                  style={
+                    i % 2 == 0
+                      ? styles.primaryDataText
+                      : styles.secondaryDataText
+                  }
+                >
+                  {Moment(run.startDate).format("llll")}
+                </Text>
+              </Col>
+            </Row>
+          </View>
+        </CollapseHeader>
+        <CollapseBody>
+          <List.Item
+            title="Rename running"
+            onPress={onChangeNameDialog}
+            left={(props) => <List.Icon {...props} icon="rename-box" />}
+          />
+          <List.Item
+            title="Delete running"
+            onPress={onDeleteDialog}
+            left={(props) => <List.Icon {...props} icon="delete" />}
+          />
+          <List.Item
+            title="View details"
+            onPress={onDetails}
+            left={(props) => <List.Icon {...props} icon="equal" />}
+          />
+        </CollapseBody>
+      </Collapse>
       <Dialog.Container visible={isDeleteDialogVisible}>
         <Dialog.Title>Running deletion</Dialog.Title>
         <Dialog.Description>
@@ -131,8 +138,6 @@ const ListRow = ({
 
 const styles = StyleSheet.create({
   gridStylePrimary: {
-    margin: 0,
-    padding: 0,
     justifyContent: "center",
     backgroundColor: "lightgray",
     textAlign: "center",
@@ -140,8 +145,6 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   gridStyleSecondary: {
-    margin: 0,
-    padding: 0,
     justifyContent: "center",
     backgroundColor: "gray",
     color: "white",
@@ -149,24 +152,17 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 
-  paddingMarginZero: {
-    margin: 0,
-    padding: 0,
-  },
-
   primaryDataText: {
     padding: 20,
     color: "white",
-    // backgroundColor: "lightgray",
     textAlign: "center",
   },
 
   secondaryDataText: {
     padding: 20,
     color: "black",
-    // backgroundColor: "gray",
     textAlign: "center",
-    // fontWeight: "800",
+    fontWeight: "800",
   },
 });
 
