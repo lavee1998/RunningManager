@@ -66,6 +66,7 @@ function reducer(state = initialState, action) {
         avgSpeed: action.payload.avgSpeed,
         topSpeed: action.payload.topSpeed,
         time: action.payload.time,
+        timeStamp: action.payload.timeStamp,
         distance: action.payload.distance,
         setTime: action.payload.setTime, //settime
         setDistance: action.payload.setDistance, //setDistance
@@ -109,6 +110,7 @@ function reducer(state = initialState, action) {
         avgSpeed: action.payload.avgSpeed,
         topSpeed: action.payload.topSpeed,
         time: action.payload.time,
+        timeStamp: action.payload.timeStamp,
         distance: action.payload.distance,
         setTime: action.payload.setTime, 
         setDistance: action.payload.setDistance, 
