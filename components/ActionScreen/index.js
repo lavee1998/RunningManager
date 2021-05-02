@@ -138,11 +138,12 @@ const ActionScreen = ({
       }
 
       // alert messages for the user based on the distance
-      if (goal * 0.95 <= letDistance && warned === 0) {
+      if (goal !== null && goal * 0.95 <= letDistance && warned === 0) {
         warned = warned + 1;
         almostReachedDistance();
       }
-      if (goal <= letDistance && warned === 1) {
+      
+      if (goal !== null && goal <= letDistance && warned === 1) {
         warned = warned + 1;
         reachedDistance();
       }
