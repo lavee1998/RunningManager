@@ -218,6 +218,7 @@ const ActionScreen = ({
         })
       ),
       time: getHHMMSS(Date.now() - runCoordinates[0].timestamp),
+      timeStamp: Date.now() - runCoordinates[0].timestamp,
       distance: distance,
       setTime: interval, //settime
       setDistance: goal, //setDistance
@@ -410,16 +411,17 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "SAVE_CURRENTRUNNING",
         payload: {
-          id: currentRun.id,
-          runCoordinates: currentRun.runCoordinates,
-          avgSpeed: currentRun.avgSpeed,
-          topSpeed: currentRun.topSpeed,
-          time: currentRun.time,
-          distance: currentRun.distance,
-          setTime: currentRun.setTime, //settime
-          setDistance: currentRun.setDistance, //setDistance
-          startDate: currentRun.startDate,
-          maxAltitude: currentRun.maxAltitude,
+          ...currentRun
+          // id: currentRun.id,
+          // runCoordinates: currentRun.runCoordinates,
+          // avgSpeed: currentRun.avgSpeed,
+          // topSpeed: currentRun.topSpeed,
+          // time: currentRun.time,
+          // distance: currentRun.distance,
+          // setTime: currentRun.setTime, //settime
+          // setDistance: currentRun.setDistance, //setDistance
+          // startDate: currentRun.startDate,
+          // maxAltitude: currentRun.maxAltitude,
         },
       }),
   };

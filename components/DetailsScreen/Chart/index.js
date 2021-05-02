@@ -1,3 +1,8 @@
+export {default as DistanceChartComponent} from "./DistanceChart"
+export {default as SpeedChartComponent} from "./SpeedChart"
+export {default as TimeChartComponent} from "./TimeChart"
+
+
 import {
   ScrollView,
   View,
