@@ -97,8 +97,8 @@ const ActionScreen = ({
       setWatchPositionStatus(watchPositionStatus);
 
       if (interval) {
-        almostTimer = setTimeout(almostPassedTime, 0.8 * interval);
-        timer = setTimeout(passedTime, interval);
+        this.almostTimer = setTimeout(almostPassedTime, 0.8 * interval);
+        this.timer = setTimeout(passedTime, interval);
       }
     })();
   }, []);
@@ -179,8 +179,8 @@ const ActionScreen = ({
     setGoal(0)
 
     if (interval) {
-      clearTimeout(timer);
-      clearTimeout(almostTimer);
+      clearTimeout(this.timer);
+      clearTimeout(this.almostTimer);
     }
 
     let arr2Saved = [];
