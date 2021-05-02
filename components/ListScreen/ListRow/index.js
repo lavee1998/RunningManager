@@ -19,7 +19,6 @@ const ListRow = ({
   navigation,
   setCurrentRunning,
 }) => {
-  const [expanded, setExpanded] = React.useState(false);
   const [isDeleteDialogVisible, SetIsDeleteDialogVisible] = React.useState(
     false
   );
@@ -28,8 +27,6 @@ const ListRow = ({
     SetIsNameChangeDialogVisible,
   ] = React.useState(false);
   const [newName, setNewName] = React.useState(null);
-
-  const handlePress = () => setExpanded(!expanded);
 
   const onDeleteDialog = () => {
     SetIsDeleteDialogVisible(true);
