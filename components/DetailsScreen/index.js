@@ -1,4 +1,3 @@
-//TODO for details
 import {
   ScrollView,
   View,
@@ -19,7 +18,7 @@ import DialogInput from "react-native-dialog-input";
 import Dialog from "react-native-dialog";
 import ChartComponent from "./Chart"
 
-const DetailsScreen = ({ navigation, currentRun, saveRunning, tabNavigation }) => { //a tabNavigation még nem működik de nem létfontosságú
+const DetailsScreen = ({ navigation, currentRun, saveRunning }) => { 
 const [isNameDialogVisible, setNameDialogVisible] = React.useState(false);
 const [alreadySavedRunning, SetAlreadySavedRunning] = useState(false);
 const [visibleAlert, setVisibleAlert] = React.useState(false);
@@ -48,10 +47,8 @@ useEffect(() => {
 
 const saveCurrentRunning = () => {
   saveRunning(currentRun);
-  console.log(currentRun, "save")
   SetAlreadySavedRunning(true);
   setVisibleAlert(true);
-  // tabNavigation.navigate("List")
 }
 return (
     <React.Fragment>
@@ -59,7 +56,6 @@ return (
           <View style={styles.pageTitleContainer}>
             <Text style={styles.pageTitle}>{(alreadySavedRunning && currentRun.name != "Default name" )? currentRun.name : "Your run"}</Text>
           </View>
-         
           <Grid style={styles.gridStyle}>
             {currentRun.id == 0 &&  
             <Button
@@ -206,6 +202,8 @@ return (
     </React.Fragment>
   );
 }
+
+
 const styles = StyleSheet.create({
   scene: {
     backgroundColor: "#ff4081",
