@@ -22,6 +22,11 @@ import {
   SpeedChartComponent,
 } from "./Chart";
 
+// This component is responsible for
+// navigation   -- navigation
+// currentRun   -- previously saved current Running
+// saveRunning  -- method for saving the Running, when it is not already saved (e.g. when the users navigated here 
+//                 from the ActionScreen and not the ListScreen)
 const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
   const [isNameDialogVisible, setNameDialogVisible] = React.useState(false);
   const [alreadySavedRunning, SetAlreadySavedRunning] = useState(false);
@@ -39,7 +44,7 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
       </Text>
     </View>
   );
-  // const TimeChart = () => <View><Text><TimeChartComponent {...currentRun} /></Text></View>
+
   const DistanceTimeChart = () => (
     <View>
       <Text>
@@ -66,11 +71,6 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
     // third: (currentRun.setDistance ? DistanceChart : undefined)
   });
 
-  const routes2 =
-    currentRun.setTime !== 0 || currentRun.setDistance !== 0
-      ? { index, routesPrimary }
-      : { index, routesSecondary };
-
   const [routesPrimary] = React.useState([
     { key: "first", title: "Speed" },
     { key: "second", title: "Achievement" },
@@ -93,14 +93,13 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
     SetAlreadySavedRunning(true);
     setVisibleAlert(true);
   };
+
   return (
     <React.Fragment>
       <ScrollView>
         <View style={styles.pageTitleContainer}>
           <Text style={styles.pageTitle}>
-            {alreadySavedRunning && currentRun.name != "Default name"
-              ? currentRun.name
-              : "Your run"}
+            {alreadySavedRunning && currentRun.name != "Default name" ? currentRun.name : "Your run"}
           </Text>
         </View>
         <Grid style={styles.gridStyle}>
@@ -166,16 +165,27 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
             </Col>
           </Row>
 
+          <Row style={styles.paddingMarginZero}>
+            <Col style={styles.paddingMarginZero}>
+              <Text style={styles.secondaryDataText}>Date (start)</Text>
+            </Col>
+            <Col style={styles.paddingMarginZero}>
+              <Text style={styles.primaryDataText}>
+                {Moment(currentRun.startDate).format("llll")}
+              </Text>
+            </Col>
+          </Row>
+
           {currentRun.setTime !== 0 && (
             <Row style={styles.paddingMarginZero}>
               <Col style={styles.paddingMarginZero}>
                 <View>
-                  <Text style={styles.secondaryDataText}>Set time</Text>
+                  <Text style={styles.primaryDataText}>Set time</Text>
                 </View>
               </Col>
               <Col style={styles.paddingMarginZero}>
                 <View>
-                  <Text style={styles.primaryDataText}>
+                  <Text style={styles.secondaryDataText}>
                     {Math.round(currentRun.setTime * 0.00001667, 2)} min
                   </Text>
                 </View>
@@ -187,43 +197,20 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
             <Row style={styles.paddingMarginZero}>
               <Col style={styles.paddingMarginZero}>
                 <View>
-                  <Text
-                    style={
-                      currentRun.setTime != 0
-                        ? styles.primaryDataText
-                        : styles.secondaryDataText
-                    }
-                  >
+                  <Text style={currentRun.setTime != 0 ? styles.secondaryDataText : styles.primaryDataText}>
                     Set distance
                   </Text>
                 </View>
               </Col>
               <Col style={styles.paddingMarginZero}>
                 <View>
-                  <Text
-                    style={
-                      currentRun.setTime != 0
-                        ? styles.secondaryDataText
-                        : styles.primaryDataText
-                    }
-                  >
+                  <Text style={currentRun.setTime != 0 ? styles.primaryDataText : styles.secondaryDataText}>
                     {currentRun.setDistance} km
                   </Text>
                 </View>
               </Col>
             </Row>
           )}
-
-          <Row style={styles.paddingMarginZero}>
-            <Col style={styles.paddingMarginZero}>
-              <Text style={styles.secondaryDataText}>Date (start)</Text>
-            </Col>
-            <Col style={styles.paddingMarginZero}>
-              <Text style={styles.primaryDataText}>
-                {Moment(currentRun.startDate).format("llll")}
-              </Text>
-            </Col>
-          </Row>
 
           {currentRun && (
             <Row style={styles.paddingMarginZero}>
@@ -284,24 +271,22 @@ const styles = StyleSheet.create({
     backgroundColor: "#ff4081",
     flex: 1,
   },
+
   gridStyle: {
     margin: 0,
     padding: 0,
   },
+
   paddingMarginZero: {
     margin: 0,
     padding: 0,
   },
-  countDownContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 8,
-  },
+
   contentContainer: {
     padding: 8,
     marginHorizontal: 20,
   },
+
   container: {
     justifyContent: "center",
     alignItems: "center",
@@ -315,7 +300,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#E0E0E0",
     fontWeight: "700",
     color: "white",
-
     shadowOffset: { width: 1, height: 1 },
     shadowColor: "black",
     shadowOpacity: 0.5,
@@ -324,6 +308,7 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderRadius: 8,
   },
+
   pageTitleContainer: {
     flex: 0.8,
     backgroundColor: "#56CCf2",
@@ -344,6 +329,7 @@ const styles = StyleSheet.create({
     padding: 20,
     fontWeight: "900",
   },
+
   primaryDataText: {
     paddingTop: 15,
     paddingBottom: 15,
@@ -351,29 +337,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#add8e6",
     textAlign: "center",
   },
+
   secondaryDataText: {
     paddingTop: 15,
-
     paddingBottom: 15,
     color: "black",
     backgroundColor: "#E0E0E0",
     textAlign: "center",
     fontWeight: "800",
-  },
-
-  setButton: {
-    marginBottom: 10,
-    marginTop: 10,
-    backgroundColor: "#E0E0E0",
-    fontWeight: "700",
-    color: "white",
-    shadowOffset: { width: 1, height: 1 },
-    shadowColor: "black",
-    shadowOpacity: 0.5,
-    padding: 10,
-    borderColor: "#56CCf2",
-    borderWidth: 3,
-    borderRadius: 8,
   },
 
   saveButton: {
