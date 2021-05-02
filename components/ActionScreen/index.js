@@ -48,8 +48,6 @@ const ActionScreen = ({
   const [watchPositionStatus, setWatchPositionStatus] = React.useState();
   const [almostReachedDistanceInformation, setAlmostReachedDistanceInformation] = useState(true);
   const [reachedDistanceInformation, setReachedDistanceInformation] = useState(true);
-  const [almostReachedTimeInformation, setAlmostReachedTimeInformation] = useState(true);
-  const [reachedTimeInformation, setReachedTimeInformation] = useState(true);
 
   // Vibrating message to the user
   const VIBRATINGMS = 500;
@@ -159,10 +157,6 @@ const ActionScreen = ({
 
   const toggleStopwatch = () => {
     setStopwatchStart(!stopwatchStart);
-    setAlmostReachedDistanceInformation(false);
-    setReachedTimeInformation(false);
-    setAlmostReachedTimeInformation(false);
-    setReachedTimeInformation(false);
   };
 
   const stopRunning = () => {
@@ -206,21 +200,15 @@ const ActionScreen = ({
   
   // Alert messages for the user
   const passedTime = () => {
-    if (reachedTimeInformation) {
-      setMessage("Time is over! You reached the previously set time.");
-      setReachedTimeInformation(false);
-      Vibration.vibrate(VIBRATINGMS);
-      setVisibleAlert(true);
-    }
+    setMessage("Time is over! You reached the previously set time.");
+    Vibration.vibrate(VIBRATINGMS);
+    setVisibleAlert(true);
   };
 
   const almostPassedTime = () => {
-    if (almostReachedTimeInformation) {
-      setMessage("The time is almost over!");
-      setAlmostReachedTimeInformation(false);
-      Vibration.vibrate(VIBRATINGMS);
-      setVisibleAlert(true);
-    }
+    setMessage("The time is almost over!");
+    Vibration.vibrate(VIBRATINGMS);
+    setVisibleAlert(true);
   };
 
   const almostReachedDistance = () => {
