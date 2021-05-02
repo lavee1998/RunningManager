@@ -22,13 +22,21 @@ import isStopped from "./isStopped";
 import getHHMMSS from "./getHHMMSS";
 import toFixing from "./toFixing";
 import calculateAvg from "./calculateAvg";
+
+// This component is responsible for handling the user's running.
+// navigation   -- navigation
+// goal         -- the previously saved goal distance
+// interval     -- the previosly saved goal interval
+// startDate    -- fix needed
+// setCurrentRunning -- method for saving the current running
+// setIsRunning -- when there is active Running, the navigation to another screen should be blocked
 const ActionScreen = ({
   navigation,
   goal,
   interval,
   startDate,
   setCurrentRunning,
-  setIsRunning, //WIP
+  setIsRunning
 }) => {
   const [stopwatchStart, setStopwatchStart] = React.useState(false);
   const [averageSpeed, setAverageSpeed] = React.useState(0);
@@ -38,18 +46,11 @@ const ActionScreen = ({
   const [message, setMessage] = React.useState(null);
   const [visibleAlert, setVisibleAlert] = React.useState(false);
   const [watchPositionStatus, setWatchPositionStatus] = React.useState();
-  const [
-    almostReachedDistanceInformation,
-    setAlmostReachedDistanceInformation,
-  ] = useState(true);
-  const [reachedDistanceInformation, setReachedDistanceInformation] = useState(
-    true
-  );
-  const [
-    almostReachedTimeInformation,
-    setAlmostReachedTimeInformation,
-  ] = useState(true);
+  const [almostReachedDistanceInformation, setAlmostReachedDistanceInformation] = useState(true);
+  const [reachedDistanceInformation, setReachedDistanceInformation] = useState(true);
+  const [almostReachedTimeInformation, setAlmostReachedTimeInformation] = useState(true);
   const [reachedTimeInformation, setReachedTimeInformation] = useState(true);
+
   // Vibrating message to the user
   const VIBRATINGMS = 500;
   const [tooSlow, setTooSlow] = React.useState(false);
@@ -65,13 +66,14 @@ const ActionScreen = ({
   const LOCATION_SETTINGS = {
     accuracy: 6,
     distanceInterval: 0,
-    //timeInterval: 2000,
   };
+
   // ----------------------- METHODS ----------------------------
 
   useEffect(() => {
     toggleStopwatch();
     setIsRunning(true);
+
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
@@ -89,45 +91,10 @@ const ActionScreen = ({
       if (interval) {
         almostTimer = setTimeout(almostPassedTime, 0.8 * interval);
         timer = setTimeout(passedTime, interval);
-      } //clearTimeout(timer)
+      }
     })();
   }, []);
 
-  const passedTime = () => {
-    if (reachedTimeInformation) {
-      setMessage("Time is over! You reached the previously set time.");
-      setReachedTimeInformation(false);
-      Vibration.vibrate(VIBRATINGMS);
-      setVisibleAlert(true);
-    }
-  };
-
-  const almostPassedTime = () => {
-    if (almostReachedTimeInformation) {
-      setMessage("The time is almost over!");
-      setAlmostReachedTimeInformation(false);
-      Vibration.vibrate(VIBRATINGMS);
-      setVisibleAlert(true);
-    }
-  };
-
-  const almostReachedDistance = () => {
-    if (almostReachedDistanceInformation) {
-      setMessage("You almost reached the previously set distance!");
-      setAlmostReachedDistanceInformation(false);
-      Vibration.vibrate(VIBRATINGMS);
-      setVisibleAlert(true);
-    }
-  };
-
-  const reachedDistance = () => {
-    if (reachedDistanceInformation) {
-      setMessage("You reached the previously set distance!");
-      setReachedDistanceInformation(false);
-      Vibration.vibrate(VIBRATINGMS);
-      setVisibleAlert(true);
-    }
-  };
   const updatePosition = (currLocation) => {
     if (arr.length) {
       const lastTimeStamp = arr[arr.length - 1].timestamp;
@@ -169,6 +136,7 @@ const ActionScreen = ({
         setCoordinates(arr);
       }
 
+      // alert messages for the user based on the distance
       if (goal * 0.95 <= letDistance && warned === 0) {
         warned = warned + 1;
         almostReachedDistance();
@@ -200,12 +168,12 @@ const ActionScreen = ({
   const stopRunning = () => {
     toggleStopwatch();
     setIsRunning(false);
-    //addToRuns(runCoordinates)
+
     if (interval) {
-      console.log("van interval")
       clearTimeout(timer);
       clearTimeout(almostTimer);
     }
+
     let arr2Saved = [];
     for (let i = 0; i < arr.length; i + 10) arr2Saved = [...arr2Saved, arr[i]];
     let currentRun = {
@@ -220,8 +188,8 @@ const ActionScreen = ({
       time: getHHMMSS(Date.now() - runCoordinates[0].timestamp),
       timeStamp: Date.now() - runCoordinates[0].timestamp,
       distance: distance,
-      setTime: interval, //settime
-      setDistance: goal, //setDistance
+      setTime: interval, 
+      setDistance: goal,
       startDate: startDate,
       maxAltitude: Math.max.apply(
         Math,
@@ -230,12 +198,48 @@ const ActionScreen = ({
         })
       ),
     };
-   // console.log(runCoordinates, "runCoordinates-action-test");
+
     watchPositionStatus.remove();
     setCurrentRunning(currentRun);
     navigation.navigate("Details");
   };
-  //gps
+  
+  // Alert messages for the user
+  const passedTime = () => {
+    if (reachedTimeInformation) {
+      setMessage("Time is over! You reached the previously set time.");
+      setReachedTimeInformation(false);
+      Vibration.vibrate(VIBRATINGMS);
+      setVisibleAlert(true);
+    }
+  };
+
+  const almostPassedTime = () => {
+    if (almostReachedTimeInformation) {
+      setMessage("The time is almost over!");
+      setAlmostReachedTimeInformation(false);
+      Vibration.vibrate(VIBRATINGMS);
+      setVisibleAlert(true);
+    }
+  };
+
+  const almostReachedDistance = () => {
+    if (almostReachedDistanceInformation) {
+      setMessage("You almost reached the previously set distance!");
+      setAlmostReachedDistanceInformation(false);
+      Vibration.vibrate(VIBRATINGMS);
+      setVisibleAlert(true);
+    }
+  };
+
+  const reachedDistance = () => {
+    if (reachedDistanceInformation) {
+      setMessage("You reached the previously set distance!");
+      setReachedDistanceInformation(false);
+      Vibration.vibrate(VIBRATINGMS);
+      setVisibleAlert(true);
+    }
+  };
 
   return (
     <React.Fragment>
@@ -249,14 +253,17 @@ const ActionScreen = ({
             >
               <Text style={styles.stopButtonText}>Stop Run!</Text>
             </Button>
+
             <Row style={styles.container}>
               <Stopwatch laps msecs start={stopwatchStart} options={options} />
             </Row>
+
             {tooSlow && (
               <Row style={styles.container}>
                 <Text style={styles.speedWarn}>You are too slow!</Text>
               </Row>
             )}
+
             <Row style={styles.paddingMarginZero}>
               <Col style={styles.paddingMarginZero}>
                 <Text style={styles.primaryDataText}>Average Speed</Text>
@@ -275,7 +282,8 @@ const ActionScreen = ({
                 <Text style={styles.primaryDataText}>{distance} km</Text>
               </Col>
             </Row>
-            <Row style={styles.speedometerrow}>
+
+            <Row style={styles.speedometerRow}>
               <RNSpeedometer
                 maxValue={
                  currentSpeed > 40 ? 100 : 40
@@ -284,6 +292,7 @@ const ActionScreen = ({
                 size={300}
               />
             </Row>
+            
             <MapComponent running={runCoordinates} detailsView={false} />
           </Grid>
           <Portal>
@@ -325,41 +334,33 @@ const options = {
 };
 
 const styles = StyleSheet.create({
-  speedometerrow: {
+  speedometerRow: {
     flex: 1,
     justifyContent: "center",
     marginBottom: 50,
   },
+
   paddingMarginZero: {
     margin: 0,
     padding: 0,
   },
+
   speedWarn: {
     color: "red",
     fontWeight: "900",
     fontSize: 30,
   },
+
   contentContainer: {
     padding: 8,
     marginHorizontal: 20,
   },
+
   container: {
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#ecf0f1",
     padding: 2,
-  },
-
-  textInput: {
-    borderBottomWidth: 0.3,
-    borderBottomColor: "black",
-    height: 25,
-    fontSize: 16,
-    marginVertical: 50,
-    marginHorizontal: 20,
-  },
-  remainingTime: {
-    fontSize: 48,
   },
 
   stopButton: {
@@ -378,6 +379,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#333333",
     textAlign: "center",
   },
+
   secondaryDataText: {
     padding: 8,
     color: "black",
@@ -407,21 +409,12 @@ const mapDispatchToProps = (dispatch) => {
         type: "SET_IS_RUNNING",
         payload: isRunning,
       }),
+
     setCurrentRunning: (currentRun) =>
       dispatch({
         type: "SAVE_CURRENTRUNNING",
         payload: {
           ...currentRun
-          // id: currentRun.id,
-          // runCoordinates: currentRun.runCoordinates,
-          // avgSpeed: currentRun.avgSpeed,
-          // topSpeed: currentRun.topSpeed,
-          // time: currentRun.time,
-          // distance: currentRun.distance,
-          // setTime: currentRun.setTime, //settime
-          // setDistance: currentRun.setDistance, //setDistance
-          // startDate: currentRun.startDate,
-          // maxAltitude: currentRun.maxAltitude,
         },
       }),
   };
