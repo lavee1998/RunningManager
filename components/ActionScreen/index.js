@@ -30,6 +30,8 @@ import calculateAvg from "./calculateAvg";
 // startDate    -- fix needed
 // setCurrentRunning -- method for saving the current running
 // setIsRunning -- when there is active Running, the navigation to another screen should be blocked
+// setGoal      -- methof for setting the goal distance
+// setInterval  -- method for setting the goal interval
 const ActionScreen = ({
   navigation,
   goal,
@@ -37,6 +39,8 @@ const ActionScreen = ({
   startDate,
   setCurrentRunning,
   setIsRunning,
+  setGoal,
+  setInterval
 }) => {
   const [stopwatchStart, setStopwatchStart] = React.useState(false);
   const [averageSpeed, setAverageSpeed] = React.useState(0);
@@ -161,8 +165,6 @@ const ActionScreen = ({
   const stopRunning = () => {
     toggleStopwatch();
     setIsRunning(false);
-    setInterval(0)
-    setGoal(0)
 
     if (interval) {
       clearTimeout(this.timer);
@@ -193,6 +195,9 @@ const ActionScreen = ({
         })
       ),
     };
+
+    setInterval(null);
+    setGoal(null);
 
     watchPositionStatus.remove();
     setCurrentRunning(currentRun);
@@ -402,6 +407,7 @@ const mapDispatchToProps = (dispatch) => {
         type: "SET_DISTANCE",
         payload: distance,
       }),
+
     setIsRunning: (isRunning) =>
       dispatch({
         type: "SET_IS_RUNNING",
