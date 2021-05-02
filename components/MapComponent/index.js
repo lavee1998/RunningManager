@@ -7,12 +7,12 @@ import { View, StyleSheet, Dimensions } from "react-native";
 // running      -- passed by the components for displaying the markers on the map
 const MapComponent = ({ running, detailsView }) => {
  
-  // console.log("running-test",running)
   if (running.length) {
      running = running.filter(function(value, index, Arr) {
       return index % 4 == 0;
   });
-    return (
+
+  return (
       <View>
         <MapView
           showsUserLocation={!!!detailsView}
@@ -43,7 +43,7 @@ const MapComponent = ({ running, detailsView }) => {
                       longitude:
                         corr.longitude,
                     }}
-                    title={"Actual datas"}
+                    title={"Actual data"}
                     description={`Speed: ${corr.speed} `}
                   />
                 );
