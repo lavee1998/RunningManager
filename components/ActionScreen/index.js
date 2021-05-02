@@ -22,6 +22,7 @@ import isStopped from "./isStopped";
 import getHHMMSS from "./getHHMMSS";
 import toFixing from "./toFixing";
 import calculateAvg from "./calculateAvg";
+import countStops from "./countStops";
 
 // This component is responsible for handling the user's running.
 // navigation   -- navigation
@@ -188,6 +189,7 @@ const ActionScreen = ({
       distance: distance,
       setTime: interval,
       setDistance: goal,
+      stopCounter : countStops(runCoordinates),
       startDate: startDate,
       maxAltitude: Math.max.apply(
         Math,

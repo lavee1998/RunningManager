@@ -208,6 +208,22 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
               </Col>
             </Row>
           )}
+            {!!currentRun.stopCounter && <Row style={styles.paddingMarginZero}>
+              <Col style={styles.paddingMarginZero}>
+                <View>
+                  <Text style={currentRun.setTime > 0 ? styles.secondaryDataText : styles.primaryDataText}>
+                    Number of the stops
+                  </Text>
+                </View>
+              </Col>
+              <Col style={styles.paddingMarginZero}>
+                <View>
+                  <Text style={currentRun.setTime > 0 ? styles.primaryDataText : styles.secondaryDataText}>
+                    {currentRun.stopCounter} 
+                  </Text>
+                </View>
+              </Col>
+            </Row>}
 
           {currentRun && (
             <Row style={styles.paddingMarginZero}>
