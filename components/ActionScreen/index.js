@@ -252,7 +252,7 @@ const ActionScreen = ({
             </Button>
 
             <Row style={styles.container}>
-              <Stopwatch laps msecs start={stopwatchStart} options={options} />
+              <Stopwatch laps secs start={stopwatchStart} options={options} />
             </Row>
 
             {tooSlow && (
