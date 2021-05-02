@@ -42,6 +42,11 @@ const HomeScreen = ({ navigation, setInterval, setGoal }) => {
 
   // Start Run button handler
   const handleStartRun = () => {
+    if(runType == '0' && (distance == 0 || hours == 0 && minutes == 0 ) || runType == '1' && hours == 0 && minutes == 0 || runType == '2' && distance == 0) {
+      onAlert(true) 
+      return
+    } 
+
     if(distance) {
       setGoal(distance)
     }
@@ -49,6 +54,9 @@ const HomeScreen = ({ navigation, setInterval, setGoal }) => {
       let milliseconds = hours*3600000 + minutes*60000
       setInterval(milliseconds)
     }
+    setDistance(0)
+    setHours(0)
+    setMinutes(0)
     navigation.navigate("CountDown")
   }
 
@@ -187,7 +195,8 @@ const HomeScreen = ({ navigation, setInterval, setGoal }) => {
         )}
 
         <Button
-          onPress={()=>{runType == '0' && (distance == 0 || hours == 0 && minutes == 0 ) || runType == '1' && hours == 0 && minutes == 0 || runType == '2' && distance == 0 ? onAlert(true) : handleStartRun();}}
+        onPress={handleStartRun}
+          //onPress={()=>{runType == '0' && (distance == 0 || hours == 0 && minutes == 0 ) || runType == '1' && hours == 0 && minutes == 0 || runType == '2' && distance == 0 ? onAlert(true) : handleStartRun();}}
           style={styles.startButton}
           mode="container"
         >

@@ -36,7 +36,7 @@ const ActionScreen = ({
   interval,
   startDate,
   setCurrentRunning,
-  setIsRunning
+  setIsRunning,
 }) => {
   const [stopwatchStart, setStopwatchStart] = React.useState(false);
   const [averageSpeed, setAverageSpeed] = React.useState(0);
@@ -116,20 +116,19 @@ const ActionScreen = ({
         arr = [...arr, currLocation.coords];
       } else {
         if (!lastTm) lastTm = arr[arr.length - 1].timestamp;
-        arr = [...arr, getCopiedLocation(arr,currLocation).coords];
+        arr = [...arr, getCopiedLocation(arr, currLocation).coords];
       }
       if (currLocation.coords.speed < 40) {
+        if (arr.length > 7) {
+          //moving avg
 
-
-        if (arr.length > 7) { //moving avg
-          
           arr[arr.length - 1].speed = calculateAvg(
-            getDistanceOfLastElements(arr,6),
+            getDistanceOfLastElements(arr, 6),
             arr[arr.length - 1].timestamp - arr[arr.length - 7].timestamp
           ); //interpolated curr speed
           setCurrentSpeed(arr[arr.length - 1].speed);
           setTooSlow(arr[arr.length - 1].speed < slow);
-        } else arr[arr.length-1].speed = 0;
+        } else arr[arr.length - 1].speed = 0;
 
         setCoordinates(arr);
       }
@@ -162,6 +161,8 @@ const ActionScreen = ({
   const stopRunning = () => {
     toggleStopwatch();
     setIsRunning(false);
+    setInterval(0)
+    setGoal(0)
 
     if (interval) {
       clearTimeout(this.timer);
@@ -182,7 +183,7 @@ const ActionScreen = ({
       time: getHHMMSS(Date.now() - runCoordinates[0].timestamp),
       timeStamp: Date.now() - runCoordinates[0].timestamp,
       distance: distance,
-      setTime: interval, 
+      setTime: interval,
       setDistance: goal,
       startDate: startDate,
       maxAltitude: Math.max.apply(
@@ -197,7 +198,7 @@ const ActionScreen = ({
     setCurrentRunning(currentRun);
     navigation.navigate("Details");
   };
-  
+
   // Alert messages for the user
   const passedTime = () => {
     setMessage("Time is over! You reached the previously set time.");
@@ -273,9 +274,7 @@ const ActionScreen = ({
 
             <Row style={styles.speedometerRow}>
               <RNSpeedometer
-                maxValue={
-                 currentSpeed > 40 ? 100 : 40
-                }
+                maxValue={currentSpeed > 40 ? 100 : 40}
                 value={currentSpeed}
                 size={300}
               />
@@ -392,6 +391,17 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    setInterval: (interval) =>
+      dispatch({
+        type: "SET_INTERVAL",
+        payload: interval,
+      }),
+
+    setGoal: (distance) =>
+      dispatch({
+        type: "SET_DISTANCE",
+        payload: distance,
+      }),
     setIsRunning: (isRunning) =>
       dispatch({
         type: "SET_IS_RUNNING",
@@ -402,7 +412,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "SAVE_CURRENTRUNNING",
         payload: {
-          ...currentRun
+          ...currentRun,
         },
       }),
   };

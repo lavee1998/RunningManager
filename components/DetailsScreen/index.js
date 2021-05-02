@@ -17,8 +17,7 @@ import MapComponent from "../MapComponent";
 import DialogInput from "react-native-dialog-input";
 import Dialog from "react-native-dialog";
 import {
-  DistanceChartComponent,
-  TimeChartComponent,
+  DistanceTimeChartComponent,
   SpeedChartComponent,
 } from "./Chart";
 
@@ -57,7 +56,7 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
   const DistanceTimeChart = () => (
     <View>
       <Text>
-        <DistanceChartComponent {...currentRun} />
+        <DistanceTimeChartComponent {...currentRun} />
       </Text>
     </View>
   );
@@ -386,17 +385,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "SAVE_RUNNING",
         payload: {
-          runCoordinates: currentRun.runCoordinates,
-          name: currentRun.name,
-          avgSpeed: currentRun.avgSpeed,
-          topSpeed: currentRun.topSpeed,
-          time: currentRun.time,
-          timeStamp: currentRun.timeStamp,
-          distance: currentRun.distance,
-          setTime: currentRun.setTime,
-          setDistance: currentRun.setDistance,
-          startDate: currentRun.startDate,
-          maxAltitude: currentRun.maxAltitude,
+          ...currentRun,
         },
       }),
   };
