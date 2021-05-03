@@ -113,6 +113,10 @@ const HomeScreen = ({ navigation, setInterval, setGoal }) => {
           searchable={false}
           open={open}
           value={runType}
+          onClose={() => {
+            setHours(0);
+            setMinutes(0);
+            setDistance(0);}}
           defaultValue={runType}
           items={runTypeList}
           setValue={setRunType}
