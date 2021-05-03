@@ -247,6 +247,7 @@ const ActionScreen = ({
               onPress={() => stopRunning()}
               style={styles.stopButton}
               mode="container"
+              disabled={runCoordinates.length===0}
             >
               <Text style={styles.stopButtonText}>Stop Run!</Text>
             </Button>
