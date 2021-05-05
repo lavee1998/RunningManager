@@ -58,8 +58,8 @@ const ActionScreen = ({
   const VIBRATINGMS = 500;
   const [tooSlow, setTooSlow] = React.useState(false);
 
-  let timer;
-  let almostTimer;
+  let timer = React.useRef(null);
+  let almostTimer = React.useRef(null);
   let lastTm = 0;
   let arr = [];
   let warned = 0;
@@ -92,8 +92,8 @@ const ActionScreen = ({
       setWatchPositionStatus(watchPositionStatus);
 
       if (interval) {
-        this.almostTimer = setTimeout(almostPassedTime, 0.8 * interval);
-        this.timer = setTimeout(passedTime, interval);
+        almostTimer.current = setTimeout(almostPassedTime, 0.8 * interval);
+        timer.current = setTimeout(passedTime, interval);
       }
     })();
   }, []);
@@ -169,8 +169,8 @@ const ActionScreen = ({
     setIsRunning(false);
 
     if (interval) {
-      clearTimeout(this.timer);
-      clearTimeout(this.almostTimer);
+      clearTimeout(timer.current);
+      clearTimeout(almostTimer.current);
     }
 
     let arr2Saved = [];
