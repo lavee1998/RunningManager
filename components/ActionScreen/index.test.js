@@ -78,7 +78,7 @@ describe('update location test:', () => {
     });
    
     
-    it('toSlow test', () => {
+    it('tooSlow test', () => {
         let testPhase=4;
 
         let tooSlow=
@@ -98,7 +98,7 @@ describe('update location test:', () => {
         tooSlow=updateLocation(JSON.parse('{"coords":{"latitude":100.00005, "longitude":100,"altitude":100,"accuracy":100,"altitudeAccuracy":100,"heading":100},"timestamp":11000}'),testPhase);
         expect(tooSlow).toBe(true);
     });
-    it('lastTm test', () => {
+    it('runCoordintes test', () => {
         let testPhase=5;
         let arr=[];
         expect(arr.length).toBe(0);

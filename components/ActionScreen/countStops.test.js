@@ -16,4 +16,9 @@ describe('count stops test: centimeter correctly', () => {
         const testJSON3=JSON.parse(testSpeedArray3);
         expect(countStops(testJSON3)).toBe(2);
     });
+    it('get 6 decimals in a correct object where user stopped twice', () => {
+        const testSpeedArray3='[ {"speed":0},{"speed":1},{"speed":0},{"speed":0},{"speed":0},{"speed":1}]';
+        const testJSON3=JSON.parse(testSpeedArray3);
+        expect(countStops(testJSON3)).toBe(1);
+    });
 });
