@@ -40,6 +40,8 @@ Android, iOS
 - **react-native-paper** : az alkalmazás stílusozásához használt eszköz.
 - **react-native-maps** : a térképes megjelenítéshez használt eszköz.
 - **react-native-speedometer** : a sebességmérő szimulálására használt eszköz.
+- **asyncStorage**: a permanens tároláshoz
+- **react-native-chart-kit**: diagram készítés a futás adataiból
 
 ## Futtatás
 
