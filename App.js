@@ -25,33 +25,6 @@ export default function App() {
       <PersistGate loading={null} persistor={persistor}>
         <PaperProvider>
           <AppNavigation />
-          {/* <NavigationContainer>
-            <Tab.Navigator initialRouteName="home" activeColor="#ffffff">
-              <Tab.Screen
-              
-                name="home"
-                component={HomeScreen}
-                
-                options={{
-                  
-                  tabBarLabel: "Get started",
-                  tabBarIcon: ({ color }) => (
-                    <MaterialCommunityIcons name="run-fast" color={color} size={26} />
-                  ),
-                }}
-              />
-              <Tab.Screen
-                name="list"
-                component={ListScreen}
-                options={{
-                  tabBarLabel: "Your runs",
-                  tabBarIcon: ({ color }) => (
-                    <MaterialCommunityIcons name="account-details" color={color} size={26} />
-                  ),
-                }}
-              />
-            </Tab.Navigator>
-          </NavigationContainer> */}
         </PaperProvider>
       </PersistGate>
     </Provider>
