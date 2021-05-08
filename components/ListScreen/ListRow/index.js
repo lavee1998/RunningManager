@@ -19,15 +19,10 @@ const ListRow = ({
   navigation,
   setCurrentRunning,
 }) => {
-  const [isDeleteDialogVisible, SetIsDeleteDialogVisible] = React.useState(
-    false
-  );
-  const [
-    isNameChangeDialogVisible,
-    SetIsNameChangeDialogVisible,
-  ] = React.useState(false);
+  const [isDeleteDialogVisible, SetIsDeleteDialogVisible] = React.useState(false);
+  const [isNameChangeDialogVisible,SetIsNameChangeDialogVisible] = React.useState(false);
   const [newName, setNewName] = React.useState(null);
-
+  
   const onDeleteDialog = () => {
     SetIsDeleteDialogVisible(true);
   };

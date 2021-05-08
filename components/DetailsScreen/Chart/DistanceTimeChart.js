@@ -45,7 +45,6 @@ const Chart = ({ setTime, timeStamp, distance, setDistance }) => {
     data.labels.push("Time");
     let value = timeStamp / setTime;
     value = value > 1 ? 1 : value;
-    console.log(setTime);
     data.data.push(value);
   }
 
@@ -53,7 +52,6 @@ const Chart = ({ setTime, timeStamp, distance, setDistance }) => {
     data.labels.push("Distance");
     let value = distance / setDistance;
     value = value > 1 ? 1 : value;
-    console.log(setDistance);
     data.data.push(value);
   }
 

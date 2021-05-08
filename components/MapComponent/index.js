@@ -5,6 +5,7 @@ import { View, StyleSheet, Dimensions } from "react-native";
 // This component is responsible for the Map
 // It will be integrated into different screens
 // running      -- passed by the components for displaying the markers on the map
+// detailsView  -- when it is used for the detailView
 const MapComponent = ({ running, detailsView }) => {
  
   if (running.length) {

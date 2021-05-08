@@ -5,9 +5,9 @@ import {
   SET_DISTANCE,
   SET_INTERVAL,
   SET_START_DATE,
-  SET_IS_RUNNING
+  SET_IS_RUNNING,
+  SAVE_CURRENTRUNNING
 } from "./actions";
-import { SAVE_CURRENTRUNNING } from "./runnings";
 
 const initialState = {
   runnings: [

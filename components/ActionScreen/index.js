@@ -51,15 +51,16 @@ const ActionScreen = ({
   const [message, setMessage] = React.useState(null);
   const [visibleAlert, setVisibleAlert] = React.useState(false);
   const [watchPositionStatus, setWatchPositionStatus] = React.useState();
-  const [almostReachedDistanceInformation, setAlmostReachedDistanceInformation] = useState(true);
-  const [reachedDistanceInformation, setReachedDistanceInformation] = useState(true);
+  const [tooSlow, setTooSlow] = React.useState(false);
 
   // Vibrating message to the user
   const VIBRATINGMS = 500;
-  const [tooSlow, setTooSlow] = React.useState(false);
 
+  // Timer
   let timer = React.useRef(null);
   let almostTimer = React.useRef(null);
+
+  // speed related variables
   let lastTm = 0;
   let arr = [];
   let warned = 0;
@@ -221,21 +222,15 @@ const ActionScreen = ({
   };
 
   const almostReachedDistance = () => {
-    if (almostReachedDistanceInformation) {
-      setMessage("You almost reached the previously set distance!");
-      setAlmostReachedDistanceInformation(false);
-      Vibration.vibrate(VIBRATINGMS);
-      setVisibleAlert(true);
-    }
+    setMessage("You almost reached the previously set distance!");
+    Vibration.vibrate(VIBRATINGMS);
+    setVisibleAlert(true);
   };
 
   const reachedDistance = () => {
-    if (reachedDistanceInformation) {
-      setMessage("You reached the previously set distance!");
-      setReachedDistanceInformation(false);
-      Vibration.vibrate(VIBRATINGMS);
-      setVisibleAlert(true);
-    }
+    setMessage("You reached the previously set distance!");
+    Vibration.vibrate(VIBRATINGMS);
+    setVisibleAlert(true);
   };
 
   return (
