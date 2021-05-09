@@ -80,7 +80,7 @@ Az alkalmazás alapvetően 4 oldalt tartalmaz, ebből 2 érhető el közvetlenü
 
 ## Osztály diagram
 
-![](images/classdiagram2.png) 
+![](images/classdiagram3.png) 
 
 
 
@@ -106,7 +106,8 @@ A **Stop run!** gombbal leállíthatjuk a futást ekkor befejeztük, és a progr
 Ezen a képernyőn láthatjuk futásunk eredményességét. Legfelül a mentéshez adhatunk meg nevet, **Name of my run** ahol megválaszthatjuk az elnevezést. Ezalatt egy táblázat található a futásunk eredményeivel, melyek a következőket jelentik:
 
  - **Time:** Futás alatt eltelt idő.
- - **Maximum altitude:** Maximum tengerszint feletti magasságunk
+ - **Maximum altitude:** A maximum megtett altitude a kezdő állapothoz képest
+ - **Max difference altitude:** A futás során mért legkisebb és legnagyobb altitude különbsége
  - **Top speed:** Maximális elért sebességünk a futás során.
  - **Average** speed: Az átlagsebességünk a futás során.
  - **Distence:** A távolság melyet futásunk során megtettünk.
