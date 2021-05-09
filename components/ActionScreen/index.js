@@ -147,10 +147,12 @@ const ActionScreen = ({
         warned = warned + 1;
         reachedDistance();
       }
+      arr[arr.length - 1].distance=letDistance;
     } else {
       if (first === 0) {
         currLocation.coords.speed = 0;
         currLocation.coords.timestamp = currLocation.timestamp;
+        currLocation.coords.distance=letDistance;
         arr = [...arr, currLocation.coords];
         setCoordinates(arr);
       } else {

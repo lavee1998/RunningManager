@@ -45,7 +45,7 @@ const MapComponent = ({ running, detailsView }) => {
                         corr.longitude,
                     }}
                     title={"Actual data"}
-                    description={`Speed: ${corr.speed} `}
+                    description={`Speed: ${corr.speed} km/h, Distance: ${corr.distance} km`}
                   />
                 );
               })}
