@@ -80,7 +80,7 @@ Az alkalmazás alapvetően 4 oldalt tartalmaz, ebből 2 érhető el közvetlenü
 
 ## Osztály diagram
 
-![](images/class_diagram.png) 
+![](images/classdiagram2.png) 
 
 
 
