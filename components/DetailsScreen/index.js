@@ -173,16 +173,35 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
             </Col>
           </Row>
 
-          {currentRun.setTime > 0 && (
+          {!!currentRun.stopCounter && (
             <Row style={styles.paddingMarginZero}>
               <Col style={styles.paddingMarginZero}>
                 <View>
-                  <Text style={styles.primaryDataText}>Set time</Text>
+                  <Text style={styles.primaryDataText}>
+                    Number of the stops
+                  </Text>
                 </View>
               </Col>
               <Col style={styles.paddingMarginZero}>
                 <View>
                   <Text style={styles.secondaryDataText}>
+                    {currentRun.stopCounter} 
+                  </Text>
+                </View>
+              </Col>
+            </Row>
+          )}
+
+          {currentRun.setTime > 0 && (
+            <Row style={styles.paddingMarginZero}>
+              <Col style={styles.paddingMarginZero}>
+                <View>
+                  <Text style={!!currentRun.stopCounter ? styles.secondaryDataText : styles.primaryDataText}>Set time</Text>
+                </View>
+              </Col>
+              <Col style={styles.paddingMarginZero}>
+                <View>
+                  <Text style={!!currentRun.stopCounter ? styles.primaryDataText : styles.secondaryDataText}>
                     {Math.round(currentRun.setTime * 0.00001667, 2)} min
                   </Text>
                 </View>
@@ -194,36 +213,20 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
             <Row style={styles.paddingMarginZero}>
               <Col style={styles.paddingMarginZero}>
                 <View>
-                  <Text style={currentRun.setTime > 0 ? styles.secondaryDataText : styles.primaryDataText}>
+                  <Text style={(currentRun.setTime > 0 && !!currentRun.stopCounter) ? styles.primaryDataText : styles.secondaryDataText}>
                     Set distance
                   </Text>
                 </View>
               </Col>
               <Col style={styles.paddingMarginZero}>
                 <View>
-                  <Text style={currentRun.setTime > 0 ? styles.primaryDataText : styles.secondaryDataText}>
+                  <Text style={(currentRun.setTime > 0 && !!currentRun.stopCounter) ? styles.secondaryDataText : styles.primaryDataText}>
                     {currentRun.setDistance} km
                   </Text>
                 </View>
               </Col>
             </Row>
           )}
-            {!!currentRun.stopCounter && <Row style={styles.paddingMarginZero}>
-              <Col style={styles.paddingMarginZero}>
-                <View>
-                  <Text style={currentRun.setTime > 0 ? styles.secondaryDataText : styles.primaryDataText}>
-                    Number of the stops
-                  </Text>
-                </View>
-              </Col>
-              <Col style={styles.paddingMarginZero}>
-                <View>
-                  <Text style={currentRun.setTime > 0 ? styles.primaryDataText : styles.secondaryDataText}>
-                    {currentRun.stopCounter} 
-                  </Text>
-                </View>
-              </Col>
-            </Row>}
 
           {currentRun && (
             <Row style={styles.paddingMarginZero}>
