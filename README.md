@@ -84,7 +84,49 @@ Az alkalmazás alapvetően 4 oldalt tartalmaz, ebből 2 érhető el közvetlenü
 
 
 
+## Felhasználói dokumentáció – használati útmutató
 
+A program futtatás után a főképernyőre dob. Ezen a képernyőn kiválaszthatjuk a futással kapcsolatos célkitűzéseinket.
 
+- **Run based on time and distance:** idő és távolság alapú futás. Kötelező paramétereinek szükséges megadni értéket, Set distance, Set time.
+- **Run based on time:** Idő alapú futás. Megválaszthatjuk, hogy mennyi ideig szeretnék futni. Kötelező paraméterének – Set time – szükséges értéket adni. 
+- **Run based on distance:** Távolság alapú futás. Ebben a módban kötelezően meg kell választanunk a céltávolságot Set distance paraméternek megadva. 
+- **Free run:** Szabad futás opció, ha ezt választjuk korlátlanul futhatunk.
 
+A **Start run!** gombbal indíthatjuk el a futást.
+ 
+## Futás akció képernyő
 
+Visszaszámlálás után az akcióképernyőt láthatjuk. Megjelenik számunkra egy sebességmérő, egy stopper, mely másodperc alapon számlálja az eltelt időt és egy térkép, amelyen megjelenik az aktuális pozíciónk. A felületen továbbá látható az átlagsebességünk **Average Speed** illetve a megtett távolság **Distance**. Ha lassan futunk, vagy megálltunk a program figyelmeztet bennünket, hogy lassan haladunk *You are too slow!* felirattal.
+Amennyiben a távolság vagy idő alapú futást választottuk, a program a céltávolság elérésekor, és 95% teljesítése esetén is figyelmeztet bennünket, hogy sikerült elérnünk, illetve közeledünk a cél eléréséhez. Az idő alapú futás esetén a program az idő leteltének 80%-ánál figyelmeztet bennünket hogy hamarosan letelik az idő, illetve a cél elérésénél ismételten, hogy lejárt az idő. 
+A **Stop run!** gombbal leállíthatjuk a futást ekkor befejeztük, és a program átnavigál bennünket egy másik képernyőre.
+
+## Futás összegző, és elemző képernyő – Your run
+
+Ezen a képernyőn láthatjuk futásunk eredményességét. Legfelül a mentéshez adhatunk meg nevet, **Name of my run** ahol megválaszthatjuk az elnevezést. Ezalatt egy táblázat található a futásunk eredményeivel, melyek a következőket jelentik:
+
+ - **Time:** Futás alatt eltelt idő.
+ - **Maximum altitude:** Maximum tengerszint feletti magasságunk
+ - **Top speed:** Maximális elért sebességünk a futás során.
+ - **Average** speed: Az átlagsebességünk a futás során.
+ - **Distence:** A távolság melyet futásunk során megtettünk.
+ - **Set time?:** A kiválasztott célidőt. Abban az esetben látható ha adtunk meg célidőt.
+ - **Set distance?:** A kiválasztott céltávolság. Abban az esetben látható ha adtunk meg céltávolságot.
+ - **Date (start):** A futás kezdetének időpontja.
+ - **Number of stops:** Megállások száma, a megtett út során hányszor álltunk meg.
+ - 
+Ezalatt láthatóak az elemzőpanelek.
+
+ - **Map:** Térkép, amely jelzi a megtett útvonalunkat. Egyes jelzésre rányomva látjuk az aktuális adatokat.
+ - **Speed chart:** A sebességünk változását jelzi az idő függvényében, ezzel könnyen leolvashatjuk a gyorsulásunkat.
+ - **Achivment:** A célidő és távolság esetén megjelenik hogy a kívánt távolságból mennyit sikerült elérnünk.
+
+Ezen az oldalon végül a **Save running!** feliratot látjuk amellyel menthetjük a futásunk eredményeit.
+
+## Futásokat megjelenítő oldal – Your runs
+
+A képernyő alján található **Your runs** fülre nyomva navigálhatunk erre az oldalra, ahol a korábban mentésre került futásaink listáját láthatjuk, melyekből egyet kiválasztva legördül egy menü melynél a következő lehetőségek közül választhatunk.
+
+ - **Rename running:** Futás átnevezése, rányomva megváltoztathatjuk a futásunk nevét.
+ - **Delete running:** Futás törlése. Ezt választva eldobhatjuk a futást a mentett elemek közül.
+ - **View details:** A korábbi futásunk eredményeit tekinthetjük meg az előző részben leírt **Your run** oldalon, melyre navigál bennünket az alkalmazás. 
