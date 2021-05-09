@@ -42,6 +42,7 @@ const ActionScreen = ({
   setGoalDistance,
   setGoalInterval
 }) => {
+  //States
   const [stopwatchStart, setStopwatchStart] = React.useState(false);
   const [averageSpeed, setAverageSpeed] = React.useState(0);
   const [currentSpeed, setCurrentSpeed] = React.useState(0);
@@ -49,9 +50,10 @@ const ActionScreen = ({
   const [runCoordinates, setCoordinates] = React.useState([]);
   const [message, setMessage] = React.useState(null);
   const [visibleAlert, setVisibleAlert] = React.useState(false);
-  const [watchPositionStatus, setWatchPositionStatus] = React.useState();
+ // const [watchPositionStatus, setWatchPositionStatus] = React.useState();
   const [tooSlow, setTooSlow] = React.useState(false);
 
+  let watchPositionStatus = React.useRef()
   // Vibrating message to the user
   const VIBRATINGMS = 500;
 
@@ -60,6 +62,7 @@ const ActionScreen = ({
   let almostTimer = React.useRef(null);
 
   // speed related variables
+  const slow = 5;
   let lastTm = 0;
   let arr = [];
   let warned = 0;
@@ -84,12 +87,12 @@ const ActionScreen = ({
         return;
       }
 
-      let watchPositionStatus = await Location.watchPositionAsync(
+      watchPositionStatus.current = await Location.watchPositionAsync(
         LOCATION_SETTINGS,
         updatePosition
       );
 
-      setWatchPositionStatus(watchPositionStatus);
+      //setWatchPositionStatus(watchPositionStatus);
 
       if (goalInterval) {
         almostTimer.current = setTimeout(almostPassedTime, 0.8 * goalInterval);
@@ -99,10 +102,10 @@ const ActionScreen = ({
   }, []);
 
   const updatePosition = (currLocation) => {
+    console.log("helobelo")
     if (arr.length) {
       const lastTimeStamp = arr[arr.length - 1].timestamp;
       const lastLocation = arr[arr.length - 1];
-      const slow = 5;
       const currDistance = getDistance(lastLocation, currLocation.coords);
       currLocation.coords.speed = calculateAvg(
         currDistance,
@@ -168,7 +171,7 @@ const ActionScreen = ({
   const stopRunning = () => {
 
     toggleStopwatch();
-    watchPositionStatus.remove();
+    watchPositionStatus.current.remove();
 
     if (goalInterval) {
       clearTimeout(timer.current);
