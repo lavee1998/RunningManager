@@ -106,16 +106,15 @@ A **Stop run!** gombbal leállíthatjuk a futást ekkor befejeztük, és a progr
 Ezen a képernyőn láthatjuk futásunk eredményességét. Legfelül a mentéshez adhatunk meg nevet, **Name of my run** ahol megválaszthatjuk az elnevezést. Ezalatt egy táblázat található a futásunk eredményeivel, melyek a következőket jelentik:
 
  - **Time:** Futás alatt eltelt idő.
- - **Maximum altitude:** A maximum megtett altitude a kezdő állapothoz képest
- - **Max difference altitude:** A futás során mért legkisebb és legnagyobb altitude különbsége
+ - **Maximum altitude:** A maximum megtett altitudet a kezdő állapothoz képest.
+ - **Max difference altitude:** A futás során mért legkisebb és legnagyobb altitude különbségét.
  - **Top speed:** Maximális elért sebességünk a futás során.
  - **Average** speed: Az átlagsebességünk a futás során.
  - **Distence:** A távolság melyet futásunk során megtettünk.
- - **Set time?:** A kiválasztott célidőt. Abban az esetben látható ha adtunk meg célidőt.
- - **Set distance?:** A kiválasztott céltávolság. Abban az esetben látható ha adtunk meg céltávolságot.
+ - **Goal time?:** A kiválasztott célidőt. Abban az esetben látható ha adtunk meg célidőt.
+ - **Goal distance?:** A kiválasztott céltávolság. Abban az esetben látható ha adtunk meg céltávolságot.
  - **Date (start):** A futás kezdetének időpontja.
  - **Number of stops:** Megállások száma, a megtett út során hányszor álltunk meg.
- - 
 Ezalatt láthatóak az elemzőpanelek.
 
  - **Map:** Térkép, amely jelzi a megtett útvonalunkat. Egyes jelzésre rányomva látjuk az aktuális adatokat.
