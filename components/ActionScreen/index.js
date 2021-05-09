@@ -18,7 +18,6 @@ import { connect } from "react-redux";
 import getCopiedLocation from "./getCopiedLocation";
 import getDistanceOfLastElements from "./getDistanceOfLastElements";
 import getDistance from "./getDistance";
-import isStopped from "./isStopped";
 import getHHMMSS from "./getHHMMSS";
 import toFixing from "./toFixing";
 import calculateAvg from "./calculateAvg";
@@ -113,10 +112,9 @@ const ActionScreen = ({
         calculateAvg(letDistance, currLocation.timestamp - arr[0].timestamp)
       );
 
-      if (currDistance > 0.005 && currLocation.coords.speed < 40) {
+      if (currDistance > 0.004 && currLocation.coords.speed < 40) {
         letDistance = toFixing(parseFloat(letDistance) + currDistance, 3);
         setDistance(letDistance);
-        isStopped(!(currDistance > 0.005));
         lastTm = 0;
         currLocation.coords.timestamp = currLocation.timestamp;
         arr = [...arr, currLocation.coords];
@@ -305,7 +303,6 @@ const ActionScreen = ({
           </Portal>
         </SafeAreaView>
       </ScrollView>
-      {/* )} */}
     </React.Fragment>
   );
 };
@@ -315,7 +312,6 @@ const options = {
     backgroundColor: "#000",
     padding: 2,
     borderRadius: 5,
-    //  width: 220,
   },
   text: {
     fontSize: 30,
