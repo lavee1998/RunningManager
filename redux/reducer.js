@@ -70,6 +70,7 @@ function reducer(state = initialState, action) {
         distance: action.payload.distance,
         setTime: action.payload.setTime, //settime
         setDistance: action.payload.setDistance, //setDistance
+        stopCounter: action.payload.stopCounter,
         startDate: action.payload.startDate,
         maxAltitude: action.payload.maxAltitude,
       };
