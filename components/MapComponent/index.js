@@ -38,6 +38,7 @@ const MapComponent = ({ running, detailsView }) => {
               {running.map((corr) => {
                 return (
                   <Marker
+                    key={corr.timestamp}
                     coordinate={{
                       latitude:
                         corr.latitude,

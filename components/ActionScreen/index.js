@@ -124,8 +124,8 @@ const ActionScreen = ({
       }
       if (currLocation.coords.speed < 40) {
         if (arr.length > 7) {
+          
           //moving avg
-
           arr[arr.length - 1].speed = calculateAvg(
             getDistanceOfLastElements(arr, 6),
             arr[arr.length - 1].timestamp - arr[arr.length - 7].timestamp
@@ -166,16 +166,15 @@ const ActionScreen = ({
   };
 
   const stopRunning = () => {
+
     toggleStopwatch();
-    setIsRunning(false);
+    watchPositionStatus.remove();
 
     if (interval) {
       clearTimeout(timer.current);
       clearTimeout(almostTimer.current);
     }
 
-    let arr2Saved = [];
-    for (let i = 0; i < arr.length; i + 10) arr2Saved = [...arr2Saved, arr[i]];
     let currentRun = {
       runCoordinates: runCoordinates,
       avgSpeed: averageSpeed,
@@ -200,11 +199,11 @@ const ActionScreen = ({
       ),
     };
 
+    setCurrentRunning(currentRun);
+    setIsRunning(false);
     setInterval(null);
     setGoal(null);
 
-    watchPositionStatus.remove();
-    setCurrentRunning(currentRun);
     navigation.navigate("Details");
   };
 
@@ -242,7 +241,7 @@ const ActionScreen = ({
               onPress={() => stopRunning()}
               style={styles.stopButton}
               mode="container"
-              disabled={runCoordinates.length===0}
+              disabled={runCoordinates.length === 0}
             >
               <Text style={styles.stopButtonText}>Stop Run!</Text>
             </Button>
