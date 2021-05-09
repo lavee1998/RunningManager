@@ -24,23 +24,23 @@ import calculateAvg from "./calculateAvg";
 import countStops from "./countStops";
 
 // This component is responsible for handling the user's running.
-// navigation   -- navigation
-// goal         -- the previously saved goal distance
-// interval     -- the previosly saved goal interval
-// startDate    -- fix needed
+// navigation      -- navigation
+// goalDistance    -- the previously saved goal distance
+// goalInterval    -- the previosly saved goal interval
+// startDate       -- fix needed
 // setCurrentRunning -- method for saving the current running
-// setIsRunning -- when there is active Running, the navigation to another screen should be blocked
-// setGoal      -- methof for setting the goal distance
-// setInterval  -- method for setting the goal interval
+// setIsRunning    -- when there is active Running, the navigation to another screen should be blocked
+// setGoalDistance -- method for setting the goal distance
+// setGoalInterval -- method for setting the goal interval
 const ActionScreen = ({
   navigation,
-  goal,
-  interval,
+  goalDistance,
+  goalInterval,
   startDate,
   setCurrentRunning,
   setIsRunning,
-  setGoal,
-  setInterval
+  setGoalDistance,
+  setGoalInterval
 }) => {
   const [stopwatchStart, setStopwatchStart] = React.useState(false);
   const [averageSpeed, setAverageSpeed] = React.useState(0);
@@ -91,9 +91,9 @@ const ActionScreen = ({
 
       setWatchPositionStatus(watchPositionStatus);
 
-      if (interval) {
-        almostTimer.current = setTimeout(almostPassedTime, 0.8 * interval);
-        timer.current = setTimeout(passedTime, interval);
+      if (goalInterval) {
+        almostTimer.current = setTimeout(almostPassedTime, 0.8 * goalInterval);
+        timer.current = setTimeout(passedTime, goalInterval);
       }
     })();
   }, []);
@@ -138,12 +138,12 @@ const ActionScreen = ({
       }
 
       // alert messages for the user based on the distance
-      if (goal !== null && goal * 0.95 <= letDistance && warned === 0) {
+      if (goalDistance !== null && goalDistance * 0.95 <= letDistance && warned === 0) {
         warned = warned + 1;
         almostReachedDistance();
       }
       
-      if (goal !== null && goal <= letDistance && warned === 1) {
+      if (goalDistance !== null && goalDistance <= letDistance && warned === 1) {
         warned = warned + 1;
         reachedDistance();
       }
@@ -170,7 +170,7 @@ const ActionScreen = ({
     toggleStopwatch();
     watchPositionStatus.remove();
 
-    if (interval) {
+    if (goalInterval) {
       clearTimeout(timer.current);
       clearTimeout(almostTimer.current);
     }
@@ -187,8 +187,8 @@ const ActionScreen = ({
       time: runCoordinates.length ? getHHMMSS(Date.now() - runCoordinates[0].timestamp) : '-',
       timeStamp: runCoordinates.length ? Date.now() - runCoordinates[0].timestamp : 0,
       distance: distance,
-      setTime: interval,
-      setDistance: goal,
+      goalInterval: goalInterval,
+      goalDistance: goalDistance,
       stopCounter : runCoordinates.length ? countStops(runCoordinates) : 0,
       startDate: startDate,
       maxAltitude: runCoordinates.length ? Math.max.apply(
@@ -201,8 +201,8 @@ const ActionScreen = ({
 
     setCurrentRunning(currentRun);
     setIsRunning(false);
-    setInterval(null);
-    setGoal(null);
+    setGoalInterval(null);
+    setGoalDistance(null);
 
     navigation.navigate("Details");
   };
@@ -384,22 +384,22 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  interval: state.reducer.interval,
-  goal: state.reducer.goal,
+  goalInterval: state.reducer.goalInterval,
+  goalDistance: state.reducer.goalDistance,
   startDate: state.reducer.startDate,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setInterval: (interval) =>
+    setGoalInterval: (interval) =>
       dispatch({
-        type: "SET_INTERVAL",
+        type: "SET_GOALINTERVAL",
         payload: interval,
       }),
 
-    setGoal: (distance) =>
+    setGoalDistance: (distance) =>
       dispatch({
-        type: "SET_DISTANCE",
+        type: "SET_GOALDISTANCE",
         payload: distance,
       }),
 

@@ -7,10 +7,10 @@ import Dialog from "react-native-dialog";
 import DropDownPicker from 'react-native-dropdown-picker';
 
 // This component is the main component. Here the user can configure his/her running parameters
-// navigation  -- navigation
-// setInterval -- the set millisec based on the hours + minutes 
-// setGoal     -- the set distance based on the km
-const HomeScreen = ({ navigation, setInterval, setGoal }) => {
+// navigation      -- navigation
+// setInterval     -- the set millisec based on the hours + minutes 
+// setGoalDistance -- the set distance based on the km
+const HomeScreen = ({ navigation, setGoalInterval, setGoalDistance }) => {
   const [hours, setHours] = React.useState(0);
   const [minutes, setMinutes] = React.useState(0);
   const [distance, setDistance] = React.useState(0);
@@ -36,9 +36,7 @@ const HomeScreen = ({ navigation, setInterval, setGoal }) => {
       details: "In this case, you needn't set time or distance, just run as Forrest!" },
   ]);
 
-  useEffect(() => {
-    setInterval = 0;
-  }, []);
+  useEffect(() => {}, []);
 
   // Start Run button handler
   const handleStartRun = () => {
@@ -48,11 +46,11 @@ const HomeScreen = ({ navigation, setInterval, setGoal }) => {
     } 
 
     if(distance) {
-      setGoal(distance)
+      setGoalDistance(distance)
     }
     if(hours || minutes ) {
       let milliseconds = hours*3600000 + minutes*60000
-      setInterval(milliseconds)
+      setGoalInterval(milliseconds)
     }
     setDistance(0)
     setHours(0)
@@ -309,22 +307,20 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state /*, ownProps*/) => ({
-  // interval: state.reducer.interval,
-});
+const mapStateToProps = (state /*, ownProps*/) => ({});
 
 const mapDispatchToProps = (dispatch) => {
   return {
     // dispatching plain actions
-    setInterval: (interval) =>
+    setGoalInterval: (interval) =>
       dispatch({
-        type: "SET_INTERVAL",
+        type: "SET_GOALINTERVAL",
         payload: interval,
       }),
 
-    setGoal: (distance) =>
+    setGoalDistance: (distance) =>
       dispatch({
-        type: "SET_DISTANCE",
+        type: "SET_GOALDISTANCE",
         payload: distance,
       })
   };

@@ -194,36 +194,38 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
             </Row>
           )}
 
-          {currentRun.setTime > 0 && (
+          {currentRun.goalInterval > 0 && (
             <Row style={styles.paddingMarginZero}>
               <Col style={styles.paddingMarginZero}>
                 <View>
-                  <Text style={!!currentRun.stopCounter ? styles.secondaryDataText : styles.primaryDataText}>Set time</Text>
+                  <Text style={!!currentRun.stopCounter ? styles.secondaryDataText : styles.primaryDataText}>
+                    Goal Interval
+                  </Text>
                 </View>
               </Col>
               <Col style={styles.paddingMarginZero}>
                 <View>
                   <Text style={!!currentRun.stopCounter ? styles.primaryDataText : styles.secondaryDataText}>
-                    {Math.round(currentRun.setTime * 0.00001667, 2)} min
+                    {Math.round(currentRun.goalInterval * 0.00001667, 2)} min
                   </Text>
                 </View>
               </Col>
             </Row>
           )}
 
-          {currentRun.setDistance > 0 && (
+          {currentRun.goalDistance > 0 && (
             <Row style={styles.paddingMarginZero}>
               <Col style={styles.paddingMarginZero}>
                 <View>
-                  <Text style={(currentRun.setTime > 0 && !!currentRun.stopCounter) ? styles.primaryDataText : styles.secondaryDataText}>
-                    Set distance
+                  <Text style={(currentRun.goalInterval > 0 && !!currentRun.stopCounter) ? styles.primaryDataText : styles.secondaryDataText}>
+                    Goal Distance
                   </Text>
                 </View>
               </Col>
               <Col style={styles.paddingMarginZero}>
                 <View>
-                  <Text style={(currentRun.setTime > 0 && !!currentRun.stopCounter) ? styles.secondaryDataText : styles.primaryDataText}>
-                    {currentRun.setDistance} km
+                  <Text style={(currentRun.goalInterval > 0 && !!currentRun.stopCounter) ? styles.secondaryDataText : styles.primaryDataText}>
+                    {currentRun.goalDistance} km
                   </Text>
                 </View>
               </Col>
@@ -234,12 +236,12 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
             <Row style={styles.paddingMarginZero}>
               <TabView
                 navigationState={
-                  currentRun.setTime || currentRun.setDistance
+                  currentRun.goalInterval || currentRun.goalDistance
                     ? { index, routes: routesForNonFreeRunning }
                     : { index, routes: routesForFreeRunning }
                 }
                 renderScene={
-                  currentRun.setTime || currentRun.setDistance
+                  currentRun.goalInterval || currentRun.goalDistance
                     ? renderSceneForNonFreeRunning
                     : renderSceneForFreeRunning
                 }
