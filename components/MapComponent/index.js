@@ -65,7 +65,6 @@ const MapComponent = ({ running, detailsView }) => {
         loadingEnabled
         style={styles.map}
       >
-        <Polyline coordinates={running} strokeWidth={5} />
       </MapView>
     </View>
   );

@@ -124,7 +124,7 @@ const ActionScreen = ({
       }
       if (currLocation.coords.speed < 40) {
         if (arr.length > 7) {
-          
+
           //moving avg
           arr[arr.length - 1].speed = calculateAvg(
             getDistanceOfLastElements(arr, 6),
@@ -174,29 +174,29 @@ const ActionScreen = ({
       clearTimeout(timer.current);
       clearTimeout(almostTimer.current);
     }
-
+    
     let currentRun = {
       runCoordinates: runCoordinates,
       avgSpeed: averageSpeed,
-      topSpeed: Math.max.apply(
+      topSpeed: runCoordinates.length ? Math.max.apply(
         Math,
         runCoordinates.map(function (coord) {
           return coord.speed;
         })
-      ),
-      time: getHHMMSS(Date.now() - runCoordinates[0].timestamp),
-      timeStamp: Date.now() - runCoordinates[0].timestamp,
+      ) : 0,
+      time: runCoordinates.length ? getHHMMSS(Date.now() - runCoordinates[0].timestamp) : '-',
+      timeStamp: runCoordinates.length ? Date.now() - runCoordinates[0].timestamp : 0,
       distance: distance,
       setTime: interval,
       setDistance: goal,
-      stopCounter : countStops(runCoordinates),
+      stopCounter : runCoordinates.length ? countStops(runCoordinates) : 0,
       startDate: startDate,
-      maxAltitude: Math.max.apply(
+      maxAltitude: runCoordinates.length ? Math.max.apply(
         Math,
         runCoordinates.map(function (coord) {
           return coord.altitude;
         })
-      ),
+      ) : 0,
     };
 
     setCurrentRunning(currentRun);
@@ -241,7 +241,6 @@ const ActionScreen = ({
               onPress={() => stopRunning()}
               style={styles.stopButton}
               mode="container"
-              disabled={runCoordinates.length === 0}
             >
               <Text style={styles.stopButtonText}>Stop Run!</Text>
             </Button>

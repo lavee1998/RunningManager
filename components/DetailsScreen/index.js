@@ -35,7 +35,9 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
 
   useEffect(() => {
     Moment.locale("hu");
-    if (currentRun.name !== "Default name") {
+
+    // When the currentRun doesn't have any coordinates or its id is > 0 then the Save button should be disabled
+    if (currentRun.id !== 0 || currentRun.runCoordinates.length == 0) {
       SetAlreadySavedRunning(true);
     }
   }, []);
@@ -228,7 +230,7 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
             </Row>
           )}
 
-          {currentRun && (
+          {currentRun.runCoordinates.length != 0 && (
             <Row style={styles.paddingMarginZero}>
               <TabView
                 navigationState={
@@ -268,6 +270,7 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
         <Dialog.Title>Successfully saved!</Dialog.Title>
         <Dialog.Button label="ok" onPress={() => setVisibleAlert(false)} />
       </Dialog.Container>
+
       {currentRun.id == 0 && (
         <Button
           onPress={saveCurrentRunning}
