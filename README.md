@@ -95,13 +95,13 @@ A program futtatás után a főképernyőre dob. Ezen a képernyőn kiválasztha
 
 A **Start run!** gombbal indíthatjuk el a futást.
  
-## Futás akció képernyő
+### Futás akció képernyő
 
 Visszaszámlálás után az akcióképernyőt láthatjuk. Megjelenik számunkra egy sebességmérő, egy stopper, mely másodperc alapon számlálja az eltelt időt és egy térkép, amelyen megjelenik az aktuális pozíciónk. A felületen továbbá látható az átlagsebességünk **Average Speed** illetve a megtett távolság **Distance**. Ha lassan futunk, vagy megálltunk a program figyelmeztet bennünket, hogy lassan haladunk *You are too slow!* felirattal.
 Amennyiben a távolság vagy idő alapú futást választottuk, a program a céltávolság elérésekor, és 95% teljesítése esetén is figyelmeztet bennünket, hogy sikerült elérnünk, illetve közeledünk a cél eléréséhez. Az idő alapú futás esetén a program az idő leteltének 80%-ánál figyelmeztet bennünket hogy hamarosan letelik az idő, illetve a cél elérésénél ismételten, hogy lejárt az idő. 
 A **Stop run!** gombbal leállíthatjuk a futást ekkor befejeztük, és a program átnavigál bennünket egy másik képernyőre.
 
-## Futás összegző, és elemző képernyő – Your run
+### Futás összegző, és elemző képernyő – Your run
 
 Ezen a képernyőn láthatjuk futásunk eredményességét. Legfelül a mentéshez adhatunk meg nevet, **Name of my run** ahol megválaszthatjuk az elnevezést. Ezalatt egy táblázat található a futásunk eredményeivel, melyek a következőket jelentik:
 
@@ -123,10 +123,121 @@ Ezalatt láthatóak az elemzőpanelek.
 
 Ezen az oldalon végül a **Save running!** feliratot látjuk amellyel menthetjük a futásunk eredményeit.
 
-## Futásokat megjelenítő oldal – Your runs
+### Futásokat megjelenítő oldal – Your runs
 
 A képernyő alján található **Your runs** fülre nyomva navigálhatunk erre az oldalra, ahol a korábban mentésre került futásaink listáját láthatjuk, melyekből egyet kiválasztva legördül egy menü melynél a következő lehetőségek közül választhatunk.
 
  - **Rename running:** Futás átnevezése, rányomva megváltoztathatjuk a futásunk nevét.
  - **Delete running:** Futás törlése. Ezt választva eldobhatjuk a futást a mentett elemek közül.
  - **View details:** A korábbi futásunk eredményeit tekinthetjük meg az előző részben leírt **Your run** oldalon, melyre navigál bennünket az alkalmazás. 
+
+## Tesztelés
+
+A tesztelést egységtesztekkel végezzük. A teszteket minden segédeljárásra elvégezzük amelyek visszatérési értékekkel rendelkeznek, illetve az updateLocation eljárásra, amelynek segédváltozóit teszteljük. Az Expo jest tesztkörnyezet segít bennünket a tesztelésben.
+
+### calculateAvg
+
+Három esetet vizsgálunk ebben a tesztben.
+
+|  					Teszteset 				 |  					Paraméterek 				                 |  					Elvárt eredmény 				 |
+|-------------|-------------------------------|-------------------|
+|  					1 				         |  					Dist: 1km, time: 3600000ms 				  |  					1 				               |
+|  					2 				         |  					Dist: 10km, time: 3600000ms 				 |  					10 				              |
+|  					3 				         |  					Dist: 1km, time: 360000ms 				   |  					10 				              |
+
+### getCopiedLocation
+
+Ebben a fázisban ellenőrizzük, hogy az utolsó tömbben eltárolt location értékei másolva lesznek-e a paraméterben megadott aktuális pozícióba. Az eredmény json minden elemét ellenőrizzük.
+
+Bemenő paraméterek:
+
+Tömb:
+**'[{"latitude":0, "longitude":0, "altitude":1, "accuracy":12, "altitudeAccuracy": 21 "heading":10, "timestamp":1000}]'**
+
+Aktuális pozíció:
+**'{"coords": {"latitude":100, "longitude":100, "altitude":100, "accuracy":100, "altitudeAccuracy" :100, "heading":100}, "timestamp":2000}'**
+
+|  							Teszteset 						 |  							Json elem 						        |  							Elvárt eredmény 						 |
+|-------------|--------------------|-------------------|
+|  							1 						         |  							latitude 						         |  							0 						               |
+|  							2 						         |  							longitude 						        |  							0 						               |
+|  							3 						         |  							altitude 						         |  							1 						               |
+|  							4 						         |  							accuracy 						         |  							12 						              |
+|  							5 						         |  							altitudeAccuracy 						 |  							21 						              |
+|  							6 						         |  							heading 						          |  							10 						              |
+|  							7 						         |  							timestamp 						        |  							2000 						            |
+
+### getDistance
+
+Ebben a tesztesetben az eredményt centiméter pontossággal várjuk. Vizsgáljuk a helyes működést a tesztesettel.
+
+|  			Teszteset 		 |  			Json elem 		                                                                                                |  			Elvárt eredmény 		                                                                                |
+|-------------|------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+|  			1 		         | '[{"latitude":0, 			"longitude":0},{"latitude":0.00001, 			"longitude":0},{"latitude":0.00003, 			"longitude":0}]' 		 |  			Az első és utolsó elem 			távolsága háromszor akkora mint az első és második elem 			közti távolság. 		 |
+
+### GetDistanceOfLastElements
+
+Ebben a fázisban a tömb hét elemének távolságait vizsgáljuk. A tömb utolsó x elemének távolságát hasonlítjuk össze az adott elem és az utolsó elem távolságával. A távolság lineárisan növekedik így egyeznie kell a kettő eredménynek.
+
+|  					Teszteset 				 |  					Teszt paraméterek 				                                             |  					Elvárt eredmény 				                     |
+|-------------|-----------------------------------------------------------------|---------------------------------------|
+|  					1 				         |  					From - Lat.: 0.00005, long.: 0  					 to - Lat.: 0.00006, long.: 0 				 | getDistance(testJSON[5],testJSON[6]) 				 |
+|  					2 				         |  					From - Lat.: 0.00004, long.: 0  					 to - Lat.: 0.00006, long.: 0 				 | getDistance(testJSON[4],testJSON[6]) 				 |
+|  					3 				         |  					From - Lat.: 0.00003, long.: 0  					 to - Lat.: 0.00006, long.: 0 				 | getDistance(testJSON[3],testJSON[6]) 				 |
+|  					4 				         |  					From - Lat.: 0.00002, long.: 0  					 to - Lat.: 0.00006, long.: 0 				 | getDistance(testJSON[2],testJSON[6]) 				 |
+|  					5 				         |  					From - Lat.: 0.00001, long.: 0  					 to - Lat.: 0.00006, long.: 0 				 | getDistance(testJSON[1],testJSON[6]) 				 |
+|  					6 				         |  					From - Lat.: 0, long.: 0  					 to - Lat.: 0.00006, long.: 0 				       | getDistance(testJSON[0],testJSON[6]) 				 |
+
+### GetHHMMSS 
+
+Az idő HHMMSS formátumban. Minden számjegyét megvizsgáljuk. 
+
+|  					Teszteset 				 |  					Idő (ms) 				 |  					Elvárt eredmény 				 |  					Kapott ered. 				 |
+|-------------|------------|-------------------|----------------|
+|  					1 				         |  					1000 				     |  					00:00:01 				        |  					00:00:01 				     |
+|  					2 				         |  					10000 				    |  					00:00:10 				        |  					00:00:10 				     |
+|  					3 				         |  					60000 				    |  					00:01:00 				        |  					00:01:00 				     |
+|  					4 				         |  					600000 				   |  					00:10:00 				        |  					00:10:00 				     |
+|  					5 				         |  					3600000 				  |  					01:00:00 				        |  					01:00:00 				     |
+|  					6 				         |  					36000000 				 |  					10:00:00 				        |  					10:00:00 				     |
+|  					7 				         |  					86400000 				 |  					00:00:00 				        |  					00:00:00 				     |
+
+### countStops
+Ebben a tesztben megnézhetjük hogy működik a countStops függvény.
+
+|  							Teszteset 						 |  							Teszt tömb 						    |  							Elvárt eredmény 						 |
+|-------------|-----------------|-------------------|
+|  							1 						         |  							[0,0,0,0,0,0] 						 |  							0 						               |
+|  							2 						         |  							[0,1,1,0,1,1] 						 |  							1 						               |
+|  							3 						         |  							[0,1,0,1,0,1] 						 |  							2 						               |
+|  							4 						         |  							[0,1,0,0,0,1] 						 |  							1 						               |
+
+### toFixing 
+Ebben a tesztben megnézhetjük hogy működik a toFixing (alsó rész) kerekítőfüggvény.
+
+|  							Teszteset 						 |  							Paraméterek 						        |  							Elvárt eredmény 						 |
+|-------------|----------------------|-------------------|
+|  							1 						         |  							Num: 1.125, dec: 0 						 |  							1 						               |
+|  							2 						         |  							Num: 1.125, dec: 1 						 |  							1.1 						             |
+|  							3 						         |  							Num: 1.125, dec: 2 						 |  							1.12 						            |
+|  							4 						         |  							Num: 1.125, dec: 3 						 |  							1.125 						           |
+
+
+### updateLocation 
+
+A legfontosabb tesztfázis. A teszt 6 részből áll. Ezek a tömbök hosszának ellenőrzése, segédváltozók eredménye, és a segédfügvények visszatérési értékei.
+
+#### Segédtömb
+A segédtömb növekedését vizsgáljuk. Ha meghívjuk a függvényt egy adathalmazzal, a tömb mérete növekedik eggyel.
+
+#### Distance változó
+Ebben a tesztesetben megnézzük hogy a pozíció változásával a távolság növekedik-e.
+
+#### Szükségtelen adatok eldobása
+Az első két adat az alkalmazás tesztkörnyezetéhez való optimalizálás miatt szükségtelen.
+
+#### TooSlow változó
+Az alacsony haladási sebességet az alkalmazás figyelmeztetéssel jelzi. Ebben a tesztben ellenőrizzük, hogy valóban működik-e.
+
+#### RunCoordinates tömb
+A méret növekedését figyeljük ebben a fázisban, hasonlóan az előző segédtömbbhöz. A tesztelési taktika megegyezik az első esetben levőével.
