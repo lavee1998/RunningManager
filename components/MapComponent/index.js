@@ -1,4 +1,4 @@
-import MapView, { Marker, AnimatedRegion, Polyline } from "react-native-maps";
+import MapView, { Marker, Polyline } from "react-native-maps";
 import React from "react";
 import { View, StyleSheet, Dimensions, Text } from "react-native";
 

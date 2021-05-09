@@ -1,7 +1,7 @@
 import React from "react";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { View, StyleSheet, Animated } from "react-native";
-import { connect, useDispatch } from "react-redux";
+import { connect } from "react-redux";
 
 // This component is the Counter component. On the screen a CountdownCircle will be visible for the user.
 // navigation   -- navigation

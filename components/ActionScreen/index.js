@@ -90,7 +90,6 @@ const ActionScreen = ({
         LOCATION_SETTINGS,
         updatePosition
       );
-      //setWatchPositionStatus(watchPositionStatus);
 
       if (goalInterval) {
         almostTimer.current = setTimeout(almostPassedTime, 0.8 * goalInterval);
@@ -199,12 +198,7 @@ const ActionScreen = ({
       stopCounter : runCoordinates.length ? countStops(runCoordinates) : 0,
       startDate: startDate,
       altitudeDifference: maxAltitude-minAltitude,
-      maxAltitude: runCoordinates.length ? Math.max.apply(
-        Math,
-        runCoordinates.map(function (coord) {
-          return coord.altitude;
-        })
-      ) : 0,
+      maxAltitude: runCoordinates.length ? maxAltitude - runCoordinates[0].altitude : 0
     };
 
     //Set current run to redux state and reset default values
