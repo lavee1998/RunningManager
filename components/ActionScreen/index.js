@@ -168,7 +168,6 @@ const ActionScreen = ({
   };
 
   const stopRunning = () => {
-
     toggleStopwatch();
     watchPositionStatus.current.remove();
 
@@ -201,6 +200,7 @@ const ActionScreen = ({
       ) : 0,
     };
 
+    //Set current run to redux state and reset default values
     setCurrentRunning(currentRun);
     setIsRunning(false);
     setGoalInterval(null);
