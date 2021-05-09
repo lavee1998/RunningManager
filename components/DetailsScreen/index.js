@@ -35,14 +35,16 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
 
   useEffect(() => {
     Moment.locale("hu");
-    if (currentRun.name !== "Default name") {
+
+    // When the currentRun doesn't have any coordinates or its id is > 0 then the Save button should be disabled
+    if (currentRun.id !== 0 || currentRun.runCoordinates.length == 0) {
       SetAlreadySavedRunning(true);
     }
   }, []);
 
   // Tabs
   const MapTab = () => (
-    <MapComponent running={currentRun.runCoordinates} detailsView={true} />
+    <MapComponent runningCoordinates={currentRun.runCoordinates} detailsView={true} />
   );
 
   const SpeedChart = () => (
@@ -132,10 +134,20 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
           </Row>
           <Row style={styles.paddingMarginZero}>
             <Col style={styles.paddingMarginZero}>
-              <Text style={styles.primaryDataText}>Top speed</Text>
+              <Text style={styles.primaryDataText}>Maximum altitude difference</Text>
             </Col>
             <Col style={styles.paddingMarginZero}>
               <Text style={styles.secondaryDataText}>
+                {currentRun.altitudeDifference.toFixed(3)} m
+              </Text>
+            </Col>
+          </Row>
+          <Row style={styles.paddingMarginZero}>
+            <Col style={styles.paddingMarginZero}>
+              <Text style={styles.secondaryDataText}>Top speed</Text>
+            </Col>
+            <Col style={styles.paddingMarginZero}>
+              <Text style={styles.primaryDataText}>
                 {currentRun.topSpeed && currentRun.topSpeed.toFixed(3)} km/h
               </Text>
             </Col>
@@ -143,20 +155,20 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
 
           <Row style={styles.paddingMarginZero}>
             <Col style={styles.paddingMarginZero}>
-              <Text style={styles.secondaryDataText}>Average speed</Text>
+              <Text style={styles.primaryDataText}>Average speed</Text>
             </Col>
             <Col style={styles.paddingMarginZero}>
-              <Text style={styles.primaryDataText}>
+              <Text style={styles.secondaryDataText}>
                 {currentRun.avgSpeed && currentRun.avgSpeed.toFixed(3)} km/h
               </Text>
             </Col>
           </Row>
           <Row style={styles.paddingMarginZero}>
             <Col style={styles.paddingMarginZero}>
-              <Text style={styles.primaryDataText}>Distance</Text>
+              <Text style={styles.secondaryDataText}>Distance</Text>
             </Col>
             <Col style={styles.paddingMarginZero}>
-              <Text style={styles.secondaryDataText}>
+              <Text style={styles.primaryDataText}>
                 {currentRun.distance} km
               </Text>
             </Col>
@@ -164,61 +176,82 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
 
           <Row style={styles.paddingMarginZero}>
             <Col style={styles.paddingMarginZero}>
-              <Text style={styles.secondaryDataText}>Date (start)</Text>
+              <Text style={styles.primaryDataText}>Date (start)</Text>
             </Col>
             <Col style={styles.paddingMarginZero}>
-              <Text style={styles.primaryDataText}>
+              <Text style={styles.secondaryDataText}>
                 {Moment(currentRun.startDate).format("llll")}
               </Text>
             </Col>
           </Row>
 
-          {currentRun.setTime > 0 && (
+          {!!currentRun.stopCounter && (
             <Row style={styles.paddingMarginZero}>
-              <Col style={styles.paddingMarginZero}>
-                <View>
-                  <Text style={styles.primaryDataText}>Set time</Text>
-                </View>
-              </Col>
               <Col style={styles.paddingMarginZero}>
                 <View>
                   <Text style={styles.secondaryDataText}>
-                    {Math.round(currentRun.setTime * 0.00001667, 2)} min
+                    Number of the stops
+                  </Text>
+                </View>
+              </Col>
+              <Col style={styles.paddingMarginZero}>
+                <View>
+                  <Text style={styles.primaryDataText}>
+                    {currentRun.stopCounter} 
                   </Text>
                 </View>
               </Col>
             </Row>
           )}
 
-          {currentRun.setDistance > 0 && (
+          {currentRun.goalInterval > 0 && (
             <Row style={styles.paddingMarginZero}>
               <Col style={styles.paddingMarginZero}>
                 <View>
-                  <Text style={currentRun.setTime > 0 ? styles.secondaryDataText : styles.primaryDataText}>
-                    Set distance
+                  <Text style={!!currentRun.stopCounter ? styles.primaryDataText : styles.secondaryDataText}>
+                    Goal Interval
                   </Text>
                 </View>
               </Col>
               <Col style={styles.paddingMarginZero}>
                 <View>
-                  <Text style={currentRun.setTime > 0 ? styles.primaryDataText : styles.secondaryDataText}>
-                    {currentRun.setDistance} km
+                  <Text style={!!currentRun.stopCounter ? styles.secondaryDataText : styles.primaryDataText}>
+                    {Math.round(currentRun.goalInterval * 0.00001667, 2)} min
                   </Text>
                 </View>
               </Col>
             </Row>
           )}
 
-          {currentRun && (
+          {currentRun.goalDistance > 0 && (
+            <Row style={styles.paddingMarginZero}>
+              <Col style={styles.paddingMarginZero}>
+                <View>
+                  <Text style={(currentRun.goalInterval > 0 && !!currentRun.stopCounter) ? styles.secondaryDataText : styles.primaryDataText}>
+                    Goal Distance
+                  </Text>
+                </View>
+              </Col>
+              <Col style={styles.paddingMarginZero}>
+                <View>
+                  <Text style={(currentRun.goalInterval > 0 && !!currentRun.stopCounter) ? styles.primaryDataText : styles.secondaryDataText}>
+                    {currentRun.goalDistance} km
+                  </Text>
+                </View>
+              </Col>
+            </Row>
+          )}
+
+          {currentRun.runCoordinates.length != 0 && (
             <Row style={styles.paddingMarginZero}>
               <TabView
                 navigationState={
-                  currentRun.setTime || currentRun.setDistance
+                  currentRun.goalInterval || currentRun.goalDistance
                     ? { index, routes: routesForNonFreeRunning }
                     : { index, routes: routesForFreeRunning }
                 }
                 renderScene={
-                  currentRun.setTime || currentRun.setDistance
+                  currentRun.goalInterval || currentRun.goalDistance
                     ? renderSceneForNonFreeRunning
                     : renderSceneForFreeRunning
                 }
@@ -249,6 +282,7 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
         <Dialog.Title>Successfully saved!</Dialog.Title>
         <Dialog.Button label="ok" onPress={() => setVisibleAlert(false)} />
       </Dialog.Container>
+
       {currentRun.id == 0 && (
         <Button
           onPress={saveCurrentRunning}

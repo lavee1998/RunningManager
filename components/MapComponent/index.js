@@ -1,17 +1,21 @@
-import MapView, { Marker, AnimatedRegion, Polyline } from "react-native-maps";
+import MapView, { Marker, Polyline } from "react-native-maps";
 import React from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
+import { View, StyleSheet, Dimensions, Text } from "react-native";
 
 // This component is responsible for the Map
 // It will be integrated into different screens
-// running      -- passed by the components for displaying the markers on the map
-const MapComponent = ({ running, detailsView }) => {
- 
-  // console.log("running-test",running)
-  if (running.length) {
-     running = running.filter(function(value, index, Arr) {
+// runningCoordinates  -- passed by the components for displaying the markers on the map
+// detailsView         -- when it is used for the detailView
+const MapComponent = ({ runningCoordinates, detailsView }) => {
+  if (runningCoordinates.length) {
+    runningCoordinates = runningCoordinates.filter(function (
+      value,
+      index,
+      Arr
+    ) {
       return index % 4 == 0;
-  });
+    });
+
     return (
       <View>
         <MapView
@@ -19,33 +23,40 @@ const MapComponent = ({ running, detailsView }) => {
           loadingEnabled
           style={styles.map}
           region={{
-            latitude: running[running.length - 1].latitude,
-            longitude: running[running.length - 1].longitude,
+            latitude:
+              runningCoordinates[runningCoordinates.length - 1].latitude,
+            longitude:
+              runningCoordinates[runningCoordinates.length - 1].longitude,
             latitudeDelta: 0.006,
             longitudeDelta: 0.006,
           }}
           initialRegion={{
-            latitude: running[running.length - 1].latitude,
-            longitude: running[running.length - 1].longitude,
+            latitude:
+              runningCoordinates[runningCoordinates.length - 1].latitude,
+            longitude:
+              runningCoordinates[runningCoordinates.length - 1].longitude,
             latitudeDelta: 0.006,
             longitudeDelta: 0.006,
           }}
         >
           {detailsView && (
             <>
-              <Polyline coordinates={running} strokeWidth={5} />
-              {running.map((corr) => {
+              <Polyline coordinates={runningCoordinates} strokeColor="orange" strokeWidth={5} />
+              {runningCoordinates.map((corr, i) => {
                 return (
                   <Marker
+                    key={corr.timestamp}
                     coordinate={{
-                      latitude:
-                        corr.latitude,
-                      longitude:
-                        corr.longitude,
+                      latitude: corr.latitude,
+                      longitude: corr.longitude,
                     }}
-                    title={"Actual datas"}
-                    description={`Speed: ${corr.speed} `}
-                  />
+                    title={"Actual data"}
+                    description={`Speed: ${corr.speed} km/h, Distance: ${corr.distance} km`}
+                  >
+                    <View style={styles.circle}>
+                      <Text style={styles.pinText}>{i}</Text>
+                    </View>
+                  </Marker>
                 );
               })}
             </>
@@ -62,14 +73,25 @@ const MapComponent = ({ running, detailsView }) => {
         followUserLocation
         loadingEnabled
         style={styles.map}
-      >
-        <Polyline coordinates={running} strokeWidth={5} />
-      </MapView>
+      ></MapView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  circle: {
+    width: 10,
+    height: 10,
+    borderRadius: 15,
+    backgroundColor: "#3498db",
+  },
+  pinText: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 20,
+    marginBottom: 10,
+  },
   map: {
     height: Dimensions.get("window").height * 0.5,
   },

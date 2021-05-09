@@ -1,15 +1,12 @@
+import React from "react";
 import { ScrollView, View, Text, SafeAreaView, StyleSheet } from "react-native";
-import React, { Component, useEffect } from "react";
-import { Card, Title, Button, TextInput } from "react-native-paper";
-import { Col, Row, Grid } from "react-native-paper-grid";
 import ListRow from "./ListRow";
 import { List } from "react-native-paper";
-
 import { connect } from "react-redux";
 
 // This component is the main component. Here the user can configure his/her running parameters
 // navigation -- ??
-const ListScreen = ({ navigation, runnings, removeRun, setCurrentRunning }) => {
+const ListScreen = ({ navigation, runnings, setCurrentRunning }) => {
   return (
     <ScrollView>
       <View style={styles.pageTitleContainer}>
@@ -76,23 +73,6 @@ const mapStateToProps = (state /*, ownProps*/) => ({
 const mapDispatchToProps = (dispatch) => {
   return {
     // dispatching plain actions
-    setInterval: (interval) =>
-      dispatch({
-        type: "SET_INTERVAL",
-        payload: interval,
-      }),
-    setGoal: (distance) =>
-      dispatch({
-        type: "SET_DISTANCE",
-        payload: distance,
-      }),
-    setStartDate: (date) =>
-      dispatch({
-        type: "SET_START_DATE",
-        payload: date,
-      }),
-    deleteRun: (runId) => dispatch({ type: "DELETE_RUN", payload: runId }),
-    editRunName: (runId) => dispatch({ type: "EDIT_RUN", payload: runId }),
     setCurrentRunning: (currentRun) =>
       dispatch({
         type: "SAVE_CURRENTRUNNING",

@@ -2,12 +2,12 @@ import {
   REMOVE_RUNNING,
   SAVE_RUNNING,
   UPDATE_RUNNING,
-  SET_DISTANCE,
-  SET_INTERVAL,
+  SET_GOALDISTANCE,
+  SET_GOALINTERVAL,
   SET_START_DATE,
-  SET_IS_RUNNING
+  SET_IS_RUNNING,
+  SAVE_CURRENTRUNNING
 } from "./actions";
-import { SAVE_CURRENTRUNNING } from "./runnings";
 
 const initialState = {
   runnings: [
@@ -42,8 +42,8 @@ const initialState = {
       startDate: "2012-12-21",
     },
   ],
-  distance: null,
-  interval: null,
+  goalDistance: null,
+  goalInterval: null,
   startDate: null,
   currentRunning: null,
   isRunning: false,
@@ -68,10 +68,12 @@ function reducer(state = initialState, action) {
         time: action.payload.time,
         timeStamp: action.payload.timeStamp,
         distance: action.payload.distance,
-        setTime: action.payload.setTime, //settime
-        setDistance: action.payload.setDistance, //setDistance
+        goalInterval: action.payload.goalInterval,
+        goalDistance: action.payload.goalDistance,
+        stopCounter: action.payload.stopCounter,
         startDate: action.payload.startDate,
         maxAltitude: action.payload.maxAltitude,
+        altitudeDifference: action.payload.altitudeDifference
       };
 
       state = {
@@ -94,10 +96,10 @@ function reducer(state = initialState, action) {
         action.payload.name;
 
       return state;
-    case SET_INTERVAL:
-      return { ...state, interval: action.payload };
-    case SET_DISTANCE:
-      return { ...state, goal: action.payload };
+    case SET_GOALINTERVAL:
+      return { ...state, goalInterval: action.payload };
+    case SET_GOALDISTANCE:
+      return { ...state, goalDistance: action.payload };
     case SET_IS_RUNNING:
       return { ...state, isRunning: action.payload };
     case SET_START_DATE:
@@ -112,10 +114,12 @@ function reducer(state = initialState, action) {
         time: action.payload.time,
         timeStamp: action.payload.timeStamp,
         distance: action.payload.distance,
-        setTime: action.payload.setTime, 
-        setDistance: action.payload.setDistance, 
+        stopCounter: action.payload.stopCounter,
+        goalInterval: action.payload.goalInterval, 
+        goalDistance: action.payload.goalDistance, 
         startDate: action.payload.startDate,
         maxAltitude: action.payload.maxAltitude,
+        altitudeDifference: action.payload.altitudeDifference
       };
 
       state = {

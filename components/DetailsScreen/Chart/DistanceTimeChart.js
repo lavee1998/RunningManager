@@ -34,26 +34,24 @@ const chartConfig = {
   // paddingRight: 20,
 };
 
-const Chart = ({ setTime, timeStamp, distance, setDistance }) => {
+const Chart = ({ goalInterval, timeStamp, distance, goalDistance }) => {
   let data = {
     labels: [], // optional
     data: [],
     colors: [],
   };
 
-  if (setTime ) {
+  if (goalInterval) {
     data.labels.push("Time");
-    let value = timeStamp / setTime;
+    let value = timeStamp / goalInterval;
     value = value > 1 ? 1 : value;
-    console.log(setTime);
     data.data.push(value);
   }
 
-  if (setDistance) {
+  if (goalDistance) {
     data.labels.push("Distance");
-    let value = distance / setDistance;
+    let value = distance / goalDistance;
     value = value > 1 ? 1 : value;
-    console.log(setDistance);
     data.data.push(value);
   }
 

@@ -1,118 +1,133 @@
 import { ScrollView, View, Text, SafeAreaView, StyleSheet } from "react-native";
-import React, { Component, useEffect } from "react";
-import { Button, TextInput } from "react-native-paper";
-import { connect, useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { Button } from "react-native-paper";
+import { connect } from "react-redux";
 import DialogInput from "react-native-dialog-input";
 import Dialog from "react-native-dialog";
-import DropDownPicker from 'react-native-dropdown-picker';
+import DropDownPicker from "react-native-dropdown-picker";
 
 // This component is the main component. Here the user can configure his/her running parameters
-// navigation  -- navigation
-// setInterval -- the set millisec based on the hours + minutes 
-// setGoal     -- the set distance based on the km
-const HomeScreen = ({ navigation, setInterval, setGoal }) => {
+// navigation      -- navigation
+// setInterval     -- the set millisec based on the hours + minutes
+// setGoalDistance -- the set distance based on the km
+const HomeScreen = ({ navigation, setGoalInterval, setGoalDistance }) => {
   const [hours, setHours] = React.useState(0);
   const [minutes, setMinutes] = React.useState(0);
   const [distance, setDistance] = React.useState(0);
-  const [isDistanceDialogVisible, setDistanceDialogVisible] = React.useState(false);
+  const [isDistanceDialogVisible, setDistanceDialogVisible] = React.useState(
+    false
+  );
   const [isTimeDialogVisible, setTimeDialogVisible] = React.useState(false);
-  const [runType, setRunType] = React.useState('0');
+  const [runType, setRunType] = React.useState("0");
   const [message, setMessage] = React.useState(null);
   const [visibleAlert, setVisibleAlert] = React.useState(false);
   const [notValidNumber, setNotValidNumber] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [runTypeList, setRunTypeList] = React.useState([
-    { value: '0', 
-      label: "Run based on time and distance", 
-      details: "In this option, an average speed will be calculated that you must maintain in order to reach your goal!" },
-    { value: '1',
-      label: "Run based on time", 
-      details: "In this option, you can set goal time, it will be counted, and the application will warn you, that you reached 90% of goal time." },
-    { value: '2',
-      label: "Run based on distance", 
-      details: "In this option, you can set goal distance, the application will give information to you, that you reached 90% of goal distance." },
-    { value: '3',
-      label: "Free run", 
-      details: "In this case, you needn't set time or distance, just run as Forrest!" },
+    {
+      value: "0",
+      label: "Run based on time and distance",
+      details:
+        "In this option, an average speed will be calculated that you must maintain in order to reach your goal!",
+    },
+    {
+      value: "1",
+      label: "Run based on time",
+      details:
+        "In this option, you can set goal time, it will be counted, and the application will warn you, that you reached 90% of goal time.",
+    },
+    {
+      value: "2",
+      label: "Run based on distance",
+      details:
+        "In this option, you can set goal distance, the application will give information to you, that you reached 90% of goal distance.",
+    },
+    {
+      value: "3",
+      label: "Free run",
+      details:
+        "In this case, you needn't set time or distance, just run as Forrest!",
+    },
   ]);
 
-  useEffect(() => {
-    setInterval = 0;
-  }, []);
+  useEffect(() => {}, []);
 
   // Start Run button handler
   const handleStartRun = () => {
-    if(runType == '0' && (distance == 0 || hours == 0 && minutes == 0 ) || runType == '1' && hours == 0 && minutes == 0 || runType == '2' && distance == 0) {
-      onAlert(true) 
-      return
-    } 
+    if (
+      (runType == "0" && (distance == 0 || (hours == 0 && minutes == 0))) ||
+      (runType == "1" && hours == 0 && minutes == 0) ||
+      (runType == "2" && distance == 0)
+    ) {
+      onAlert(true);
+      return;
+    }
 
-    if(distance) {
-      setGoal(distance)
+    if (distance) {
+      setGoalDistance(distance);
     }
-    if(hours || minutes ) {
-      let milliseconds = hours*3600000 + minutes*60000
-      setInterval(milliseconds)
+    if (hours || minutes) {
+      let milliseconds = hours * 3600000 + minutes * 60000;
+      setGoalInterval(milliseconds);
     }
-    setDistance(0)
-    setHours(0)
-    setMinutes(0)
-    navigation.navigate("CountDown")
-  }
+    setDistance(0);
+    setHours(0);
+    setMinutes(0);
+    navigation.navigate("CountDown");
+  };
 
   // Validator for the hour input field
   const hourValidator = (hour) => {
-    if(hour) {
+    if (hour) {
       setNotValidNumber(false);
       setHours(hour);
+    } else {
+      setNotValidNumber(true);
+      setHours(0);
     }
-    else {
-     setNotValidNumber(true);
-     setHours(0);
-    }
-  }
+  };
 
   // Validator for the minute input field
   const minuteValidator = (minute) => {
-    if(minute) {
+    if (minute) {
       setNotValidNumber(false);
       setMinutes(minute);
+    } else {
+      setNotValidNumber(true);
+      setMinutes(0);
     }
-    else {
-     setNotValidNumber(true);
-     setMinutes(0);
-    }
-  }
+  };
 
   // Error message for the user, when there are missing parameters
   const onAlert = (alertAble) => {
-    if(alertAble){
+    if (alertAble) {
       setVisibleAlert(true);
-      if(runType == '0')
-        setMessage("Set both of the parameters please!");
-      else if(runType == '1')
-        setMessage("Set interval please!");
-      else 
-        setMessage("Set distance please!");
+      if (runType == "0") setMessage("Set both of the parameters please!");
+      else if (runType == "1") setMessage("Set interval please!");
+      else setMessage("Set distance please!");
     }
-  }
+  };
 
   return (
     <ScrollView>
       <View style={styles.pageTitleContainer}>
         <Text style={styles.pageTitle}>Get Started!</Text>
       </View>
-      
-      <SafeAreaView style={styles.containerStyle}>
 
+      <SafeAreaView style={styles.containerStyle}>
         <DropDownPicker
           schema={{
-            label: 'label',
-            value: 'value'
+            label: "label",
+            value: "value",
           }}
           searchable={false}
           open={open}
           value={runType}
+          onClose={() => {
+            setHours(0);
+            setMinutes(0);
+            setDistance(0);
+          }}
           defaultValue={runType}
           items={runTypeList}
           setValue={setRunType}
@@ -123,28 +138,28 @@ const HomeScreen = ({ navigation, setInterval, setGoal }) => {
         <View style={styles.detailsContainer}>
           <Text style={styles.detailsText}>{runTypeList[runType].details}</Text>
         </View>
-        
-        {(runType == '0' || runType == '2')&&
-        <Button
-          icon={distance == 0 ? "close" : "check"}
-          style={styles.setButton}
-          onPress={() => setDistanceDialogVisible(true)}
-        >
-          <Text style={styles.buttonText}>Set distance</Text>
-        </Button>
-        }
 
-        {(runType == '0' || runType == '1')&&
-        <Button
-          icon={hours == 0 && minutes == 0 ? "close" : "check"}
-          style={styles.setButton}
-          onPress={() => setTimeDialogVisible(true)}
-        >
-          <Text style={styles.buttonText}>Set time</Text>
-        </Button>
-        }
+        {(runType == "0" || runType == "2") && (
+          <Button
+            icon={distance == 0 ? "close" : "check"}
+            style={styles.setButton}
+            onPress={() => setDistanceDialogVisible(true)}
+          >
+            <Text style={styles.buttonText}>Set distance</Text>
+          </Button>
+        )}
 
-        {['0', '2'].includes(runType) && (
+        {(runType == "0" || runType == "1") && (
+          <Button
+            icon={hours == 0 && minutes == 0 ? "close" : "check"}
+            style={styles.setButton}
+            onPress={() => setTimeDialogVisible(true)}
+          >
+            <Text style={styles.buttonText}>Set time</Text>
+          </Button>
+        )}
+
+        {["0", "2"].includes(runType) && (
           <DialogInput
             isDialogVisible={isDistanceDialogVisible}
             title={"Distance"}
@@ -161,25 +176,33 @@ const HomeScreen = ({ navigation, setInterval, setGoal }) => {
           ></DialogInput>
         )}
 
-        {['0', '1'].includes(runType) && (
+        {["0", "1"].includes(runType) && (
           <Dialog.Container visible={isTimeDialogVisible}>
             <Dialog.Title>Time</Dialog.Title>
-            {notValidNumber&&
-            <Dialog.Description>
-              Please provide valid number!
-            </Dialog.Description>
-            }
+            {notValidNumber && (
+              <Dialog.Description>
+                Please provide valid number!
+              </Dialog.Description>
+            )}
             <Dialog.Input
               label="Hours"
               placeholder="0"
-              defaultValue={hours}
-              onChangeText={(hour) => {!isNaN(hour) && Math.floor(hour) == hour ? hourValidator(hour) : hourValidator(false)}}
+              defaultValue={"0"}
+              onChangeText={(hour) => {
+                !isNaN(hour) && Math.floor(hour) == hour
+                  ? hourValidator(hour)
+                  : hourValidator(false);
+              }}
             ></Dialog.Input>
             <Dialog.Input
               label="Minutes"
               placeholder="0"
-              defaultValue={minutes}
-              onChangeText={(minute) => {!isNaN(minute) && Math.floor(minute) == minute ? minuteValidator(minute) : minuteValidator(false)}}
+              defaultValue={"0"}
+              onChangeText={(minute) => {
+                !isNaN(minute) && Math.floor(minute) == minute
+                  ? minuteValidator(minute)
+                  : minuteValidator(false);
+              }}
             ></Dialog.Input>
             <Dialog.Button
               label="Cancel"
@@ -189,28 +212,28 @@ const HomeScreen = ({ navigation, setInterval, setGoal }) => {
             />
             <Dialog.Button
               label="Submit"
-              onPress={() => {(Math.floor(minutes) == minutes && minutes >= 0) || (Math.floor(hours) == hours && hours >= 0) ? setTimeDialogVisible(false) : null}}
+              onPress={() => {
+                (Math.floor(minutes) == minutes && minutes >= 0) ||
+                (Math.floor(hours) == hours && hours >= 0)
+                  ? setTimeDialogVisible(false)
+                  : null;
+              }}
             />
           </Dialog.Container>
         )}
 
         <Button
-        onPress={handleStartRun}
-          //onPress={()=>{runType == '0' && (distance == 0 || hours == 0 && minutes == 0 ) || runType == '1' && hours == 0 && minutes == 0 || runType == '2' && distance == 0 ? onAlert(true) : handleStartRun();}}
+          onPress={handleStartRun}
           style={styles.startButton}
           mode="container"
         >
           <Text style={styles.startButtonText}> Start run!</Text>
         </Button>
-        <Dialog.Container
-          visible={visibleAlert}
-        >
-          <Dialog.Title>
-            Alert!
-          </Dialog.Title>
 
-          <Text>{message}</Text>
-          <Dialog.Button label="ok" onPress={() => setVisibleAlert(false)}/>
+        <Dialog.Container visible={visibleAlert}>
+          <Dialog.Title>Alert!</Dialog.Title>
+          <Text style={styles.alertText}>{message}</Text>
+          <Dialog.Button label="ok" onPress={() => setVisibleAlert(false)} />
         </Dialog.Container>
       </SafeAreaView>
     </ScrollView>
@@ -218,6 +241,11 @@ const HomeScreen = ({ navigation, setInterval, setGoal }) => {
 };
 
 const styles = StyleSheet.create({
+  alertText: {
+    textAlign: "center",
+    marginBottom: 20,
+    fontWeight: "900",
+  },
   containerStyle: {
     flex: 1,
     marginHorizontal: 20,
@@ -307,24 +335,22 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state /*, ownProps*/) => ({
-  // interval: state.reducer.interval,
-});
+const mapStateToProps = (state /*, ownProps*/) => ({});
 
 const mapDispatchToProps = (dispatch) => {
   return {
     // dispatching plain actions
-    setInterval: (interval) =>
+    setGoalInterval: (interval) =>
       dispatch({
-        type: "SET_INTERVAL",
+        type: "SET_GOALINTERVAL",
         payload: interval,
       }),
 
-    setGoal: (distance) =>
+    setGoalDistance: (distance) =>
       dispatch({
-        type: "SET_DISTANCE",
+        type: "SET_GOALDISTANCE",
         payload: distance,
-      })
+      }),
   };
 };
 
