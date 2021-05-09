@@ -177,7 +177,7 @@ const ActionScreen = ({
     let minAltitude = 0;
     let maxAltitude = 0;
     if(runCoordinates.length) {
-      minAltitude = Math.max.apply(Math,runCoordinates.map(function (coord) { return coord.altitude; }));
+      minAltitude = Math.min.apply(Math,runCoordinates.map(function (coord) { return coord.altitude; }));
       maxAltitude = Math.max.apply(Math,runCoordinates.map(function (coord) { return coord.altitude; }));
     }
     
