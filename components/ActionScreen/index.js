@@ -6,7 +6,7 @@ import {
   Vibration,
 } from "react-native";
 import React from "react";
-import { Stopwatch, Timer } from "react-native-stopwatch-timer";
+import { Stopwatch } from "react-native-stopwatch-timer";
 import { Button, Paragraph, Dialog, Portal } from "react-native-paper";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import RNSpeedometer from "react-native-speedometer";
@@ -50,7 +50,6 @@ const ActionScreen = ({
   const [runCoordinates, setCoordinates] = useState([]);
   const [message, setMessage] = useState(null);
   const [visibleAlert, setVisibleAlert] = useState(false);
- // const [watchPositionStatus, setWatchPositionStatus] = React.useState();
   const [tooSlow, setTooSlow] = useState(false);
 
   let watchPositionStatus = useRef()
