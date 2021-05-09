@@ -16,6 +16,7 @@ import { connect } from "react-redux";
 
 const Tab = createMaterialBottomTabNavigator();
 
+// isRunning -- it is true when the user is running. In that case the navigation should be blocked
 const AppNavigation = ({ isRunning }) => {
   return (
     <NavigationContainer>
@@ -60,15 +61,6 @@ const AppNavigation = ({ isRunning }) => {
     </NavigationContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
 
 const mapStateToProps = (state /*, ownProps*/) => ({
   isRunning: state.reducer.isRunning,

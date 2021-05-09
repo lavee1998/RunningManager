@@ -3,7 +3,6 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from '@react-navigation/stack';
-
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import HomeScreen from "./components/HomeScreen";
 import ListScreen from "./components/ListScreen";
@@ -17,8 +16,6 @@ import AppNavigation from "./AppNavigation"
 import { LogBox } from 'react-native';
 LogBox.ignoreAllLogs();//Ignore all log notifications
 
-const Tab = createMaterialBottomTabNavigator();
-
 export default function App() {
   return (
     <Provider store={store}>
@@ -30,12 +27,3 @@ export default function App() {
     </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

@@ -51,8 +51,8 @@ const ActionScreen = ({
   const [message, setMessage] = useState(null);
   const [visibleAlert, setVisibleAlert] = useState(false);
   const [tooSlow, setTooSlow] = useState(false);
-
   let watchPositionStatus = useRef()
+
   // Vibrating message to the user
   const VIBRATINGMS = 500;
 
@@ -173,7 +173,7 @@ const ActionScreen = ({
       clearTimeout(almostTimer.current);
     }
 
-    //Calculate the difference between the MAX and MIN altitude
+    //For calculating the difference between altitudes
     let minAltitude = 0;
     let maxAltitude = 0;
     if(runCoordinates.length) {

@@ -5,14 +5,11 @@ import { View, StyleSheet, Dimensions, Text } from "react-native";
 // This component is responsible for the Map
 // It will be integrated into different screens
 // runningCoordinates  -- passed by the components for displaying the markers on the map
-// detailsView         -- when it is used for the detailView
+// detailsView         -- "True" when it is used for the detailsView
 const MapComponent = ({ runningCoordinates, detailsView }) => {
+
   if (runningCoordinates.length) {
-    runningCoordinates = runningCoordinates.filter(function (
-      value,
-      index,
-      Arr
-    ) {
+    runningCoordinates = runningCoordinates.filter(function (value,index,Arr) {
       return index % 4 == 0;
     });
 
@@ -23,18 +20,14 @@ const MapComponent = ({ runningCoordinates, detailsView }) => {
           loadingEnabled
           style={styles.map}
           region={{
-            latitude:
-              runningCoordinates[runningCoordinates.length - 1].latitude,
-            longitude:
-              runningCoordinates[runningCoordinates.length - 1].longitude,
+            latitude: runningCoordinates[runningCoordinates.length - 1].latitude,
+            longitude: runningCoordinates[runningCoordinates.length - 1].longitude,
             latitudeDelta: 0.006,
             longitudeDelta: 0.006,
           }}
           initialRegion={{
-            latitude:
-              runningCoordinates[runningCoordinates.length - 1].latitude,
-            longitude:
-              runningCoordinates[runningCoordinates.length - 1].longitude,
+            latitude: runningCoordinates[runningCoordinates.length - 1].latitude,
+            longitude: runningCoordinates[runningCoordinates.length - 1].longitude,
             latitudeDelta: 0.006,
             longitudeDelta: 0.006,
           }}
