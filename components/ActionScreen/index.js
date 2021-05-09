@@ -173,6 +173,14 @@ const ActionScreen = ({
       clearTimeout(timer.current);
       clearTimeout(almostTimer.current);
     }
+
+    //Calculate the difference between the MAX and MIN altitude
+    let minAltitude = 0;
+    let maxAltitude = 0;
+    if(runCoordinates.length) {
+      minAltitude = Math.max.apply(Math,runCoordinates.map(function (coord) { return coord.altitude; }));
+      maxAltitude = Math.max.apply(Math,runCoordinates.map(function (coord) { return coord.altitude; }));
+    }
     
     let currentRun = {
       runCoordinates: runCoordinates,
@@ -190,6 +198,7 @@ const ActionScreen = ({
       goalDistance: goalDistance,
       stopCounter : runCoordinates.length ? countStops(runCoordinates) : 0,
       startDate: startDate,
+      altitudeDifference: maxAltitude-minAltitude,
       maxAltitude: runCoordinates.length ? Math.max.apply(
         Math,
         runCoordinates.map(function (coord) {
