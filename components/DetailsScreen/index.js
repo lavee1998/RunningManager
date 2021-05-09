@@ -44,7 +44,7 @@ const DetailsScreen = ({ navigation, currentRun, saveRunning }) => {
 
   // Tabs
   const MapTab = () => (
-    <MapComponent running={currentRun.runCoordinates} detailsView={true} />
+    <MapComponent runningCoordinates={currentRun.runCoordinates} detailsView={true} />
   );
 
   const SpeedChart = () => (

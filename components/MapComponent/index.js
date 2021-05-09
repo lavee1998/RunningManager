@@ -4,12 +4,12 @@ import { View, StyleSheet, Dimensions } from "react-native";
 
 // This component is responsible for the Map
 // It will be integrated into different screens
-// running      -- passed by the components for displaying the markers on the map
-// detailsView  -- when it is used for the detailView
-const MapComponent = ({ running, detailsView }) => {
+// runningCoordinates  -- passed by the components for displaying the markers on the map
+// detailsView         -- when it is used for the detailView
+const MapComponent = ({ runningCoordinates, detailsView }) => {
  
-  if (running.length) {
-     running = running.filter(function(value, index, Arr) {
+  if (runningCoordinates.length) {
+    runningCoordinates = runningCoordinates.filter(function(value, index, Arr) {
       return index % 4 == 0;
   });
 
@@ -20,22 +20,22 @@ const MapComponent = ({ running, detailsView }) => {
           loadingEnabled
           style={styles.map}
           region={{
-            latitude: running[running.length - 1].latitude,
-            longitude: running[running.length - 1].longitude,
+            latitude: runningCoordinates[runningCoordinates.length - 1].latitude,
+            longitude: runningCoordinates[runningCoordinates.length - 1].longitude,
             latitudeDelta: 0.006,
             longitudeDelta: 0.006,
           }}
           initialRegion={{
-            latitude: running[running.length - 1].latitude,
-            longitude: running[running.length - 1].longitude,
+            latitude: runningCoordinates[runningCoordinates.length - 1].latitude,
+            longitude: runningCoordinates[runningCoordinates.length - 1].longitude,
             latitudeDelta: 0.006,
             longitudeDelta: 0.006,
           }}
         >
           {detailsView && (
             <>
-              <Polyline coordinates={running} strokeWidth={5} />
-              {running.map((corr) => {
+              <Polyline coordinates={runningCoordinates} strokeWidth={5} />
+              {runningCoordinates.map((corr) => {
                 return (
                   <Marker
                     key={corr.timestamp}
