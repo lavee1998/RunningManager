@@ -70,7 +70,7 @@ const ActionScreen = ({
 
   const LOCATION_SETTINGS = {
     accuracy:Location.Accuracy.High,
-    distanceInterval: 3,
+    distanceInterval: 0,
   };
 
   // ----------------------- METHODS ----------------------------
