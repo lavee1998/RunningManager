@@ -70,8 +70,8 @@ const ActionScreen = ({
   let first = 3;
 
   const LOCATION_SETTINGS = {
-    accuracy: 6,
-    distanceInterval: 0,
+    accuracy:Location.Accuracy.High,
+    distanceInterval: 3,
   };
 
   // ----------------------- METHODS ----------------------------
@@ -102,7 +102,6 @@ const ActionScreen = ({
   }, []);
 
   const updatePosition = (currLocation) => {
-    console.log("helobelo")
     if (arr.length) {
       const lastTimeStamp = arr[arr.length - 1].timestamp;
       const lastLocation = arr[arr.length - 1];
