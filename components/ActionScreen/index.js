@@ -12,7 +12,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import RNSpeedometer from "react-native-speedometer";
 import { Col, Row, Grid } from "react-native-paper-grid";
 import * as Location from "expo-location";
-import { useState, useEffect } from "react";
+import { useState, useEffect , useRef} from "react";
 import MapComponent from "../MapComponent";
 import { connect } from "react-redux";
 import getCopiedLocation from "./getCopiedLocation";
@@ -43,23 +43,23 @@ const ActionScreen = ({
   setGoalInterval
 }) => {
   //States
-  const [stopwatchStart, setStopwatchStart] = React.useState(false);
-  const [averageSpeed, setAverageSpeed] = React.useState(0);
-  const [currentSpeed, setCurrentSpeed] = React.useState(0);
-  const [distance, setDistance] = React.useState(0);
-  const [runCoordinates, setCoordinates] = React.useState([]);
-  const [message, setMessage] = React.useState(null);
-  const [visibleAlert, setVisibleAlert] = React.useState(false);
+  const [stopwatchStart, setStopwatchStart] = useState(false);
+  const [averageSpeed, setAverageSpeed] = useState(0);
+  const [currentSpeed, setCurrentSpeed] = useState(0);
+  const [distance, setDistance] = useState(0);
+  const [runCoordinates, setCoordinates] = useState([]);
+  const [message, setMessage] = useState(null);
+  const [visibleAlert, setVisibleAlert] = useState(false);
  // const [watchPositionStatus, setWatchPositionStatus] = React.useState();
-  const [tooSlow, setTooSlow] = React.useState(false);
+  const [tooSlow, setTooSlow] = useState(false);
 
-  let watchPositionStatus = React.useRef()
+  let watchPositionStatus = useRef()
   // Vibrating message to the user
   const VIBRATINGMS = 500;
 
   // Timer
-  let timer = React.useRef(null);
-  let almostTimer = React.useRef(null);
+  const timer = useRef(null);
+  const almostTimer = useRef(null);
 
   // speed related variables
   const slow = 5;
@@ -67,7 +67,7 @@ const ActionScreen = ({
   let arr = [];
   let warned = 0;
   let letDistance = 0;
-  let first = 3;
+  let firstN = 3;
 
   const LOCATION_SETTINGS = {
     accuracy:Location.Accuracy.High,
@@ -76,7 +76,7 @@ const ActionScreen = ({
 
   // ----------------------- METHODS ----------------------------
 
-  useEffect(() => {
+  useEffect(() => {    
     toggleStopwatch();
     setIsRunning(true);
 
@@ -91,7 +91,6 @@ const ActionScreen = ({
         LOCATION_SETTINGS,
         updatePosition
       );
-
       //setWatchPositionStatus(watchPositionStatus);
 
       if (goalInterval) {
@@ -151,14 +150,14 @@ const ActionScreen = ({
       }
       arr[arr.length - 1].distance=letDistance;
     } else {
-      if (first === 0) {
+      if (firstN === 0) { 
         currLocation.coords.speed = 0;
         currLocation.coords.timestamp = currLocation.timestamp;
         currLocation.coords.distance=letDistance;
         arr = [...arr, currLocation.coords];
         setCoordinates(arr);
       } else {
-        first = first - 1;
+        firstN = firstN - 1;
       }
     }
   };
