@@ -176,13 +176,13 @@ const HomeScreen = ({ navigation, setInterval, setGoal }) => {
             <Dialog.Input
               label="Hours"
               placeholder="0"
-              defaultValue={hours}
+              defaultValue={'0'}
               onChangeText={(hour) => {!isNaN(hour) && Math.floor(hour) == hour ? hourValidator(hour) : hourValidator(false)}}
             ></Dialog.Input>
             <Dialog.Input
               label="Minutes"
               placeholder="0"
-              defaultValue={minutes}
+              defaultValue={'0'}
               onChangeText={(minute) => {!isNaN(minute) && Math.floor(minute) == minute ? minuteValidator(minute) : minuteValidator(false)}}
             ></Dialog.Input>
             <Dialog.Button
@@ -199,20 +199,18 @@ const HomeScreen = ({ navigation, setInterval, setGoal }) => {
         )}
 
         <Button
-        onPress={handleStartRun}
+          onPress={handleStartRun}
           //onPress={()=>{runType == '0' && (distance == 0 || hours == 0 && minutes == 0 ) || runType == '1' && hours == 0 && minutes == 0 || runType == '2' && distance == 0 ? onAlert(true) : handleStartRun();}}
           style={styles.startButton}
           mode="container"
         >
           <Text style={styles.startButtonText}> Start run!</Text>
         </Button>
-        <Dialog.Container
-          visible={visibleAlert}
-        >
+
+        <Dialog.Container visible={visibleAlert}>
           <Dialog.Title>
             Alert!
           </Dialog.Title>
-
           <Text>{message}</Text>
           <Dialog.Button label="ok" onPress={() => setVisibleAlert(false)}/>
         </Dialog.Container>
