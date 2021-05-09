@@ -11,6 +11,13 @@ import {
   CollapseBody,
 } from "accordion-collapse-react-native";
 
+// This component represents a row in the ListScreen
+// run            -- the current running
+// i              -- index of the list
+// deleteRunning  -- method for delete a Running
+// updateRunning  -- method for update a Running
+// navtigation    -- navigation
+// setCurrentRunning -- method for setting the Current Running with Redux. It will be displayed on the Details screen.
 const ListRow = ({
   run,
   i,

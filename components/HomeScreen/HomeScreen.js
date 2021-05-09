@@ -8,8 +8,8 @@ import DropDownPicker from "react-native-dropdown-picker";
 
 // This component is the main component. Here the user can configure his/her running parameters
 // navigation      -- navigation
-// setInterval     -- the set millisec based on the hours + minutes
-// setGoalDistance -- the set distance based on the km
+// setGoalInterval -- for setting the goal Interval (millisec based on the hours + minutes)
+// setGoalDistance -- for setting the goal Distance (km)
 const HomeScreen = ({ navigation, setGoalInterval, setGoalDistance }) => {
   const [hours, setHours] = React.useState(0);
   const [minutes, setMinutes] = React.useState(0);

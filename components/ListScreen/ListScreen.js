@@ -4,8 +4,10 @@ import ListRow from "./ListRow";
 import { List } from "react-native-paper";
 import { connect } from "react-redux";
 
-// This component is the main component. Here the user can configure his/her running parameters
-// navigation -- ??
+// This component is the List component. It is responsible for displaying the saved runnings
+// navigation -- navigation
+// runnings   -- the previoiusly saved runnings
+// setCurrentRunning -- method for setting the current running. This will be displayed on the Details screen
 const ListScreen = ({ navigation, runnings, setCurrentRunning }) => {
   return (
     <ScrollView>

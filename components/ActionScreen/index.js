@@ -26,10 +26,10 @@ import countStops from "./countStops";
 // This component is responsible for handling the user's running.
 // navigation      -- navigation
 // goalDistance    -- the previously saved goal distance
-// goalInterval    -- the previosly saved goal interval
-// startDate       -- fix needed
+// goalInterval    -- the previously saved goal interval
+// startDate       -- the previously saved start date
 // setCurrentRunning -- method for saving the current running
-// setIsRunning    -- when there is active Running, the navigation to another screen should be blocked
+// setIsRunning    -- when there is an active Running, the navigation to another screen should be blocked
 // setGoalDistance -- method for setting the goal distance
 // setGoalInterval -- method for setting the goal interval
 const ActionScreen = ({

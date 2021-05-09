@@ -21,7 +21,7 @@ import {
   SpeedChartComponent,
 } from "./Chart";
 
-// This component is responsible for
+// This component is responsible for displaying the running related data
 // navigation   -- navigation
 // currentRun   -- previously saved current Running
 // saveRunning  -- method for saving the Running, when it is not already saved (e.g. when the users navigated here 
