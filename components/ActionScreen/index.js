@@ -111,7 +111,7 @@ const ActionScreen = ({
         calculateAvg(letDistance, currLocation.timestamp - arr[0].timestamp)
       );
 
-      if (currDistance > 0.004 && currLocation.coords.speed < 40) {
+      if (currDistance > 0.002 && currLocation.coords.speed < 40) {
         letDistance = toFixing(parseFloat(letDistance) + currDistance, 3);
         setDistance(letDistance);
         lastTm = 0;
