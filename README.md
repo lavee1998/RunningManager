@@ -77,7 +77,11 @@ Az alkalmazás alapvetően 4 oldalt tartalmaz, ebből 2 érhető el közvetlenü
 4. **"Action view"** - A futás közben ezt a képernyőt látja a felhasználó, itt két alnézetet is megtekinthet ahol egy sebességmérőn nézheti, hogy az átlagsebességhez képest mekkora a sebessége, valamint a térképen követheti végig mozgását. Mindemellett a futásának jelenlegi adatait is nyomon követheti.
 ![](images/viewModel.png) 
 
-
+## Screenshots
+![](images/
+|  	![](images/Screenshot_action_screen.png) 	  |  	![](images/Screenshot_action_screen.png)   |  	![](images/Screenshot_action_screen.png) |
+|  				![](images/Screenshot_action_screen.png) 				         |  					Dist: 10km, time: 3600000ms 				 |  					10 				              |
+|  					3 				         |  					Dist: 1km, time: 360000ms 				   |  					10 				              |
 ## Osztály diagram
 
 ![](images/classdiagram3.png) 
