@@ -86,7 +86,6 @@ Az alkalmazás alapvetően 4 oldalt tartalmaz, ebből 2 érhető el közvetlenü
 ![](images/classdiagram3.png) 
 
 
-
 ## Felhasználói dokumentáció – használati útmutató
 
 A program futtatás után a főképernyőre dob. Ezen a képernyőn kiválaszthatjuk a futással kapcsolatos célkitűzéseinket.
