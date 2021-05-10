@@ -79,7 +79,7 @@ Az alkalmazás alapvetően 4 oldalt tartalmaz, ebből 2 érhető el közvetlenü
 
 ## Képernyőfotók az alkalmazásról
 
-![](images/Screenshots.jpg) 
+![](images/Screenshots.png) 
 
 ## Osztály diagram
 
