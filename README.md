@@ -57,10 +57,10 @@ Az alkalmazás futtatásához az Expo Go mobil app szükséges.
 7. Ezen az oldalon elhelyezkedik egy olyan gomb amivel a beállított paraméterek alapján megkezdheti a felhasználó a futást egy új képernyőre viszi őt eközben. Ezen a képernyőn megjelenik egy stopperóra ahol az idejét tudja figyelni, kiolvashatja a közelítő sebességét, valamint hogy eddig mennyit futott. Ezen kívül egy megjelenik egy sebességmutató jelenik meg, ahol nézheti hogy az átlag sebesség (idő és távolság alapú futás esetén pedig a kívánt átlagsebesség) alapján mennyivel fut, valamint egy térkép ahol nyomon követheti futását.
 8. Miután befejezte futását a megfelelő gomb lenyomásával leállíthatja a folyamatot. Ekkor kérhet elemzést a programtól a felhasználó, ahol megkapja az átlagsebességét, a távolságot amennyit futott, a maximális sebességét, és egy térképen megjeleníti a futását. A térképen egyenletesen ellenörzőpontok segítségével további adatokat olvashat le a futásának részleteiről az adott pontban.
 9. Miután végzett az elemzéssel a felhasználó kérheti hogy elmentse az adott futás vizsgálatát a helyi tárolóba.
-10. A másik fő képernyőn a "Your runs"-ban megtekintheti a felhasználó az elmentett eredményeit és ezeket újra megvizsgálhatja a térképen (mint ahogy a futás elemzésénél is).
-11. Az alkalmazás futás közben figyelmeztet az esetleges célidő közelettére 10%-kal a vége elött. 
-12. Az alkalmazás futás közben figyelmeztet az esetleges céltáv elérésének közelettére 10%-kal a vége elött.
-13. Az alkalmazás figyelmeztet ha a kívánt sebesség (esetleges átlagsebesség) alatt teljesít a felhasználó.
+11. A másik fő képernyőn a "Your runs"-ban megtekintheti a felhasználó az elmentett eredményeit és ezeket újra megvizsgálhatja a térképen vagy megtekintheti az alkalmazás által készített grafikonokat a futásáról (mint ahogy a futás elemzésénél is).
+12. Az alkalmazás futás közben figyelmeztet az esetleges célidő közelettére 20%-kal a vége elött. 
+13. Az alkalmazás futás közben figyelmeztet az esetleges céltáv elérésének közelettére 5%-kal a vége elött.
+14. Az alkalmazás figyelmeztet ha a kívánt sebesség (esetleges átlagsebesség) alatt teljesít a felhasználó.
 
 
 ## Használat - eset diagram
@@ -135,7 +135,7 @@ A képernyő alján található **Your runs** fülre nyomva navigálhatunk erre 
 
 ## Tesztelés
 
-A tesztelést egységtesztekkel végezzük. A teszteket minden segédeljárásra elvégezzük amelyek visszatérési értékekkel rendelkeznek, illetve az updateLocation eljárásra, amelynek segédváltozóit teszteljük. Az Expo jest tesztkörnyezet segít bennünket a tesztelésben.
+A tesztelést egységtesztekkel végezzük. A teszteket minden segédeljárásra elvégezzük amelyek visszatérési értékekkel rendelkeznek, illetve az updateLocation eljárásra, amelynek segédváltozóit teszteljük. Az Expo Jest tesztkörnyezet segít bennünket a tesztelésben.
 
 ### calculateAvg
 
