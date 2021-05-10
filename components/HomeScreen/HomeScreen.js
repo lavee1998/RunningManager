@@ -14,9 +14,7 @@ const HomeScreen = ({ navigation, setGoalInterval, setGoalDistance }) => {
   const [hours, setHours] = React.useState(0);
   const [minutes, setMinutes] = React.useState(0);
   const [distance, setDistance] = React.useState(0);
-  const [isDistanceDialogVisible, setDistanceDialogVisible] = React.useState(
-    false
-  );
+  const [isDistanceDialogVisible, setDistanceDialogVisible] = React.useState(false);
   const [isTimeDialogVisible, setTimeDialogVisible] = React.useState(false);
   const [runType, setRunType] = React.useState("0");
   const [message, setMessage] = React.useState(null);
@@ -166,6 +164,7 @@ const HomeScreen = ({ navigation, setGoalInterval, setGoalDistance }) => {
             textInputProps={{ keyboardType: "numeric" }}
             message={"Please provide a distance (km):"}
             hintInput={"0.75"}
+            initValueTextInput={distance.toString()}
             submitInput={(inputText) => {
               setDistance(inputText);
               setDistanceDialogVisible(false);
@@ -187,7 +186,7 @@ const HomeScreen = ({ navigation, setGoalInterval, setGoalDistance }) => {
             <Dialog.Input
               label="Hours"
               placeholder="0"
-              defaultValue={"0"}
+              defaultValue={hours.toString()}
               onChangeText={(hour) => {
                 !isNaN(hour) && Math.floor(hour) == hour
                   ? hourValidator(hour)
@@ -197,7 +196,7 @@ const HomeScreen = ({ navigation, setGoalInterval, setGoalDistance }) => {
             <Dialog.Input
               label="Minutes"
               placeholder="0"
-              defaultValue={"0"}
+              defaultValue={minutes.toString()}
               onChangeText={(minute) => {
                 !isNaN(minute) && Math.floor(minute) == minute
                   ? minuteValidator(minute)
