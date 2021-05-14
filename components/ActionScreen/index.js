@@ -100,39 +100,32 @@ const ActionScreen = ({
 
   const updatePosition = (currLocation) => {
     if (arr.length) {
-      const lastTimeStamp = arr[arr.length - 1].timestamp;
-      const lastLocation = arr[arr.length - 1];
-      const currDistance = getDistance(lastLocation, currLocation.coords);
-      currLocation.coords.speed = calculateAvg(
-        currDistance,
-        currLocation.timestamp - (lastTm ? lastTm : lastTimeStamp)
-      );
+      const currDistance = getDistance(arr[arr.length-1], currLocation.coords);
       setAverageSpeed(
         calculateAvg(letDistance, currLocation.timestamp - arr[0].timestamp)
       );
-
-      if (currDistance > 0.002 && currLocation.coords.speed < 40) {
-        letDistance = toFixing(parseFloat(letDistance) + currDistance, 3);
-        setDistance(letDistance);
-        lastTm = 0;
-        currLocation.coords.timestamp = currLocation.timestamp;
-        arr = [...arr, currLocation.coords];
-      } else {
-        if (!lastTm) lastTm = arr[arr.length - 1].timestamp;
-        arr = [...arr, getCopiedLocation(arr, currLocation).coords];
-      }
-      if (currLocation.coords.speed < 40) {
-        if (arr.length > 7) {
-
+      let currSpeed=0;
+      if (arr.length > 6) {
+        currSpeed=calculateAvg(
           //moving avg
-          arr[arr.length - 1].speed = calculateAvg(
-            getDistanceOfLastElements(arr, 6),
-            arr[arr.length - 1].timestamp - arr[arr.length - 7].timestamp
-          ); //interpolated curr speed
-          setCurrentSpeed(arr[arr.length - 1].speed);
-          setTooSlow(arr[arr.length - 1].speed < slow);
-        } else arr[arr.length - 1].speed = 0;
-
+          getDistanceOfLastElements(arr,5)+currDistance,
+          currLocation.timestamp - arr[arr.length - 6].timestamp
+        ); 
+      }
+      if (currSpeed < 40) {
+        if (currDistance > 0.002 ) {
+          letDistance = toFixing(parseFloat(letDistance) + currDistance, 3);
+          setDistance(letDistance);
+          lastTm = 0;
+          currLocation.coords.timestamp = currLocation.timestamp;
+          arr = [...arr, currLocation.coords];
+        } else {
+          if (!lastTm) lastTm = arr[arr.length - 1].timestamp;
+          arr = [...arr, getCopiedLocation(arr, currLocation).coords];
+        }
+        arr[arr.length - 1].speed = currSpeed;//interpolated curr speed
+        setCurrentSpeed(arr[arr.length - 1].speed);
+        setTooSlow(arr[arr.length - 1].speed < slow);
         setCoordinates(arr);
       }
 
